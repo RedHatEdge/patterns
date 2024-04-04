@@ -12,7 +12,7 @@ metadata:
 spec:
   to:
     kind: Service
-    name: ui
+    name: ui-{{ .Release.Name }}
   port:
     targetPort: 1880
   tls:

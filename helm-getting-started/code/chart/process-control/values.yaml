@@ -7,10 +7,12 @@ instanceAnnotations:
   billingCity: "Raleigh"
   billingState: "North Carolina"
   billingZipCode: "27601"
+  billingCountry: "US"
   deploymentAddress: "1_Main_St_SE"
   deploymentCity: "Minneapolis"
   deploymentState: "Minnesota"
   deploymentZipCode: "55414"
+  deploymentCountry: "US"
   serviceProvider: "Managed_Services_Inc"
   
 # Technical/resource values for the deployment

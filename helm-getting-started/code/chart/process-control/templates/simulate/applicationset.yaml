@@ -2,9 +2,9 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: simulate-ss
+  name: simulate-ss-{{ .Release.Name }}
   labels:
-    app.kubernetes.io/name: simulate-ss
+    app.kubernetes.io/name: simulate-ss-{{ .Release.Name }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/version: "1.0.0"
     app.kubernetes.io/component: simulate
@@ -12,7 +12,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: simulate
+      app.kubernetes.io/name: simulate-{{ .Release.Name }}
       app.kubernetes.io/instance: {{ .Release.Name }}
       app.kubernetes.io/part-of: process-control
   serviceName: "simulate-service"
@@ -21,7 +21,7 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: simulate
+        app.kubernetes.io/name: simulate-{{ .Release.Name }}
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/part-of: process-control
     spec:
