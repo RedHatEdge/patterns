@@ -32,6 +32,9 @@ spec:
           env:
             - name: MQTT_URI
               value: mqtt://mqtt-{{ .Release.Name }}
+          ports:
+            - containerPort: 1880
+              name: simulate-port
           resources:
             limits:
               memory: {{ .Values.resourceLimitOverrides.control.memory | default "100Mi" }}

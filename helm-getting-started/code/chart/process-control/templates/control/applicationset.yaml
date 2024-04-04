@@ -28,7 +28,10 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
         - name: control
-          image: quay.io/device-edge-workshops/process-control-control-k8s:4.0.0
+          image: quay.io/device-edge-workshops/process-control-control-k8s:4.1.0
+          env:
+            - name: MQTT_URI
+              value: mqtt://mqtt-{{ .Release.Name }}
           ports:
             - containerPort: 1880
               name: control-port
