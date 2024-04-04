@@ -28,7 +28,10 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
         - name: simulate
-          image: quay.io/device-edge-workshops/process-control-simulate-k8s:1.0.0
+          image: quay.io/device-edge-workshops/process-control-simulate-k8s:1.1.0
+          env:
+            - name: MQTT_URI
+              value: mqtt://mqtt-{{ .Release.Name }}
           resources:
             limits:
               memory: {{ .Values.resourceLimitOverrides.control.memory | default "100Mi" }}
