@@ -1,0 +1,6 @@
+apiVersion: v2
+name: process-control
+description: A Helm chart to deploy the sample process control application on Kubernetes
+type: application
+version: 1.0.0
+appVersion: "4.0.0"

@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mqtt-broker-ss
+  labels:
+    app.kubernetes.io/name: mqtt-broker-ss
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/component: mqtt-broker
+    app.kubernetes.io/part-of: process-control
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mqtt-broker
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/part-of: process-control
+  serviceName: "mqtt-service"
+  replicas: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mqtt-broker
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/part-of: process-control
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: mqtt-broker
+          image: quay.io/device-edge-workshops/process-control-mqtt:1.0.0
+          ports:
+            - containerPort: 1883
+              name: mqtt-port
+          resources:
+            limits:
+              memory: {{ .Values.resourceLimitOverrides.control.memory | default "100Mi" }}
+              cpu: {{ .Values.resourceLimitOverrides.control.cpu | default "100m" }}

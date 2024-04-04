@@ -1,0 +1,19 @@
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: hmi-{{ .Release.Name }}
+  annotations:
+    haproxy.router.openshift.io/rewrite-target: /ui
+  labels:
+    app.kubernetes.io/name: ui-route
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/part-of: process-control
+spec:
+  to:
+    kind: Service
+    name: ui
+  port:
+    targetPort: 1880
+  tls:
+    termination: edge

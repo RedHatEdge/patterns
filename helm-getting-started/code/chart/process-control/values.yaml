@@ -1,0 +1,21 @@
+---
+
+# "Meta" information about the deployment
+instanceAnnotations:
+  companyName: "Example_Company_Inc"
+  billingAddress: "100_East_Davie_Street"
+  billingCity: "Raleigh"
+  billingState: "North Carolina"
+  billingZipCode: "27601"
+  deploymentAddress: "1_Main_St_SE"
+  deploymentCity: "Minneapolis"
+  deploymentState: "Minnesota"
+  deploymentZipCode: "55414"
+  serviceProvider: "Managed_Services_Inc"
+  
+# Technical/resource values for the deployment
+uiReplicas: 2
+resourceLimitOverrides:
+  control:
+    cpu: 500m
+    memory: 500Mi
