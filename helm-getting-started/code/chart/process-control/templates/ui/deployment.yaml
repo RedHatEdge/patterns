@@ -22,7 +22,10 @@ spec:
     spec:
       containers:
       - name: ui
-        image: quay.io/device-edge-workshops/process-control-ui-k8s:4.0.0
+        image: quay.io/device-edge-workshops/process-control-ui-k8s:4.1.0
+        env:
+          - name: MQTT_URI
+            value: mqtt://mqtt-{{ .Release.Name }}
         ports:
           - containerPort: 1880
             name: ui-port
