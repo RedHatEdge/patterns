@@ -151,7 +151,7 @@ TEST SUITE: None
 ```
 
 In this example, the chart was deployed with a deployment name of `xyz-corp-deployment-1`:
-![xyz-corp-deployment-1](./images/xyz-corp-deployment-1.png)
+![xyz-corp-deployment-1](./.images/xyz-corp-deployment-1.png)
 
 Since a few values in our `values.yaml` file define information about the deployed instnace, these values can be set on the CLI when deploying as well:
 ```
