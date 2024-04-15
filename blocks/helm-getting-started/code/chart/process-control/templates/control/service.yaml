@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: control-{{ .Release.Name }}
+  labels:
+    app.kubernetes.io/name: control-service
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/part-of: process-control
+spec:
+  ports:
+    - port: 1880
+      protocol: TCP
+      targetPort: 1880
+  selector:
+    app.kubernetes.io/name: control
+  clusterIP: None

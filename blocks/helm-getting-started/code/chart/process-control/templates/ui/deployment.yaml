@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui-deployment-{{ .Release.Name }}
+  labels:
+    app.kubernetes.io/name: ui-deployment-{{ .Release.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: "4.0.0"
+    app.kubernetes.io/component: ui
+    app.kubernetes.io/part-of: process-control
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ui-{{ .Release.Name }}
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ui-{{ .Release.Name }}
+        app.kubernetes.io/part-of: process-control
+    spec:
+      containers:
+      - name: ui
+        image: quay.io/device-edge-workshops/process-control-ui-k8s:4.1.0
+        env:
+          - name: MQTT_URI
+            value: mqtt://mqtt-{{ .Release.Name }}
+        ports:
+          - containerPort: 1880
+            name: ui-port
+        resources:
+          limits:
+              memory: {{ .Values.resourceLimitOverrides.control.memory | default "250Mi" }}
+              cpu: {{ .Values.resourceLimitOverrides.control.cpu | default "100m" }}
