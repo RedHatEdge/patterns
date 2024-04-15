@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simulate-service
+  labels:
+    app.kubernetes.io/name: simulate-service
+    app.kubernetes.io/instance: process-control
+    app.kubernetes.io/part-of: process-control
+spec:
+  ports:
+    - port: 1880
+      protocol: TCP
+      targetPort: 1880
+  selector:
+    app.kubernetes.io/name: simulate
+  clusterIP: None

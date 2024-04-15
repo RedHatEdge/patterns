@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mqtt
+  labels:
+    app.kubernetes.io/name: mqtt-service
+    app.kubernetes.io/instance: process-control
+    app.kubernetes.io/part-of: process-control
+spec:
+  ports:
+    - port: 1883
+      protocol: TCP
+      targetPort: 1883
+  selector:
+    app.kubernetes.io/name: mqtt-broker
+  clusterIP: None
