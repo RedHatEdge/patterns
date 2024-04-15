@@ -156,7 +156,18 @@ These parameters will override the supplied values when deployed.
 ## Part 5 - Example Deployment
 To test using ArgoCD, the examples from this repository can be directly applied to a cluster with OpenShift GitOps installed:
 ```
-oc apply -f code/argocd/
+# Create repository
+oc apply -f code/argocd/repository.yaml
+
+# Create application
+oc apply -f code/argocd/application.yaml
 ```
 
-# TO-DO: Add screenshot of deployed application
+Repository created:
+![Repository](./.images/repository.png)
+
+Application created:
+![Application](./.images/application.png)
+
+Deployment:
+![Deployment](./.images/deployment.png)

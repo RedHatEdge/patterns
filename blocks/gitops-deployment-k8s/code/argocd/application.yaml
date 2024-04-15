@@ -7,6 +7,9 @@ metadata:
   labels:
     application: process-control
 spec:
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
   destination:
     name: ""
     namespace: process-control
@@ -15,9 +18,9 @@ spec:
   source:
     repoURL: https://github.com/RedHatEdge/patterns.git
     targetRevision: HEAD
-    path: blocks/helm-getting-started/code/chart
+    path: blocks/helm-getting-started/code/chart/process-control
     helm:
-      parameters:
+      valuesObject:
         instanceAnnotations:
           companyName: "Example_Gitops_Company_Deployment"
           billingAddress: "100_East_Davie_Street"
