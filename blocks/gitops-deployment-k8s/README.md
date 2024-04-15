@@ -12,7 +12,8 @@ This block is for the deployment of applications deployed to kubernetes-based pl
 * [Part 1 - Introduction to GitOps](#part-1---introduction-to-gitops)
 * [Part 2 - Creating a Repository](#part-2---creating-a-repository)
 * [Part 3 - Creating an Application](#part-3---creating-an-application)
-* [Part 4 - Example Deployment](#part-4---example-deployment)
+* [Part 4 - Supplying Helm Parameters](#part-4---supplying-helm-parameters)
+* [Part 5 - Example Deployment](#part-5---example-deployment)
 
 ## Part 1 - Introduction to GitOps
 At a high level, gitops refers to using a code repository as a source of truth, and what actions are triggered from via code changes. Since the git repo is just code, typically a continous delivery tool is used to read the repo, apply changes, and track the current sync state.
@@ -84,7 +85,75 @@ destination:
 ```
 This defines the destination cluster and namespace - here, we're deploying to the local cluster.
 
-## Part 4 - Example Deployment
+## Part 4 - Supplying Helm Parameters
+Since Helm templates usually contain a values file with some configurable options, it may be required to supply these values via GitOps.
+
+For our example application's helm chart, the following is found in the `values.yaml` file:
+```yaml
+---
+# "Meta" information about the deployment
+instanceAnnotations:
+  companyName: "Example_Company_Inc"
+  billingAddress: "100_East_Davie_Street"
+  billingCity: "Raleigh"
+  billingState: "North Carolina"
+  billingZipCode: "27601"
+  billingCountry: "US"
+  deploymentAddress: "1_Main_St_SE"
+  deploymentCity: "Minneapolis"
+  deploymentState: "Minnesota"
+  deploymentZipCode: "55414"
+  deploymentCountry: "US"
+  serviceProvider: "Managed_Services_Inc"
+  
+# Technical/resource values for the deployment
+uiReplicas: 2
+resourceLimitOverrides:
+  control:
+    cpu: 500m
+    memory: 500Mi
+```
+
+To override these, we can use the `.spec.source.helm.parameters` field when defining our application:
+```yaml
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: process-control
+  namespace: openshift-gitops
+  labels:
+    application: process-control
+spec:
+  destination:
+    name: ""
+    namespace: process-control
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://github.com/RedHatEdge/patterns.git
+    targetRevision: HEAD
+    path: blocks/k8s-core-concepts/code/k8s
+    helm:
+      parameters:
+        instanceAnnotations:
+          companyName: "Example_Gitops_Company_Deployment"
+          billingAddress: "100_East_Davie_Street"
+          billingCity: "Raleigh"
+          billingState: "North Carolina"
+          billingZipCode: "27601"
+          billingCountry: "US"
+          deploymentAddress: "30_36_Monument_Street"
+          deploymentCity: "London"
+          deploymentState: "NA"
+          deploymentZipCode: " EC3R_8NB"
+          deploymentCountry: "UK"
+          serviceProvider: "Managed_GitOps_Services_Inc"
+```
+
+These parameters will override the supplied values when deployed.
+
+## Part 5 - Example Deployment
 To test using ArgoCD, the examples from this repository can be directly applied to a cluster with OpenShift GitOps installed:
 ```
 oc apply -f code/argocd/

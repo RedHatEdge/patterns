@@ -15,7 +15,19 @@ spec:
   source:
     repoURL: https://github.com/RedHatEdge/patterns.git
     targetRevision: HEAD
-    path: blocks/k8s-core-concepts/code/k8s
-    destination:
-      server: https://kubernetes.default.svc
-      namespace: process-control
+    path: blocks/helm-getting-started/code/chart
+    helm:
+      parameters:
+        instanceAnnotations:
+          companyName: "Example_Gitops_Company_Deployment"
+          billingAddress: "100_East_Davie_Street"
+          billingCity: "Raleigh"
+          billingState: "North Carolina"
+          billingZipCode: "27601"
+          billingCountry: "US"
+          deploymentAddress: "30_36_Monument_Street"
+          deploymentCity: "London"
+          deploymentState: "NA"
+          deploymentZipCode: " EC3R_8NB"
+          deploymentCountry: "UK"
+          serviceProvider: "Managed_GitOps_Services_Inc"
