@@ -1,0 +1,62 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: process-control-as
+  namespace: openshift-gitops
+spec:
+  generators:
+    - list:
+        elements:
+          - deploymentNumber: '1'
+            displayName: "example-company-inc"
+            companyName: "Example_Company_Inc"
+            billingAddress: "100_East_Davie_Street"
+            billingCity: "Raleigh"
+            billingState: "North Carolina"
+            billingZipCode: "27601"
+            deploymentAddress: "1_Main_St_SE"
+            deploymentCity: "Minneapolis"
+            deploymentState: "Minnesota"
+            deploymentZipCode: "55414"
+            serviceProvider: "Managed_Services_Inc"
+            namespace: "example-company-inc"
+          - deploymentNumber: '2'
+            displayName: "example-company-inc"
+            companyName: "Example_Company_Inc"
+            billingAddress: "Werner-von-Siemens-Ring_12"
+            billingCity: "Raleigh"
+            billingState: "North Carolina"
+            billingZipCode: "27601"
+            deploymentAddress: "Werner-von-Siemens-Ring_12"
+            deploymentCity: "Munich"
+            deploymentState: "Grasbrunn"
+            deploymentZipCode: "85630"
+            serviceProvider: "Managed_Services_Inc"
+            namespace: "example-company-inc"
+  template:
+    metadata:
+      name: '{{displayName}}-{{deploymentNumber}}'
+      annotations:
+        companyName: '{{companyName}}'
+        billingAddress: '{{billingAddress}}'
+        billingCity: '{{billingCity}}'
+        billingState: '{{billingState}}'
+        billingZipCode: '{{billingZipCode}}'
+        deploymentAddress: '{{deploymentAddress}}'
+        deploymentCity: '{{deploymentCity}}'
+        deploymentState: '{{deploymentState}}'
+        deploymentZipCode: '{{deploymentZipCode}}'
+        serviceProvider: '{{serviceProvider}}'
+    spec:
+      project: default
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+      source:
+        repoURL: https://github.com/RedHatEdge/patterns.git
+        targetRevision: HEAD
+        path: helm-getting-started/code/chart/process-control
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
