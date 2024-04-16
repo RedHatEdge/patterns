@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: process-control-multicustomer-asS
+  name: process-control-multicustomer-as
   namespace: openshift-gitops
 spec:
   syncPolicy:
