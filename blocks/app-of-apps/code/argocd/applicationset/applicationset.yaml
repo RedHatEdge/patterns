@@ -18,18 +18,18 @@ spec:
       - path: "blocks/app-of-apps/code/customer-deployments/**/deployment-*.yaml"
   template:
     metadata:
-      name: '{{displayName}}-{{deploymentNumber}}'
+      name: '{{.displayName}}-{{.deploymentNumber}}'
       annotations:
-        companyName: '{{companyName}}'
-        billingAddress: '{{billingAddress}}'
-        billingCity: '{{billingCity}}'
-        billingState: '{{billingState}}'
-        billingZipCode: '{{billingZipCode}}'
-        deploymentAddress: '{{deploymentAddress}}'
-        deploymentCity: '{{deploymentCity}}'
-        deploymentState: '{{deploymentState}}'
-        deploymentZipCode: '{{deploymentZipCode}}'
-        serviceProvider: '{{serviceProvider}}'
+        companyName: '{{.companyName}}'
+        billingAddress: '{{.billingAddress}}'
+        billingCity: '{{.billingCity}}'
+        billingState: '{{.billingState}}'
+        billingZipCode: '{{.billingZipCode}}'
+        deploymentAddress: '{{.deploymentAddress}}'
+        deploymentCity: '{{.deploymentCity}}'
+        deploymentState: '{{.deploymentState}}'
+        deploymentZipCode: '{{.deploymentZipCode}}'
+        serviceProvider: '{{.serviceProvider}}'
     spec:
       project: default
       syncPolicy:
@@ -41,4 +41,4 @@ spec:
         path: helm-getting-started/code/chart/process-control
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{namespace}}'
+        namespace: '{{.namespace}}'
