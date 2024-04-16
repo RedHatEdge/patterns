@@ -1,0 +1,14 @@
+---
+deploymentNumber: '1'
+displayName: "Customer_One"
+companyName: "Customer_One"
+billingAddress: "100_East_Davie_Street"
+billingCity: "Raleigh"
+billingState: "North Carolina"
+billingZipCode: "27601"
+deploymentAddress: "Werner-von-Siemens-Ring_12"
+deploymentCity: "Munich"
+deploymentState: "Grasbrunn"
+deploymentZipCode: "85630"
+serviceProvider: "Managed_Services_Inc"
+namespace: "customer-1"

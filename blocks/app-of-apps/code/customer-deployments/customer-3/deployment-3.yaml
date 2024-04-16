@@ -1,0 +1,14 @@
+---
+deploymentNumber: '1'
+displayName: "Customer_Three"
+companyName: "Customer_Three"
+billingAddress: "One Microsoft Way"
+billingCity: "Redmond"
+billingState: "Washington"
+billingZipCode: "98052"
+deploymentAddress: "100 Washington Ave S"
+deploymentCity: "Minneapolis"
+deploymentState: "Minnesota"
+deploymentZipCode: "55401"
+serviceProvider: "Managed_Services_Inc"
+namespace: "customer-3"

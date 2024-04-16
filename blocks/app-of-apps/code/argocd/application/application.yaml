@@ -1,0 +1,21 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: customer-deployment-as
+  namespace: openshift-gitops
+  labels:
+    application: customer-deployment
+spec:
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+  destination:
+    name: ""
+    namespace: openshift-gitops
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://github.com/RedHatEdge/patterns.git
+    targetRevision: HEAD
+    path: blocks/app-of-apps/code/argocd/applicationset

@@ -1,0 +1,44 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: process-control-multicustomer-asS
+  namespace: openshift-gitops
+spec:
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - git:
+      repoURL: https://github.com/RedHatEdge/patterns.git
+      revision: HEAD
+      files:
+      - path: "blocks/app-of-apps/code/customer-deployments/**/deployment-*.yaml"
+  template:
+    metadata:
+      name: '{{displayName}}-{{deploymentNumber}}'
+      annotations:
+        companyName: '{{companyName}}'
+        billingAddress: '{{billingAddress}}'
+        billingCity: '{{billingCity}}'
+        billingState: '{{billingState}}'
+        billingZipCode: '{{billingZipCode}}'
+        deploymentAddress: '{{deploymentAddress}}'
+        deploymentCity: '{{deploymentCity}}'
+        deploymentState: '{{deploymentState}}'
+        deploymentZipCode: '{{deploymentZipCode}}'
+        serviceProvider: '{{serviceProvider}}'
+    spec:
+      project: default
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+      source:
+        repoURL: https://github.com/RedHatEdge/patterns.git
+        targetRevision: HEAD
+        path: helm-getting-started/code/chart/process-control
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'

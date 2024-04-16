@@ -1,0 +1,14 @@
+---
+deploymentNumber: '1'
+displayName: "Customer_Two"
+companyName: "Customer_Two"
+billingAddress: "1_New_Orchard_Road"
+billingCity: "Armonk"
+billingState: "New York"
+billingZipCode: "10504"
+deploymentAddress: "1_New_Orchard_Road"
+deploymentCity: "Armonk"
+deploymentState: "New York"
+deploymentZipCode: "10504"
+serviceProvider: "Managed_Services_Inc"
+namespace: "customer-2"
