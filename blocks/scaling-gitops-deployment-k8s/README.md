@@ -1,10 +1,17 @@
 # Scaling GitOps Deployments
 This block highlights how Red Hat OpenShift GitOps can scale up deployments easily.
 
+## Information
+**Platform:** Red Hat Device Edge with Microshift, Red Hat Openshift
+**Scope:** Application deployment
+**Tooling:** Git, Helm
+**Pre-requisite Patterns:** [Kubernetes Core Concepts](../k8s-core-concepts/README.md),[Helm Getting Started](../helm-getting-started/README.md), [GitOps Deployments](../gitops-deployment-k8s/README.md)
+**Example Application**: Process Control
+
 ## Table of Contents
-1. Introduction to ApplicationSets
-2. Scaling Up Deployments
-3. Example Deployment
+* [Part 1 - Introduction to ApplicationSets](#part-1---introduction-to-applicationsets)
+* [Part 2 - Scaling Up Deployments via List Generator](#part-2---scaling-up-deployments-via-list-generator)
+* [Part 3 - Example Deployment](#part-3---example-deployment)
 
 ## Part 1 - Introduction to ApplicationSets
 In OpenShift GitOps, [ApplicationSets](https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/), a custom CRD, are used to generate applications based on a generator. These generated applications can be used to template out many deployments across a single cluster, or across many clusters. When an ApplicationSet is configured, the applications are rendered and show up as applications.
