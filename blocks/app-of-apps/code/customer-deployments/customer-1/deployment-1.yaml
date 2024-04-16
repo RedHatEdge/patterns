@@ -1,7 +1,7 @@
 ---
 deploymentNumber: '1'
-displayName: "Customer_One"
-companyName: "Customer_One"
+displayName: "customer_one"
+companyName: "Customer One"
 billingAddress: "100_East_Davie_Street"
 billingCity: "Raleigh"
 billingState: "North Carolina"

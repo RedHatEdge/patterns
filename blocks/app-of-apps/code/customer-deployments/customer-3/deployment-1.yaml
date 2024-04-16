@@ -1,7 +1,7 @@
 ---
 deploymentNumber: '1'
-displayName: "Customer_Three"
-companyName: "Customer_Three"
+displayName: "customer_three"
+companyName: "Customer Three"
 billingAddress: "One Microsoft Way"
 billingCity: "Redmond"
 billingState: "Washington"

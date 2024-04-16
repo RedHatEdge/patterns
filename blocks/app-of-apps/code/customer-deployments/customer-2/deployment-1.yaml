@@ -1,7 +1,7 @@
 ---
 deploymentNumber: '1'
-displayName: "Customer_Two"
-companyName: "Customer_Two"
+displayName: "customer_two"
+companyName: "Customer Two"
 billingAddress: "1_New_Orchard_Road"
 billingCity: "Armonk"
 billingState: "New York"
