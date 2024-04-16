@@ -1,6 +1,6 @@
 ---
 deploymentNumber: '1'
-displayName: "customer_two"
+displayName: "customer-two"
 companyName: "Customer Two"
 billingAddress: "1_New_Orchard_Road"
 billingCity: "Armonk"

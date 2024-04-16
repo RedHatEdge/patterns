@@ -1,6 +1,6 @@
 ---
 deploymentNumber: '1'
-displayName: "customer_three"
+displayName: "customer-three"
 companyName: "Customer Three"
 billingAddress: "One Microsoft Way"
 billingCity: "Redmond"
