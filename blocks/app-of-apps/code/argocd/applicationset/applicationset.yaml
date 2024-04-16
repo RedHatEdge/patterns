@@ -38,7 +38,7 @@ spec:
       source:
         repoURL: https://github.com/RedHatEdge/patterns.git
         targetRevision: HEAD
-        path: helm-getting-started/code/chart/process-control
+        path: blocks/helm-getting-started/code/chart/process-control
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{.namespace}}'
