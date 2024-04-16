@@ -1,13 +1,18 @@
 # Installing Operators via YAML
 This block centers around installing operators through a automatiable method over using the WebUI.
 
-##
+## Information
+**Platform:** Red Hat Openshift
+**Scope:** Operators
+**Tooling:** N/A
+**Pre-requisite Blocks:** [Kubernetes Core Concepts](../k8s-core-concepts/README.md)
+**Example Application**: `cert-manager` Operator
 
 ## Table of Contents
-1. Brief Introduction to Operators
-2. YAML-based Operator Installs
-3. Deploying Operator-Based Resources
-3. Example Operator Deployment
+* [Part 1 - Brief Introduction to Operators](#part-1---brief-introduction-to-operators)
+* [Part 2 - YAML-Based Operator Installation](#part-2---yaml-based-operator-installation)
+* [Part 3 - Deploying Operator-Based Resources](#part-3---deploying-operator-based-resources)
+* [Part 4 - Example Deployment](#part-4---example-deployment)
 
 ## Part 1 - Brief Introduction to Operators
 Operators are extentions to Kubernetes, allowing for custom resource definitions that expand the resources that can be leveraged and managed within a cluster.
