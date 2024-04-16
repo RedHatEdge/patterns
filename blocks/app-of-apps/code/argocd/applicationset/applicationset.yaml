@@ -5,9 +5,6 @@ metadata:
   name: process-control-multicustomer-as
   namespace: openshift-gitops
 spec:
-  syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:

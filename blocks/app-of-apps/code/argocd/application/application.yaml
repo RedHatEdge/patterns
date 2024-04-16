@@ -7,9 +7,6 @@ metadata:
   labels:
     application: customer-deployment
 spec:
-  syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
   destination:
     name: ""
     namespace: openshift-gitops
