@@ -1,7 +1,28 @@
 # Scaling Deployments as a Managed Service Provider
 This pattern gives an opinionated look at scaling up deployment capabilities using gitops tooling from the perspective of a managed service provider.
 
-## Goals
+## Problem
+**Problem Statement:** When acting as a managed service provider, it can often be challenging to install and run many deployments of an application at scale for customers.
+
+## Abstract
+| Key | Value |
+| --- | --- |
+| **Platform(s)** | <ul><li>Red Hat Device Edge with Microshift</li><li>Red Hat Openshift</li></ul> |
+| **Scope** | Application deployment |
+| **Tooling** | <ul><li>Red Hat OpenShift GitOps</li></ul> |
+| **Pre-requisite Blocks** | <ul><li>[Kubernetes Core Concepts](../../blocks/k8s-core-concepts/README.md)</li><li>[Scaling GitOps Deployment](../scaling-gitops-deployment-k8s/README.md)</li><li>[Helm Getting Started](../helm-getting-started/README.md)</li><li>[GitOps Deployments](../gitops-deployment-k8s/README.md)</li><li>[App of Apps](../../blocks/app-of-apps/README.md)</li></ul>
+| **Example Application** | Process Control |
+
+**Resolution:** Using modern tooling and processes, the main goals of this pattern are:
+1. Increase the number of instances for customers that can be managed
+2. Increase the consistency between deployments
+3. Allow for customizations between deployments relative to customer requirements
+4. Leverage code and code reviews as the "source of truth" for deployments
+
+## Context
+This pattern can be applied where a high number of deployments, usually for external entities such as customers, are being managed from a central location, and deployed to a single target. Current deployment processes are typically manually initiated or completely manual, and deployments have drifted or become inconsistent over time.
+
+## Forces
 1. **Scalability:** This pattern allows for easy scalability by adding or removing deployments as needed, up to a nearly limitless number of deployments across customers.
 2. **Modularity:** Each deployment can be individually managed or adjusted using the same core  reduces complexity.
 3. **Customization:** MSPs can customize the set of applications based on the specific needs of their customers, providing a tailored solution.
@@ -10,14 +31,30 @@ This pattern gives an opinionated look at scaling up deployment capabilities usi
 6. **Isolation:** This pattern allows for isolation down to the individual deployment level, allowing for proper boundries around customers and deployments, and even multiple deployments within customers.
 7. **Flexibility:** MSPs can easily onboard new customers, retire old customers, and contextualize/customize where required through one process.
 
-## Information
-| Key | Value |
-| --- | --- |
-| **Platform(s)** | <ul><li>Red Hat Device Edge with Microshift</li><li>Red Hat Openshift</li></ul> |
-| **Scope** | Application deployment |
-| **Tooling** | <ul><li>Red Hat OpenShift GitOps</li></ul> |
-| **Pre-requisite Blocks** | <ul><li>[Kubernetes Core Concepts](../../blocks/k8s-core-concepts/README.md)</li><li>[Scaling GitOps Deployment](../scaling-gitops-deployment-k8s/README.md)</li><li>[Helm Getting Started](../helm-getting-started/README.md)</li><li>[GitOps Deployments](../gitops-deployment-k8s/README.md)</li><li>[App of Apps](../../blocks/app-of-apps/README.md)</li></ul>
-| **Example Application** | Process Control |
+## Solution
+![MSP Process](./.images/msp-process.png)
+
+
+
+
+
+
+
+## Resulting Context
+
+
+## Example
+
+
+
+
+
+
+
+
+# OLD, IGNORE
+
+
 
 ## Limitations
 - This patterns assumes one deployment target, and one common namespace for all deployments within a customer - this is, however customizable.
