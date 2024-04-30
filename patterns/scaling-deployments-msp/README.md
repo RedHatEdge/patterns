@@ -1,9 +1,6 @@
 # Scaling Deployments as a Managed Service Provider
 This pattern gives an opinionated look at scaling up deployment capabilities using gitops tooling from the perspective of a managed service provider.
 
-## Problem
-**Problem Statement:** When acting as a managed service provider, it can often be challenging to install and run many deployments of an application at scale for customers.
-
 ## Abstract
 | Key | Value |
 | --- | --- |
@@ -12,6 +9,9 @@ This pattern gives an opinionated look at scaling up deployment capabilities usi
 | **Tooling** | <ul><li>Red Hat OpenShift GitOps</li></ul> |
 | **Pre-requisite Blocks** | <ul><li>[Kubernetes Core Concepts](../../blocks/k8s-core-concepts/README.md)</li><li>[Scaling GitOps Deployment](../scaling-gitops-deployment-k8s/README.md)</li><li>[Helm Getting Started](../helm-getting-started/README.md)</li><li>[GitOps Deployments](../gitops-deployment-k8s/README.md)</li><li>[App of Apps](../../blocks/app-of-apps/README.md)</li></ul>
 | **Example Application** | Process Control |
+
+## Problem
+**Problem Statement:** When acting as a managed service provider, it can often be challenging to install and run many deployments of an application at scale for customers.
 
 **Resolution:** Using modern tooling and processes, the main goals of this pattern are:
 1. Increase the number of instances for customers that can be managed
@@ -34,52 +34,41 @@ This pattern can be applied where a high number of deployments, usually for exte
 ## Solution
 ![MSP Process](./.images/msp-process.png)
 
+### Part 1 - Deploying GitOps
+Red Hat OpenShift GitOps is shipped as an operator, and can be installed in an automated fastion. See [Installing Operators](../../blocks/installing-operators-yaml/README.md) for details. The deployed resources run on an existing cluster, and may be the same cluster as where deployments of software are being run.
 
+### Part 2 - Configuring GitOps
+Perform the basic setup of GitOps by connecting to the code repository housing application code, and if necessary, the deployment location. Full information is located in the [GitOps Deployment](../../blocks/gitops-deployment-k8s/README.md) block.
 
+### Part 3 - Adjust Deployments to be Templated
+Some adjustments to how deployments are instantiated may be made, to allow them to be isolated and customizable. Examples of this can be found in the [Scaling GitOps Deployments](../../blocks/scaling-gitops-deployment-k8s/README.md) block. The main concept is to have a "common base" template for a deployment which allows for customization, and to store customer information and allow Red Hat OpenShift GitOps to template from a code repository, which acts as the source of truth.
 
+For adding a new deployment, the process would roughly be:
+![GitOps Decision Flow](./.images/decision-flow.png)
 
+### Part 4 - Adopting New Processes
+With the technology and practices in place, deployments are now completely managed via code changes, as opposed to by manual intervention or other processes. All changes should be submitted via code change, reviewed, and then deployed exclusively through automation, and not by other processes.
 
+### Part 5 - Operate
+This pattern is designed to be highly scalable, so no process changes are made simply for scaling. All ongoing operations leverage the same process regardless of scale.
 
 ## Resulting Context
+Once deployed, all management of deployments, from initial roll-out to updates to deletion, are completely handled through an automated process that uses code as the source of truth.
+
+Some highlights:
+- **Simplified Application Management:** The app-of-apps pattern allows MSPs to manage multiple applications using a single Git repository. This simplifies the management process, as all configuration and deployment information is stored in one central location.
+- **Enhanced Collaboration:** GitOps encourages collaboration among teams by providing a centralized repository for managing applications. This helps improve communication, as all team members can easily access and contribute to the repository.
+- **Version Control:** Git provides robust version control capabilities, allowing MSPs to track changes made to applications over time. This ensures that they can easily roll back to previous versions if needed, reducing the risk of errors or downtime.
+- **Automation:** GitOps promotes the use of automation for application deployment and management. By leveraging tools like GitLab CI/CD or Argo CD, MSPs can automate the deployment process, reducing manual intervention and the risk of human error.
+- **Scalability:** The app-of-apps pattern is highly scalable, allowing MSPs to easily add or remove applications as needed. This scalability ensures that MSPs can quickly adapt to changing customer requirements without significant overhead.
+- **Consistency:** With the app-of-apps pattern, MSPs can ensure consistency across applications by defining common configurations and deployment processes. This helps maintain a standardized environment, reducing the risk of configuration drift.
+- **Security:** GitOps promotes security best practices by enforcing code reviews, access controls, and audit logs. This helps ensure that applications are deployed securely, reducing the risk of security breaches.
 
 
-## Example
-
-
-
-
-
-
-
-
-# OLD, IGNORE
-
-
-
-## Limitations
-- This patterns assumes one deployment target, and one common namespace for all deployments within a customer - this is, however customizable.
-
-## Processes
-Four example processes are showcased in this pattern:
-1. [Onboarding New Customer and Deploying Software](#onboarding-new-customer-and-deploying-software)
-2. [Adding Deployment to Existing Customer](#adding-deployment-to-existing-customer)
-3. [Removing Deployment from Existing Customer](#removing-deployment-from-existing-customer)
-4. [Removing Customer Completely](#removing-customer-completely)
-
-### Onboarding New Customer and Deploying Software
-For this example, the onboarding and initial deployment process will exist as so:
+## Examples
+Example Process from Persona Perspective:
 ![Example Onboarding with Deployment Process](./.images/onboard-new-customer-with-deployment.drawio.png)
 
-This can be mapped to the various stakeholders and technologies:
-![Mapping to Stakeholders and Technology](./.images/onboard-new-customer-with-deployment-map.png)
 
-Resulting in the following process at the technology level:
-![Technical Rollout of New Customer and Deployment](./.images/onboard-new-customer-with-deployment-technical.drawio.png)
 
-# TO-DO
-### Adding Deployment to Existing Customer
-
-### Removing Deployment from Existing Customer
-
-### Removing Customer Completely
 
