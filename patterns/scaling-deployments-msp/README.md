@@ -32,25 +32,26 @@ This pattern can be applied where a high number of deployments, usually for exte
 7. **Flexibility:** MSPs can easily onboard new customers, retire old customers, and contextualize/customize where required through one process.
 
 ## Solution
+This pattern leverages two main elements to achieve a solution:
+- Using code as the source of truth for deployments
+- Using GitOps tooling and practices to manage and enforce deployments
+
+An example implimentation:
 ![MSP Process](./.images/msp-process.png)
 
-### Part 1 - Deploying GitOps
-Red Hat OpenShift GitOps is shipped as an operator, and can be installed in an automated fastion. See [Installing Operators](../../blocks/installing-operators-yaml/README.md) for details. The deployed resources run on an existing cluster, and may be the same cluster as where deployments of software are being run.
+Here, a new customer deployment has been identified, added to the code repository, approved for deployment, and is rolled out completely via tooling and automation, and does not require manual intervention.
 
-### Part 2 - Configuring GitOps
-Perform the basic setup of GitOps by connecting to the code repository housing application code, and if necessary, the deployment location. Full information is located in the [GitOps Deployment](../../blocks/gitops-deployment-k8s/README.md) block.
+To achieve this, a few conditions must be met:
+- Deployments and their customizations can be captured as code
+- A valid code repository exists, with proper controls, to contain deployments
+- Proper wiring of tooling to the code repo has been configured
 
-### Part 3 - Adjust Deployments to be Templated
-Some adjustments to how deployments are instantiated may be made, to allow them to be isolated and customizable. Examples of this can be found in the [Scaling GitOps Deployments](../../blocks/scaling-gitops-deployment-k8s/README.md) block. The main concept is to have a "common base" template for a deployment which allows for customization, and to store customer information and allow Red Hat OpenShift GitOps to template from a code repository, which acts as the source of truth.
+For details on the above, see the prerequisite blocks in the [Abstract](#abstract) setion.
 
-For adding a new deployment, the process would roughly be:
-![GitOps Decision Flow](./.images/decision-flow.png)
+Once the tooling and source of truth are properly configured, all individuals reposonsible for creating, updating, and deleting deployments now adopt the code-focused approach, as opposed to manual processes that are not code driven.
 
-### Part 4 - Adopting New Processes
-With the technology and practices in place, deployments are now completely managed via code changes, as opposed to by manual intervention or other processes. All changes should be submitted via code change, reviewed, and then deployed exclusively through automation, and not by other processes.
+This pattern can scale across multiple types of deployments, such as different applications, different deployment targets, and more, with proper customization.
 
-### Part 5 - Operate
-This pattern is designed to be highly scalable, so no process changes are made simply for scaling. All ongoing operations leverage the same process regardless of scale.
 
 ## Resulting Context
 Once deployed, all management of deployments, from initial roll-out to updates to deletion, are completely handled through an automated process that uses code as the source of truth.
@@ -66,9 +67,21 @@ Some highlights:
 
 
 ## Examples
-Example Process from Persona Perspective:
-![Example Onboarding with Deployment Process](./.images/onboard-new-customer-with-deployment.drawio.png)
+In all examples, the same overall setup and process is used:
+![MSP Process](./.images/msp-process.png)
+
+### Adding a New Customer Deployment
+When a new deployment is desired, the following process is used:
+1. The production code repo is cloned
+2. A new branch is created from the production branch
+3. The new deployment is added to the new branch
+4. A pull request is opened to merge changes to the production branch
+
+### Updating an Existing Deployment
+
+### Deleting a Customer Deployment
 
 
 
-
+Rationale
+An explanation/justification of the pattern as a whole, or of individual components within it, indicating how the pattern actually works, and why - how it resolves the forces to achieve the desired goals and objectives, and why this is "good". The Solution element of a pattern describes the external structure and behavior of the solution: the Rationale provides insight into its internal workings.
