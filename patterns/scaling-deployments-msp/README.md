@@ -76,11 +76,46 @@ When a new deployment is desired, the following process is used:
 2. A new branch is created from the production branch
 3. The new deployment is added to the new branch
 4. A pull request is opened to merge changes to the production branch
+5. The request is approved, and the new deployment code is merged
+6. RHOCP GitOps syncs the code changes
+7. RHCOP evaluates existing deployments against the code repositroy
+8. RHOCP creates a new deployment with the specified information
 
-### Updating an Existing Deployment
+### Updating All Existing Deployment
+When deployments need to be modified, such as for updating the application code, the following example process can be used:
+1. The production code repo is cloned
+2. A new branch is created from the production branch
+3. The new application code information is added
+4. A pull request is opened to merge changes to the production branch
+5. The request is approved, and the new deployment code is merged
+6. RHOCP GitOps syncs the code changes
+7. RHCOP evaluates existing deployments against the code repository
+8. RHOCP begins rolling through deployments, upgrading components as specified
 
 ### Deleting a Customer Deployment
+If a deployment is no longer needed, such as a customer not renewing, or a deployment no longer being needed, the following example process can be used:
+1. The production code repo is cloned
+2. A new branch is created from the production branch
+3. The deployment definition is deleted from the code base
+4. A pull request is opened to merge changes to the production branch
+5. The request is approved, and the new deployment code is merged
+6. RHOCP GitOps syncs the code changes
+7. RHCOP evaluates existing deployments against the code repository
+8. RHOCP deletes the deployment that was removed from the code repository
 
+## Rationale
+The two main points that set this process above other ways to manage deployments at scale are:
+1. Using Code as a Source of Truth
+2. Having GitOps Tooling Track Status Automatically
+
+### Using Code as a Source of Truth
+While manually deployments are subject to human error, deployments triggered from a code repository are always deployed according to their specification. This brings near-perfect consistency to deployments, even when operating at scale.
+
+In addition, using code as a source of truth allows for easy audit trails, clear definitions of production environments, and can be integrated easily with other systems as needed.
+
+Finally, code repositories almost always allow for peer or team reviews before making impactful changes, and in fact best practices for code maintenance and operations require reviews.
+
+### Having GitOps Tooling Track Status Automatically
 
 
 Rationale
