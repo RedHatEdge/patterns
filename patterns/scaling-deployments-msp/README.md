@@ -1,6 +1,16 @@
 # Scaling Deployments as a Managed Service Provider
 This pattern gives an opinionated look at scaling up deployment capabilities using gitops tooling from the perspective of a managed service provider.
 
+## Table of Contents
+* [Abstract](#abstract)
+* [Problem](#problem)
+* [Context](#context)
+* [Forces](#forces)
+* [Solution](#solution)
+* [Resulting Content](#resulting-context)
+* [Examples](#examples)
+* [Rationale](#rationale)
+
 ## Abstract
 | Key | Value |
 | --- | --- |
@@ -116,7 +126,8 @@ In addition, using code as a source of truth allows for easy audit trails, clear
 Finally, code repositories almost always allow for peer or team reviews before making impactful changes, and in fact best practices for code maintenance and operations require reviews.
 
 ### Having GitOps Tooling Track Status Automatically
+An "out of the box" feature of RHOCP GitOps is the ability to automatically track resources that are created as part of a deployed application. For example, if an application contains: two pods, two services, and a route, these will all be tracked as a group under the application deployment.
 
+In the event of drift or deletion, reconsiliation will automatically happen, bringing the application back to the desired, known good state without manual intervention.
 
-Rationale
-An explanation/justification of the pattern as a whole, or of individual components within it, indicating how the pattern actually works, and why - how it resolves the forces to achieve the desired goals and objectives, and why this is "good". The Solution element of a pattern describes the external structure and behavior of the solution: the Rationale provides insight into its internal workings.
+These rationales, along with the features and functionality provided by the tooling and processes described here, provide an easily adopted, highly scalable approach to running deployments at scale as a managed service provider.
