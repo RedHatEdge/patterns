@@ -131,3 +131,11 @@ An "out of the box" feature of RHOCP GitOps is the ability to automatically trac
 In the event of drift or deletion, reconsiliation will automatically happen, bringing the application back to the desired, known good state without manual intervention.
 
 These rationales, along with the features and functionality provided by the tooling and processes described here, provide an easily adopted, highly scalable approach to running deployments at scale as a managed service provider.
+
+## Footnotes
+
+### Version
+1.0.0
+
+### Authors
+- Josh Swanson (jswanson@redhat.com)
