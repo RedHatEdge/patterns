@@ -100,73 +100,47 @@ In highly protected situations, the number of copies of data can be set to 3, me
 ## Resulting Context
 Once deployed, a highly available advanced computing platform provides the functionality to run multiple types of workloads on the same common platform. 
 
-**TODO**
-
 Some highlights:
-- **Platform Consolidation:** With 
-- **Enhanced Collaboration:** GitOps encourages collaboration among teams by providing a centralized repository for managing applications. This helps improve communication, as all team members can easily access and contribute to the repository.
-- **Version Control:** Git provides robust version control capabilities, allowing MSPs to track changes made to applications over time. This ensures that they can easily roll back to previous versions if needed, reducing the risk of errors or downtime.
-- **Automation:** GitOps promotes the use of automation for application deployment and management. By leveraging tools like GitLab CI/CD or Argo CD, MSPs can automate the deployment process, reducing manual intervention and the risk of human error.
-- **Scalability:** The app-of-apps pattern is highly scalable, allowing MSPs to easily add or remove applications as needed. This scalability ensures that MSPs can quickly adapt to changing customer requirements without significant overhead.
-- **Consistency:** With the app-of-apps pattern, MSPs can ensure consistency across applications by defining common configurations and deployment processes. This helps maintain a standardized environment, reducing the risk of configuration drift.
-- **Security:** GitOps promotes security best practices by enforcing code reviews, access controls, and audit logs. This helps ensure that applications are deployed securely, reducing the risk of security breaches.
+- **Platform Consolidation:** With a software-based platform providing capabilities around running many different types of workloads, a single platform on a single hardware stack can be used to consolidate workloads from many differnet platforms.
+- **Ease of Operations:** With only a single platform deployed, operators need to only learn one technology stack, and interface with one management interface for running workloads or for platform maintenance.
+- **Self-Management:** OpenShift provides management of workloads as part of the platform, automatically initiating failover and recovery actions when required. These are performed without manual intervention.
+- **Scalability:** As power and cooling allow for more compute, the ACP automatically consumes and presents these additional resources for workloads to consume.
+- **Consistency:** As one platform is used across multiple deployment sites, workloads can easily be deployed and scaled, and training resources can be reused at each deployment location.
+- **Security:** By default, an ACP comes with a high level of pre-configured, preventing the deployment of insecure workloads, and providing some segmentation between users and workloads. These are configurable, allowing for far more control and restrictions on workloads as needed.
 
 
 ## Examples
-In all examples, the same overall setup and process is used:
-![MSP Process](./.images/msp-process.png)
+![ACP with Workloads](./.images/acp-with-workloads.png)
 
-### Adding a New Customer Deployment
-When a new deployment is desired, the following process is used:
-1. The production code repo is cloned
-2. A new branch is created from the production branch
-3. The new deployment is added to the new branch
-4. A pull request is opened to merge changes to the production branch
-5. The request is approved, and the new deployment code is merged
-6. RHOCP GitOps syncs the code changes
-7. RHCOP evaluates existing deployments against the code repositroy
-8. RHOCP creates a new deployment with the specified information
+In this example, three core categories of workloads are running on a converged platform, leveragng the same hardware footprint and platform, despite being different types of workloads with different requirements.
 
-### Updating All Existing Deployment
-When deployments need to be modified, such as for updating the application code, the following example process can be used:
-1. The production code repo is cloned
-2. A new branch is created from the production branch
-3. The new application code information is added
-4. A pull request is opened to merge changes to the production branch
-5. The request is approved, and the new deployment code is merged
-6. RHOCP GitOps syncs the code changes
-7. RHCOP evaluates existing deployments against the code repository
-8. RHOCP begins rolling through deployments, upgrading components as specified
+These workloads are examples, however they are representitive of workloads found on ACPs.
 
-### Deleting a Customer Deployment
-If a deployment is no longer needed, such as a customer not renewing, or a deployment no longer being needed, the following example process can be used:
-1. The production code repo is cloned
-2. A new branch is created from the production branch
-3. The deployment definition is deleted from the code base
-4. A pull request is opened to merge changes to the production branch
-5. The request is approved, and the new deployment code is merged
-6. RHOCP GitOps syncs the code changes
-7. RHCOP evaluates existing deployments against the code repository
-8. RHOCP deletes the deployment that was removed from the code repository
+Ultimately, these workloads all share base requirements of connectivity, storage, and a platform to orchestrate them, however how those resources are consumed is different per workload. The ACP is responsible for providing these common resources, and faciliting their consumption.
+
+### Control Plane Functionality
+This set of functions are related to the operation of the platform and how the underlying hardware is both abstracted and presented, as well as managed over time by the platform.
+
+This functionality is related to the ongoing availablity and capabilities of the platform, and is all self-managed, self-deployed, and simply consumed by workloads or operators.
+
+### Manufacturing Execution System - Containerized
+This workload provides the core set of functions of an MES: monitoring, tracking, documenting, and controlling the production of products at a single or many sites.
+
+In this example, the application has been containerized, leveraging native k8s functionality provided by the ACP. Since this is a "next generation" workload with requirements around running containerized workloads, the core operating concepts of the ACP, based on k8s, are heavily utilized.
+
+### Distributed Control System - Virtualized
+This workload is representitive of a supervisory system atop industrial equipment and devices, and is a more traditional workload with requirements to match.
+
+This application is broken up into a components, however those components are deployed on top of virtual machines, which consume resources of the ACP.
 
 ## Rationale
-The two main points that set this process above other ways to manage deployments at scale are:
-1. Using Code as a Source of Truth
-2. Having GitOps Tooling Track Status Automatically
+The two main rationalizations for a modern compute platform, such as an ACP are:
+1. Running Existing Applications that Power the Business
+2. Providing for Next-Generation Workloads without Replatforming
 
-### Using Code as a Source of Truth
-While manually deployments are subject to human error, deployments triggered from a code repository are always deployed according to their specification. This brings near-perfect consistency to deployments, even when operating at scale.
+A modern approach to computing, such as an ACP as outlined above, provide for both of these points without requiring the replacement of the platform when new applications are deployed.
 
-In addition, using code as a source of truth allows for easy audit trails, clear definitions of production environments, and can be integrated easily with other systems as needed.
-
-Finally, code repositories almost always allow for peer or team reviews before making impactful changes, and in fact best practices for code maintenance and operations require reviews.
-
-### Having GitOps Tooling Track Status Automatically
-An "out of the box" feature of RHOCP GitOps is the ability to automatically track resources that are created as part of a deployed application. For example, if an application contains: two pods, two services, and a route, these will all be tracked as a group under the application deployment.
-
-In the event of drift or deletion, reconsiliation will automatically happen, bringing the application back to the desired, known good state without manual intervention.
-
-These rationales, along with the features and functionality provided by the tooling and processes described here, provide an easily adopted, highly scalable approach to running deployments at scale as a managed service provider.
+While there's value in running the workloads found today, applications are being modernized by internal teams, by vendors, etc, and providing a consistent, capable platform allows for any type of workload to recieve the same benefits as others, regardless of the individual differences in application type, deployment method, or operating method.
 
 ## Footnotes
 
