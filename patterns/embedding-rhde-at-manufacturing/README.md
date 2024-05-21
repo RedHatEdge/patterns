@@ -106,13 +106,12 @@ As part of this preparation, container images for the example workload have been
 #### Step 1 - Applying Image to Devices
 ![Installing Base Image](./.images/installing-base-image.png)
 
-
 As devices are manufactured, one of the last steps to be completed is applying the base image to disk. This step accomplishes a few key goals:
-1. 
+1. Application of base image to devices
+2. Creation of ownership vouchers
+3. Forwarding of ownership vouchers to onboarding server
 
-```
-1. Bulk apply gold installation to devices
-2. Ownership vouchers transfered to onboarding server
+Once complete, the devices are prepared to be shipped to their destination and securely onboarded. In addition, the devices can be stored for long periods of time, without issue, however pulling updates once onboarded at their destination is recommended.
 
 ### Phase 3 - Gather Deployment Requirements
 1. Identify desired workloads to be deployed
