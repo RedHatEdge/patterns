@@ -23,16 +23,16 @@ This pattern gives a technical look at a highly available, hyper-converged style
 ## Problem
 **Problem Statement:** Industrial sites require the ability to provide a consistent, highly available compute platform for running both legacy applications in virtual machines, along with next generation workloads.
 
-**Resolution:** By combining the platform capabilities of Red Hat OpenShift with some additional tooling and opinionated hardware requirements, the following goals can be achieved:
-1. Highly available, converged control/worker planes across three physical nodes
-2. Converged storage spread across workers, consumable by nodes within the cluster
-3. Ability to run virtual machine based workloads alongside containerized workloads on one platform
-4. Platform configured for local autonomy and resiliancy
+This pattern creates a highly available platform offering at the storage, compute, scheduling, and networking layers. Applications that are highly available will benefit from this platform, while non-highly available applications will be automatically rescheduled and recovered in the event of node failure.
 
 ## Context
 This pattern represents the default configuration for an ACP, operating at an industrial site, that's reponsible for mission critical applications. It attempts to provide capabilities for many types of application requirements out of the box, allowing for new workloads to be onboarded without reinstallation of the platform.
 
+This pattern is focused on outlining the default configuration, at a higher level, to answer the basic question of "what is the best approach
+
 This pattern calls out recommendations for hardware, however these should be scaled according to the workloads intended for the platform. If more resources (CPU/memory) are required, the hardware is scaled accordingly.
+
+Three nodes provides for true high availability of the control plane and functionality of the platform while fitting into the space, power, and cooling constrained environments found at industrial/remote sites.
 
 ## Forces
 1. **Ease of Use:** This pattern represents a platform that's ready "out of the box", with customizations applied automatically at or immediately after installation, so the platform is ready for many different types of workloads.
@@ -41,6 +41,12 @@ This pattern calls out recommendations for hardware, however these should be sca
 4. **High Availability:** The ACP's control plane is highly available, allowing for failure of a single node without impacting platform functionality. Non-HA workloads will be automatically recovered, and highly-available workloads will be automatically scheduled to remain available even if a node is lost.
 
 ## Solution
+By combining the platform capabilities of Red Hat OpenShift with some additional tooling and opinionated hardware requirements, the following goals can be achieved:
+1. Highly available, converged control/worker planes across three physical nodes
+2. Converged storage spread across workers, consumable by nodes within the cluster
+3. Ability to run virtual machine based workloads alongside containerized workloads on one platform
+4. Platform configured for local autonomy and resiliancy
+
 At a high level, a highly available ACP contains three physical systems, acting as both control plane and workers, connected to a networking stack:
 
 ![HA ACP](./.images/ha-acp.png)
