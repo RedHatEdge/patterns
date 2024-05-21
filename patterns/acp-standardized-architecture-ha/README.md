@@ -28,7 +28,7 @@ This pattern creates a highly available platform offering at the storage, comput
 ## Context
 This pattern represents the default configuration for an ACP, operating at an industrial site, that's reponsible for mission critical applications. It attempts to provide capabilities for many types of application requirements out of the box, allowing for new workloads to be onboarded without reinstallation of the platform.
 
-This pattern is focused on outlining the default configuration, at a higher level, to answer the basic question of "what is the best approach
+This pattern is focused on outlining the default configuration of a compact, highly available advanced computing platform, using a hyperconverged-style approach.
 
 This pattern calls out recommendations for hardware, however these should be scaled according to the workloads intended for the platform. If more resources (CPU/memory) are required, the hardware is scaled accordingly.
 
@@ -39,6 +39,7 @@ Three nodes provides for true high availability of the control plane and functio
 2. **Flexibility:** While this pattern is heavily opinionated, it is flexible, and can be expanded, changed, or adjusted due to new requirements over time.
 3. **Consistency:** ACPs should be treated as cattle, being deployed in a consistent fashion across many sides, allowing for a consistent deployment target across site boundries.
 4. **High Availability:** The ACP's control plane is highly available, allowing for failure of a single node without impacting platform functionality. Non-HA workloads will be automatically recovered, and highly-available workloads will be automatically scheduled to remain available even if a node is lost.
+5. **Limited Supporting Resources:** Edge sites are typically constrained on power and cooling, while the workloads still require a platform capable of being highly available. The platform should fit within these power and cooling constraints.
 
 ## Solution
 By combining the platform capabilities of Red Hat OpenShift with some additional tooling and opinionated hardware requirements, the following goals can be achieved:
@@ -59,6 +60,8 @@ In the event of a failure of a node or of networking to that node, the lost work
 
 This recovery action is performed automatically by the platform, regardless of the type of workload: pods, virtual machines, etc.
 
+***Note: add justification for this
+
 ### Network Connectivity
 
 There are three main channels of communication for highly available ACPs: control plane/containerized workloads, bridged virtual machines, and storage. It's recommended to separate these communication channels onto dedicated links for the best performance.
@@ -74,6 +77,18 @@ In this diagram, each of the communication channels are matched to a dedicated p
 A remote management link is also connected if available on the hardware platform, however this is not required.
 
 It is highly recommended to separate the vaious communication channels across subnet/VLANs, as to provide proper network segmentation for the various types of traffic.
+
+![Cluster Connectivity](./.images/cluster-connectivity.png)
+
+In a highly available setup, the failure of a single link or loss of a node will not impact functionality of the control plane.
+
+For example, if a link fails:
+
+![Link Failure](./.images/link-failure.png)
+
+Or, if a node fails:
+
+![Node Failure](./.images/node-failure.png)
 
 #### Control Plane and Containerized Workload Traffic
 The control plane and containerized workload traffic is any traffic using OpenShift's default ingress capabilities, along with the internal networking concepts provided by the cluster. As almost all containerized workloads leverage these concepts, application traffic will flow over this link. In addition, node to node communication for control plane traffic will also leverage this link.
@@ -102,6 +117,16 @@ Within each node, a device is dedicated to being the boot/sysroot device, then t
 Within the storage cluster, the failure domain for the storage layer is set to "node", so that an entire node can be lost without data being lost as well.
 
 In highly protected situations, the number of copies of data can be set to 3, meaning that each node would have a copy of the data, for mamimum data durability in the event of failure.
+
+In the event of a drive failure, the data is still available via drives on other nodes, and will continue to be served:
+![Drive Failure](./.images/drive-failure.png)
+
+Once the drive is replaced, data will be replicated from other nodes/drives.
+
+In the event of a node failure, data will continue to be read/written, as the failure domain is set to a node:
+![Storage Node Failure](./.images/storage-node-failure.png)
+
+Upon recovery, data will be rebalanced and available copies will be restored.
 
 ## Resulting Context
 Once deployed, a highly available advanced computing platform provides the functionality to run multiple types of workloads on the same common platform. 
