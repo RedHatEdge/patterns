@@ -14,7 +14,7 @@ This pattern gives an opinionated look at scaling up deployment capabilities usi
 ## Abstract
 | Key | Value |
 | --- | --- |
-| **Platform(s)** | <ul><li>Red Hat Device Edge with Microshift</li><li>Red Hat Openshift</li></ul> |
+| **Platform(s)** | <ul><li>Red Hat Openshift</li></ul> |
 | **Scope** | Application deployment |
 | **Tooling** | <ul><li>Red Hat OpenShift GitOps</li></ul> |
 | **Pre-requisite Blocks** | <ul><li>[Kubernetes Core Concepts](../../blocks/k8s-core-concepts/README.md)</li><li>[Scaling GitOps Deployment](../scaling-gitops-deployment-k8s/README.md)</li><li>[Helm Getting Started](../helm-getting-started/README.md)</li><li>[GitOps Deployments](../gitops-deployment-k8s/README.md)</li><li>[App of Apps](../../blocks/app-of-apps/README.md)</li></ul>
@@ -23,14 +23,10 @@ This pattern gives an opinionated look at scaling up deployment capabilities usi
 ## Problem
 **Problem Statement:** When acting as a managed service provider, it can often be challenging to install and run many deployments of an application at scale for customers.
 
-**Resolution:** Using modern tooling and processes, the main goals of this pattern are:
-1. Increase the number of instances for customers that can be managed
-2. Increase the consistency between deployments
-3. Allow for customizations between deployments relative to customer requirements
-4. Leverage code and code reviews as the "source of truth" for deployments
-
 ## Context
 This pattern can be applied where a high number of deployments, usually for external entities such as customers, are being managed from a central location, and deployed to a single target. Current deployment processes are typically manually initiated or completely manual, and deployments have drifted or become inconsistent over time.
+
+In addition, this pattern assumes a platform, such as Red Hat OpenShift, is already deployed and running, and will be used as the target deployment location, as well as where GitOps functionality will live.
 
 ## Forces
 1. **Scalability:** This pattern allows for easy scalability by adding or removing deployments as needed, up to a nearly limitless number of deployments across customers.
@@ -42,6 +38,12 @@ This pattern can be applied where a high number of deployments, usually for exte
 7. **Flexibility:** MSPs can easily onboard new customers, retire old customers, and contextualize/customize where required through one process.
 
 ## Solution
+Using modern tooling and processes, the main goals of this pattern are:
+1. Increase the number of instances for customers that can be managed
+2. Increase the consistency between deployments
+3. Allow for customizations between deployments relative to customer requirements
+4. Leverage code and code reviews as the "source of truth" for deployments
+
 This pattern leverages two main elements to achieve a solution:
 - Using code as the source of truth for deployments
 - Using GitOps tooling and practices to manage and enforce deployments
