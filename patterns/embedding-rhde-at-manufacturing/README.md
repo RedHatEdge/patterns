@@ -113,15 +113,26 @@ As devices are manufactured, one of the last steps to be completed is applying t
 
 Once complete, the devices are prepared to be shipped to their destination and securely onboarded. In addition, the devices can be stored for long periods of time, without issue, however pulling updates once onboarded at their destination is recommended.
 
-### Phase 3 - Gather Deployment Requirements
-1. Identify desired workloads to be deployed
-2. Identify post-installation configuration items
+### Phase 3 - Setup for Secure Onboarding
+#### Step 1 - Gathering Desired State for Devices
+With the devices ready to be deployed, their desired state after onboarding can be identified.
 
-### Phase 4 - Setup for Secure Onboarding
+For this example, the devices will be deployed with three applications: an smart building management application, a process control application, and an IoT data relay to report in data from these applications.
+
+These three applications will be deployed onto a single device, converting it into a multi-purpose device:
+![Device Desired State](./.images/device-desired-state.png)
+
+Responsibility for pulling and starting applications will be offloaded to Podman, which will be instructed via quadlet files:
+![Device Desired State Config](./.images/device-desired-state-config.png)
+
+After onboarding, the device will download these configuration files, load them, then begin pulling and starting the applications.
+
+#### Step 2 - Contextualizing Vouchers with Desired State
+
+
 1. Contextualize vouchers with workloads
-2. Prepare post-installation configuration items
 
-### Phase 5 - Deploy Devices
+### Phase 4 - Deploy Devices
 1. Ensure connectivity to rendezvous server
 2. Connect devices
 3. Onboard devices
