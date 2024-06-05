@@ -53,85 +53,29 @@ The main services, provided by Red Hat, are as follows:
 
 These services provide the core set of functionality for running and operating an ACP, along with capabilities beyond the platform itself as desired. They are all shipped and supported by Red Hat.
 
-To provide this solution, services are installed in an opinionated and ordered manner, as some rely on the others:
+To provide this solution, services are installed in an opinionated and ordered manner, as some rely on the others.
 
-![HA ACP](./.images/ha-acp.png)
+### Phase 0
+Phase 0 is focused on enabling the platform to begin managing itself, as well as loading in the definitions of those services so the platform can install and configure them.
+![Phase 0](./.images/phase0.png)
 
-All control plane functionality is run in a highly available deployment across the nodes. Workloads that are highly available will be spread across the nodes as well.
+This phase is fairly static, as the initial responsiblities are simply being established.
 
-In the event of a failure of a node or of networking to that node, the lost workloads and control plane functions are automatically rescheduled:
+### Phase 1
+Phase 1 is focused on setting up storage, networking, and certificate management based on the definitions loaded in phase 0.
+![Phase 1](./.images/phase1.png)
 
-![HA ACP Failover](./.images/ha-acp-failover.png)
+After installation and configuration, key services are now provided and managed:
+![Phase 1 Post-Install](./.images/phase1-post-install.png)
 
-This recovery action is performed automatically by the platform, regardless of the type of workload: pods, virtual machines, etc.
+These services provide the foundation for the "higher level" services installed in the next phase, as those services will consume them.
 
-***Note: add justification for this
+### Phase 2
+Finally, the higher level services are installed, which consume the "lower level" services. These services are virtualization and IT automation, which rely on storage and networking provided in phase 1.
+![Phase 2](./.images/phase2.png)
 
-### Network Connectivity
 
-There are three main channels of communication for highly available ACPs: control plane/containerized workloads, bridged virtual machines, and storage. It's recommended to separate these communication channels onto dedicated links for the best performance.
 
-![Node Connectivity](./.images/node-connectivity.png)
-
-> Note:
->
-> VLAN numbers are examples.
-
-In this diagram, each of the communication channels are matched to a dedicated physical connection tied back to the appropriate network infrastructure. The required link speed for storage is 10Gbps/minimum. In addition, the other communication channels's links are recommended to be 10Gbps+, depending on workloads.
-
-A remote management link is also connected if available on the hardware platform, however this is not required.
-
-It is highly recommended to separate the vaious communication channels across subnet/VLANs, as to provide proper network segmentation for the various types of traffic.
-
-![Cluster Connectivity](./.images/cluster-connectivity.png)
-
-In a highly available setup, the failure of a single link or loss of a node will not impact functionality of the control plane.
-
-For example, if a link fails:
-
-![Link Failure](./.images/link-failure.png)
-
-Or, if a node fails:
-
-![Node Failure](./.images/node-failure.png)
-
-#### Control Plane and Containerized Workload Traffic
-The control plane and containerized workload traffic is any traffic using OpenShift's default ingress capabilities, along with the internal networking concepts provided by the cluster. As almost all containerized workloads leverage these concepts, application traffic will flow over this link. In addition, node to node communication for control plane traffic will also leverage this link.
-
-Non-bridged virtual machine traffic will also use this link.
-
-#### Storage Traffic
-The storage traffic is for nodes in the cluster to replicate data being moved to and from the storage layer. Workloads do not access the storage layer on this link, instead, it is used to keep the storage system "in sync", and keeps rebalancing traffic from overwhelming other forms of traffic.
-
-The storage traffic can be treated as "internal only", meaning the only devices in that subnet/VLAN are the node's storage links. A gateway is not required.
-
-#### Bridged Virtual Machine Traffic
-Using a network bridge for virtual machines provides the same connectivity model as what other virtualization platforms provide: the VMs appear as endpoints on the network, with their own MAC addess and IP address, and can be communicated with directly. This provides operational consistency with existing setups, however it alos bypasses the kubernetes-native networking stack, removing some of the provided segmentation and traffic control functionality. In this configuration, network segmentation and traffic isolation responsibility is offloaded to a firewall.
-
-Multiple VLANs/subnets are possible, using VLAN interfaces on top of a bridge interface, or by scaling up the number of bridge interfaces if needed.
-
-### HCI-style Storage Cluster
-A core concept of hyper-converged infrastructure is taking available devices, such as storage devices, available on the nodes and presenting them as one consistent layer for consumption by workloads. OpenShift Data Foundation works according to this mantra as well: taking physical storage devices and presenting them as consumable storage for workloads, in a few different storage classes.
-
-The number of physical devices required depends on throughput and IOPS requirements for workloads, however 7 physical devices will used as an example here.
-
-Within each node, a device is dedicated to being the boot/sysroot device, then the other devices are managed by ODF:
-
-![Node Disk Layout](./.images/node-storage.png)
-
-Within the storage cluster, the failure domain for the storage layer is set to "node", so that an entire node can be lost without data being lost as well.
-
-In highly protected situations, the number of copies of data can be set to 3, meaning that each node would have a copy of the data, for mamimum data durability in the event of failure.
-
-In the event of a drive failure, the data is still available via drives on other nodes, and will continue to be served:
-![Drive Failure](./.images/drive-failure.png)
-
-Once the drive is replaced, data will be replicated from other nodes/drives.
-
-In the event of a node failure, data will continue to be read/written, as the failure domain is set to a node:
-![Storage Node Failure](./.images/storage-node-failure.png)
-
-Upon recovery, data will be rebalanced and available copies will be restored.
 
 ## Resulting Context
 Once deployed, a highly available advanced computing platform provides the functionality to run multiple types of workloads on the same common platform. 
