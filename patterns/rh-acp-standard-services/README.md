@@ -1,5 +1,5 @@
-# Standardized Highly Available Computing Platform Architecture
-This pattern gives a technical look at a highly available, hyper-converged style advanced computing platform on three nodes.
+# Red Hat Provided ACP Standard Services
+This pattern gives a technical look at the core services supported by Red Hat on an Advanced Compute Platform.
 
 ## Table of Contents
 * [Abstract](#abstract)
@@ -75,52 +75,57 @@ Finally, the higher level services are installed, which consume the "lower level
 ![Phase 2](./.images/phase2.png)
 
 
-
-
 ## Resulting Context
-Once deployed, a highly available advanced computing platform provides the functionality to run multiple types of workloads on the same common platform. 
+Once all services are deployed and configured, a core set of services are available for consumption. The ease of installation is handled at deployment time, resulting in the correct sequence and service availability.
 
-Some highlights:
-- **Platform Consolidation:** With a software-based platform providing capabilities around running many different types of workloads, a single platform on a single hardware stack can be used to consolidate workloads from many differnet platforms.
-- **Ease of Operations:** With only a single platform deployed, operators need to only learn one technology stack, and interface with one management interface for running workloads or for platform maintenance.
-- **Self-Management:** OpenShift provides management of workloads as part of the platform, automatically initiating failover and recovery actions when required. These are performed without manual intervention.
-- **Scalability:** As power and cooling allow for more compute, the ACP automatically consumes and presents these additional resources for workloads to consume.
-- **Consistency:** As one platform is used across multiple deployment sites, workloads can easily be deployed and scaled, and training resources can be reused at each deployment location.
-- **Security:** By default, an ACP comes with a high level of pre-configured, preventing the deployment of insecure workloads, and providing some segmentation between users and workloads. These are configurable, allowing for far more control and restrictions on workloads as needed.
-
+The platform is now ready to run multiple workloads in a converged state.
 
 ## Examples
-![ACP with Workloads](./.images/acp-with-workloads.png)
+Two main examples will be considered in this pattern: deployment and management of workloads of a virtualized workload, and automation of network infrastructure outside of the platform.
 
-In this example, three core categories of workloads are running on a converged platform, leveragng the same hardware footprint and platform, despite being different types of workloads with different requirements.
+### Deployment and Management of a Virtualized Workload
+In this example, a virtualized workload is deployed on the platform which requires post-installation automation, as well as ongoing maintenance. The platform should be responsible for managing this workload.
 
-These workloads are examples, however they are representitive of workloads found on ACPs.
+#### Day -1
+Before deployment on day 0, the definitions and context of the application are loaded into the declarative state management tooling, along with the appropriate automation definitions. In this example, the definitions will be loaded by an actor, however this could be automated.
+![Day -1](./.images/day-1.png)
 
-Ultimately, these workloads all share base requirements of connectivity, storage, and a platform to orchestrate them, however how those resources are consumed is different per workload. The ACP is responsible for providing these common resources, and faciliting their consumption.
+#### Day 0
+On day 0, deployment is initiated, and the corresponding assets are created by the responsible services. The virtual machine, which consumes network configuration and storage, is created by OCP Virtualization, and the supporting automation playbooks and job templates are created via Ansible Automation Platform:
+![Day 0](./.images/day0.png)
 
-### Control Plane Functionality
-This set of functions are related to the operation of the platform and how the underlying hardware is both abstracted and presented, as well as managed over time by the platform.
+#### Day 1+
+After the initial deployment, the operational pattern stabilizes for the lifecycle of the workload. OCP Virtualization keeps managing the virtual machine, while continued automation runs via Ansible Automation Platform ensure the workload is installed within the virtual machine, updated, and overall healthy.
+![Day 1+](./.images/day1+.png)
 
-This functionality is related to the ongoing availablity and capabilities of the platform, and is all self-managed, self-deployed, and simply consumed by workloads or operators.
+Changes could be introducted into the available automation to undertake new workflows, such as reconfiguration of the application, if desired.
 
-### Manufacturing Execution System - Containerized
-This workload provides the core set of functions of an MES: monitoring, tracking, documenting, and controlling the production of products at a single or many sites.
+### Automation of Network Infrastructure
+A second example would be leveraging the IT automation capabilities to manage a resource outside of the platform, such as network switches and firewalls.
 
-In this example, the application has been containerized, leveraging native k8s functionality provided by the ACP. Since this is a "next generation" workload with requirements around running containerized workloads, the core operating concepts of the ACP, based on k8s, are heavily utilized.
+In much the same flow as above, this example will be broken up over a few different "days" for clarity.
 
-### Distributed Control System - Virtualized
-This workload is representitive of a supervisory system atop industrial equipment and devices, and is a more traditional workload with requirements to match.
+#### Day -1
+Before beginning to automate, desired state and configurations are loaded by an actor:
+![Day -1](./.images/day-1.png)
 
-This application is broken up into a components, however those components are deployed on top of virtual machines, which consume resources of the ACP.
+#### Day 0
+With the definitions loaded, the assets specificed are created by consuming Ansible Automation Platform capabilities:
+![Network Automation Day 0](./.images/network-automation-day0.png)
+
+#### Day 1+
+Now, for initial configuration and ongoing enforcement, the IT Automation service (Ansible) consumes the created automation assets, and is capable of both configuration and enforcement against devices in the network stack:
+![Network Automation Day1+](./.images/network-automation-day1+.png)
+
 
 ## Rationale
-The two main rationalizations for a modern compute platform, such as an ACP are:
-1. Running Existing Applications that Power the Business
-2. Providing for Next-Generation Workloads without Replatforming
+The main rationale for deploying these core services are:
+1. Ease of use for running multiple types of workloads
+2. Extensibility through and beyond the platform as needed
 
-A modern approach to computing, such as an ACP as outlined above, provide for both of these points without requiring the replacement of the platform when new applications are deployed.
+As applications often have many requirements and many supporting processes, it's important to provide a high amount of functionality at the platform level, that can be configured and consumed to support workloads as they are onboarded to the platform.
 
-While there's value in running the workloads found today, applications are being modernized by internal teams, by vendors, etc, and providing a consistent, capable platform allows for any type of workload to recieve the same benefits as others, regardless of the individual differences in application type, deployment method, or operating method.
+In addition, as infrastucture becomes more complex, providing the capability to manage and automate removes complexity and error, and provides a more robust experience.
 
 ## Footnotes
 
