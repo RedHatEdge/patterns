@@ -22,46 +22,76 @@ This pattern gives a technical look at the core services run on a hub for managi
 | **Example Application** | N/A |
 
 ## Problem
-**Problem Statement:** As multiple ACPs are deployed to 
+**Problem Statement:** As multiple ACPs are deployed to geographically diverse sites, a central management concept is required to properly manage the platforms at scale. This central location is responsible for key functions such as update content standardization, application deployment, compliance and drift, image vulnerability scanning, app deployment delegation, and provisioning.
 
-***HERE***
+These core offerings represent the required functionality to operate ACPs at scale.
 
 ## Context
-This pattern represents the Red Hat provided core services that run on top of a standard ACP. It is focused on providing these core services for workloads running on the ACP itself, along with limited support for extension beyond the platform itself.
+This pattern represents the Red Hat provided services used to run ACPs in large quantites, with a focus on having a central place to develop and deploy from. In this context, the ACPs are considered "deployment targets" that are given responsibility for managing their own workloads, while the hub is responsible for delegating that functionality as well as higher level functions.
 
-This pattern is limited to the services provided by Red Hat, either as foundational components of the platform, or run on top of the platform, allowing for capabilities beyond the platform itself.
+This pattern is limited to the services and offerings shipped and supported by Red Hat.
 
-This pattern also assumes an ACP has been established and is available, aligned to the requirements called out in the [ACP Standard Architecture](../acp-standardized-architecture-ha/README.md) pattern.
+In addition, it assumes that enough infrastructure resources [CPU, memory, disk] are available to support the installation and operation of these resources, in the form of an OpenShift cluster. This cluster does not need to be an ACP, it could be a cluster in a cloud.
 
-In addition, it assumes that the underlying ACP has enough resources [CPU, memory, disk] to support the installation and operation of these resources.
+This pattern also assumes some level of network connectivity is available between the hub and the ACPs. This connection does not need to be presistent or highly performant.
 
 ## Forces
-1. **Ease of Use:** This pattern attempts to provide easily consumed resources as part of a holistic solution, rather than individual product functionality.
-3. **Opinionated:** These services should be installed according to best practices, and leveraged in a consistent, somewhat pre-determined manner. This is done to lower the barrier to entry, and accelerate consumption of the platform.
-2. **Extensibility:** While the selection and deployment of these services are opinionated, they can be easily adjusted, changed, integrated, or extended to support use cases and workflows not necessarily covered in this pattern.
+1. **Central Management Point:** This pattern focuses on creating a centralized management point that can be leveraged to manage a large number of ACPs that are geographically distributed.
+3. **Security Shift-Left:** As much as possible, proper security scanning and baselining should be handled centrally, then enforced across the fleet. The compute intensive work of scanning many images and application code bases should be done outside of the compute-constratined ACPs, then deployed.
+2. **Consistency:** Consistency is key for any edge computing deployment, as scale makes management and operations challenging. Enforcement and reconsiliation are required to keep platforms healthy and operating as expected.
+4. **Scalability:** This pattern represents a way to scale from a single site to thousands, with potential to scale even higher. This also encompasses scaling the capabilities of the centralized development and support organizations.
+5. **Responsibility Delegation:** To enable local autonomy, as workloads are defined for ACPs, the definition of the workloads should be centrally pushed, however the responsibility of the starting and watching that work should fall to the ACPs, in case of hub maintenance or connectivity interruptions.
 
 ## Solution
-An ACP should come "out of the box" with a set of consumable services for running workloads of all types and for automating assets near and around the ACP, as needed.
+A hub leverages a few key services to provide centralized management:
 
-The main services, provided by Red Hat, are as follows:
 | Service | Red Hat Product/Functionality | Description |
 | --- | --- | --- |
-| Certificate Management | [cert-manager Operator](https://www.redhat.com/en/blog/the-cert-manager-operator-is-now-generally-available-in-openshift) | Provides automatic certificate management for platform and service certificates, integrates with ACME certificate providers. |
-| Converged Storage | [Red Hat OpenShift Data Foundation](https://www.redhat.com/en/technologies/cloud-computing/openshift-data-foundation) | Translates physical devices into consumable storage at the platform level across multiple storage types |
-| Virtualization | [Red Hat OpenShift Virtualization](https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization) | Provides virtualization capabilities across the platform for multiple types of guests and workloads |
-| Network Interface Management | [Kubernetes NMState Operator](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.15/html/networking/kubernetes-nmstate) | Provides declarative configuration of network interfaces to support workloads such as storage, virtualization, and general workloads |
-| IT Automation | [Red Hat Ansible Automation Platform](https://www.redhat.com/en/technologies/management/ansible) | Provides IT-level idempotent automation of workloads, networks, and more, both on the platform and outside of it |
-| Declarative State Management | [Red Hat OpenShift GitOps](https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops) | Provides declarative management of the platform's core services and workloads, delegating responsiblity to the platform itself |
+| Declarative State Management | [Red Hat OpenShift GitOps](https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops) | Provides declarative management of platforms and applications, using git as the source of truth |
+| Centralized Cluster Management | [Red Hat Advanced Cluster Management for Kubernetes](https://www.redhat.com/en/technologies/management/advanced-cluster-management) | Management, visibility, deployment, and lifecycle functionality provided from a central control plane |
+| Compliance and Vulnerability | [Red Hat Advanced Cluster Security for Kubernetes](https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-cluster-security-kubernetes) | Provides compliance policy enforcement using industry standards, vulnerability scanning, policy violation actions, and centralized visibility |
+| Image Storage and Scanning | [Red Hat Quay](https://www.redhat.com/en/technologies/cloud-computing/quay) | Provides a highly-available controlled image registry with built in image vulnerability scanning and full RBAC |
+| IT Automation | Red Hat Ansible Automation Platform](https://www.redhat.com/en/technologies/management/ansible) | Provides IT-level idempotent automation for managing networks, bare metal systems, and more |
 
-These services provide the core set of functionality for running and operating an ACP, along with capabilities beyond the platform itself as desired. They are all shipped and supported by Red Hat.
+These services and how they are leveraged are explained below.
 
-To provide this solution, services are installed in an opinionated and ordered manner, as some rely on the others.
+### Declarative State Management
+A common concept for application deployment and management is using a declarative approach and relying on tooling to translate that into reality.
 
-### Phase 0
-Phase 0 is focused on enabling the platform to begin managing itself, as well as loading in the definitions of those services so the platform can install and configure them.
-![Phase 0](./.images/phase0.png)
+In the same way, from a central hub, two key concepts are declared: what the ACPs themselves are, and what workloads should be run on them.
 
-This phase is fairly static, as the initial responsiblities are simply being established.
+#### Declaring and Managing ACPs
+To build platforms, the definition of their base configuration is loaded into a central respository, then declarative state management tooling leverages the appropriate supporting tooling to build and manage the platform. This happens from a central location to distributed locations.
+![Define and Build ACP](./.images/define-acp-build.png)
+
+In the event that there are additional configuration changes needed, additional IT automation tooling can be leveraged to enable remote building, connect installation media, and reconfigure networks to allow the process to work as desired.
+![Define and Build ACP with AAP](./.images/define-acp-build-with-aap.png)
+
+#### Declaring Workloads and Delegating Responsibility
+
+
+
+####
+
+
+
+This results in all elements of an ACP being enforcable and auditable, as all definitions of configuration live in code.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Phase 1
 Phase 1 is focused on setting up storage, networking, and certificate management based on the definitions loaded in phase 0.
