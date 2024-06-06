@@ -68,14 +68,32 @@ In the event that there are additional configuration changes needed, additional 
 ![Define and Build ACP with AAP](./.images/define-acp-build-with-aap.png)
 
 #### Declaring Workloads and Delegating Responsibility
+Similar to declaring a cluster in code, workloads are also described as code. The difference is how the application is defined at the hub level: the intention is to declare what the ACPs should be responsible for running instead of the workloads themselves.
+
+As the first step, thw workloads are defined and committed to a repository. After the workloads are defined, a definition of the workloads is created, which encompasses what these workloads are, and where they can be deployed from.
+![App and App Definition](./.images/app-and-app-def.png)
+
+Once a the target deployment platform has been built, or is ready, the hub pushes the workload definitions to the target. This is the "handoff" of responsibility to the target: it now becomes responsible for deploying and managing the workload, which begins once it knows what workloads it is responsible for.
+![Hub to ACP](./.images/hub-to-acp.png)
+
+Once complete, the connection from the hub to the target ACP could be broken, as the target is now locally responsible for the stated workloads.
+
+### Centralized Cluster Management
+To enable solution scaling, a centralized control plane is used to visualize distributed platforms and optionally, push changes out in bulk. This approach favors usability over speed: the distributed platforms will recieve the updates and apply them the next time connectivity is available. If connectivity is always available, then the changes are applied immediately.
+
+Distributed platforms can also be group logically to allow for changes to be applied in bulk.
+![Hub to ACP Interaction](./.images/hub-to-acp-interaction.png)
+
+### Compliance and Vulnerability
+
+
+### Image Storing and Scanning
+
+### IT Automation
 
 
 
-####
 
-
-
-This results in all elements of an ACP being enforcable and auditable, as all definitions of configuration live in code.
 
 
 
@@ -108,6 +126,9 @@ Finally, the higher level services are installed, which consume the "lower level
 
 
 ## Resulting Context
+
+This results in all elements of an ACP being enforcable and auditable, as all definitions of configuration live in code.
+
 Once all services are deployed and configured, a core set of services are available for consumption. The ease of installation is handled at deployment time, resulting in the correct sequence and service availability.
 
 The platform is now ready to run multiple workloads in a converged state.
