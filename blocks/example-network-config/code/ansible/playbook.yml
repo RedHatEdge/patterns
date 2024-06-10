@@ -1,0 +1,29 @@
+---
+- name: Configure switches
+  hosts:
+    - all
+  tasks:
+    - name: Configure VLANs
+      cisco.nxos.nxos_vlans:
+        config: "{{ vlans }}"
+        state: merged
+      notify:
+        - copy_run_start
+    - name: Configure interfaces
+      cisco.nxos.interfaces:
+        config: "{{ interfaces }}"
+        state: merged
+      notify:
+        - copy_run_start
+    - name: configure l2 interfaces
+      cisco.nxos.l2_interfaces:
+        config: "{{ l2_interfaces }}"
+        state: replaced
+      notify:
+        - copy_run_start
+  handlers:
+    - name: Copy run start
+      cisco.nxos.nxos_config:
+        save_when: always
+      listen:
+        - copy_run_start

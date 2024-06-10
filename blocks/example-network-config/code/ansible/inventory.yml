@@ -1,0 +1,18 @@
+---
+all:
+  hosts:
+    switch:
+      # Define the endpoint if not in DNS
+      ansible_host: 172.16.0.2
+      # Define the network operating system of the device (Cisco NX-OS)
+      ansible_network_os: cisco.nxos.nxos
+      # Define the username to authenticate with
+      ansible_user: admin
+      # Define the password to authenticate with
+      ansible_password: 'switch-password'
+      # Have ansible elevate privileges
+      ansible_become: true
+      # Add common args for SSH, for example if only older algorithms are supported by the switch
+      ansible_ssh_common_args: '-o PubkeyAcceptedAlgorithms=+ssh-rsa -o HostkeyAlgorithms=+ssh-rsa'
+      # Use the CLI over an SSH connection, instead of an API or other connection mechanism
+      ansible_connection: network_cli
