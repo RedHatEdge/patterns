@@ -60,6 +60,8 @@ A common concept for application deployment and management is using a declarativ
 
 In the same way, from a central hub, two key concepts are declared: what the ACPs themselves are, and what workloads should be run on them.
 
+At runtime, a third concept is handled through the same process: identifying vulnerabilities and risks of the platform, and then changing the definition to remediate.
+
 #### Declaring and Managing ACPs
 To build platforms, the definition of their base configuration is loaded into a central respository, then declarative state management tooling leverages the appropriate supporting tooling to build and manage the platform. This happens from a central location to distributed locations.
 ![Define and Build ACP](./.images/define-acp-build.png)
@@ -84,7 +86,39 @@ To enable solution scaling, a centralized control plane is used to visualize dis
 Distributed platforms can also be group logically to allow for changes to be applied in bulk.
 ![Hub to ACP Interaction](./.images/hub-to-acp-interaction.png)
 
-### Compliance and Vulnerability
+### Policy Definition and Enforcement
+A centralized approach to policy definition and enforcement is also part of the overarching set of standard services for running highly distributed platforms. These policies are defined and loaded centrally, and then evaluated against the highly distributed platforms.
+![Centralized Policies](./.images/central-policies.png)
+
+The loaded policies generally contain explanation details, scope, criteria, and enforcement behaviors, and are centrally evaluated and acted on.
+
+### Vulnerability and Policy Visualization
+The central control plane provides functionality around scanning and visualizing the active vulnerabilities of both workloads and deployment configurations on the distributed platforms. This information is consolidated for easy consumption.
+![ACS Interacts](./.images/acs-interacts.png)
+
+The important part of this is that both vulnerabilities in the application code and images are scanned for, as well as the permissions assigned at deployment time. Both of these pieces are required for properly securing applications. The intention is to shift as much of the responsibility for remediating vulnerabilities and policy enforcement to a centralized location where development is happening, rather than out at the distributed platforms.
+
+An example look at the vulnerability dashboard.
+![ACS Vulnerability Dashboard](./.images/acs-vulnerability-dashboard.png)
+
+### Risk Ranking
+
+
+### Runtime Process Discovery
+As part of a centralized security approach, the executed application processes are also scanned and evaluated. This provides insight into the inner workings of the deployed applications, allowing for proper identification of undesired activites within the applications themselves, along with the ability to enforce and block deployment.
+
+For example, if two workloads are deployed to a remote platform, one that is allowed by policy, and another that is not, they will both be scanned and evaluated:
+![Scan Processes](./.images/scan-processes.png)
+
+Then, based on policy which includes enforcement actions, the good workload is allowed to continue. For the "bad" workload, alerts or incidents can be raised, or more direct action, such as eviction, can be taken.
+![Enforce Processes](./.images/enforce-processes.png)
+
+An example loook at process discovery:
+![ACS Process Discovery](./.images/acs-process-discovery.png)
+
+### Network Visualization and Policies
+
+### Compliance
 
 ### Image Storing and Scanning
 
@@ -93,6 +127,12 @@ Distributed platforms can also be group logically to allow for changes to be app
 ## Resulting Context
 
 ## Examples
+
+### Onboarding a New Site
+
+### Updating a Deployed Application
+
+### Closing an Application Vulnerability
 
 ## Rationale
 
