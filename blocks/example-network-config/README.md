@@ -9,12 +9,15 @@ This block is an example of using Ansible to configure networking devices to sup
 **Example Application**: N/A
 
 ## Table of Contents
-* [Part 1 - Introduction to Helm](#part-1---introduction-to-helm)
-* [Part 2 - Writing a Chart for the Example Application](#part-2---introduction-to-charts)
-  * [Section 1 - Layout](#section-1---layout)
-  * [Section 2 - Chart.yaml and values.yaml](#section-2---chartyaml-and-valuesyaml)
-  * [Section 3 - Creating Templates for Resources](#section-3---creating-templates-for-resources)
-* [Part 3 - Deploying the Example Application](#part-3---deploying-the-example-application)
+* [Part 0 - Assumptions and Network Layout](#part-0---assumptions-and-network-layout)
+* [Part 1 - Ansible Networking Collections](#part-1---ansible-networking-collections)
+* [Part 2 - Inventory for Networking Devicess](#part-2---inventory-for-networking-devices)
+* [Part 3 - Swtich Variables](#part-3---swtich-variables)
+  * [Section 1 - VLANs](#section-1---vlans)
+  * [Section 2 - Interfaces](#section-2---interfaces)
+  * [Section 3 - L2 Interfaces](#section-3---l2-interfaces)
+* [Part 4 - Creating a Playbook](#part-4---creating-a-playbook)
+* [Part 5 - Applying the Configuration](#part-5---applying-the-configuration)
 
 ## Part 0 - Assumptions and Network Layout
 This block has a few key assumptions, in an attempt to keep things digestable:
@@ -90,7 +93,7 @@ This example inventory will allow Ansible to connect to and manage our switch.
 ## Part 3 - Swtich Variables
 In a variables file, we'll define the key configuration items for our automation to handle. The main ones are: VLANs, interfaces, and L2 Interfaces.
 
-### VLANs
+### Section 1 - VLANs
 Oue VLANs, as outlined above, represent the logical boundries within the network for various services and types of traffic. They'll be defined under one parent variable.
 ```yaml
 vlans:
@@ -120,7 +123,7 @@ vlans:
     state: active
 ```
 
-### Interfaces
+### Section 2 - Interfaces
 In Cisco + Ansible terms, interfaces refers to the settings and configuration of the physical interface itself, AKA layer 1.
 
 We don't need to set link speed or other interface settings, but descriptions are helpful, and we'll ensure the ports are on.
@@ -159,7 +162,7 @@ interfaces:
     enabled: true
 ```
 
-### L2 Interfaces
+### Section 3 - L2 Interfaces
 Again in Cisco + Ansible terms, layer 2 interfaces represent the union of VLANs and switch mode: trunk or access. We'll define ours under one umbrella variable again:
 ```yaml
 l2_interfaces:
