@@ -49,7 +49,7 @@ A hub leverages a few key services to provide centralized management:
 | --- | --- | --- |
 | Declarative State Management | [Red Hat OpenShift GitOps](https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops) | Provides declarative management of platforms and applications, using git as the source of truth |
 | Centralized Cluster Management | [Red Hat Advanced Cluster Management for Kubernetes](https://www.redhat.com/en/technologies/management/advanced-cluster-management) | Management, visibility, deployment, and lifecycle functionality provided from a central control plane |
-| Compliance and Vulnerability | [Red Hat Advanced Cluster Security for Kubernetes](https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-cluster-security-kubernetes) | Provides compliance policy enforcement using industry standards, vulnerability scanning, policy violation actions, and centralized visibility |
+| Security, Compliance and Vulnerability | [Red Hat Advanced Cluster Security for Kubernetes](https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-cluster-security-kubernetes) | Provides compliance policy enforcement using industry standards, vulnerability scanning, policy violation actions, and centralized visibility |
 | Image Storage and Scanning | [Red Hat Quay](https://www.redhat.com/en/technologies/cloud-computing/quay) | Provides a highly-available controlled image registry with built in image vulnerability scanning and full RBAC |
 | IT Automation | [Red Hat Ansible Automation Platform](https://www.redhat.com/en/technologies/management/ansible) | Provides IT-level idempotent automation for managing networks, bare metal systems, and more |
 
@@ -124,25 +124,62 @@ An example loook at process discovery:
 Another capability of the centralized management platform is the ability to visualize and, if desired, apply policies to the networking layer of the target platform. Capturing network flows provides a deeper understanding of the deployed applications and how their various components interact.
 ![Network Flow Gathering](./.images/flow-gathering.png)
 
-
+This representation of flows can be used for both East-West as well as North-South traffic flows, provising a holistic look at traffic within and around the distributed platforms.
+![Traffic Flows Graph](./.images/traffic-flows-graph.png)
 
 ### Compliance
+Compliance standards have been established that provide secure operating models for applications and for platforms, and to be fully aligned with a standard, must be validated at both of those layers.
+
+This central management platform provides the capability to assign various standards to a platform, enforce it, and then scan for drift.
+![Compliance Enforcement and Reporting](./.images/compliance-enforcement-reporting.png)
+
+The selected standards/profiles and the compliance of the distributed platforms are represented visually, centrally, for actions to be taken off of if desired.
+![Compliance Dashboard](./.images/compliance-dashboard.png)
 
 ### Image Storing and Scanning
+Part of ensuring proper flow of application content to the distributed platforms is keeping the content centrally managed. This allows for strong RBAC around what content can be consumed where. In addition, application images can be centrally scanned for vulnerabilities, layer by layer, leveraging the more readily available compute resources of the central management plane.
+![Image Storage and Scanning](./.images/image-storage-and-scanning.png)
+
+An example of an image, scanned layer by layer:
+![Scanned Image](./.images/scanned-image.png)
 
 ### IT Automation
+For additional capabilities, IT automation is added to the set of standard services. This functionality allows for interation with assets around the central management plane and the distributed platforms for provisioning and management functionality. Assets such as cloud resources, firewalls, switches, and more can be brought under central management, or their management can be delegated to the distributed platforms as needed.
+
+As stated above, this functionality could be used to build platforms:
+![Define and Build ACP with AAP](./.images/define-acp-build-with-aap.png)
+
+It also can be used for additional workflows or ongoing management if the need arises.
 
 ## Resulting Context
+The resulting context of a fully deployed set of centralized management services is the ability to securely scan, deploy, and enforce workloads and policies against a large number of target deployment platforms.
+
+As the number of target platforms increases, the impacts of onboarding and operating the new platforms is minimized, as the contenxt, process, and capabilities are already build and ready to scale.
 
 ## Examples
 
 ### Onboarding a New Site
+Onboarding new sites becomes simple by consuming the available services running centrally:
+![Onboard New Site](./.images/define-acp-build-with-aap.png)
 
-### Updating a Deployed Application
+For example, a new site could be onboarded with the following process, assuming the platform definition was already created:
+| Step | Consumed Service | Description |
+| --- | --- | --- |
+| 1. Load Context into Central Management Plane | <ul><li>Declarative State Management</li><li>Centralized Cluster Management</li></ul> | Cluster definition is loaded into central management plane in preparation for install and first check-in |
+| 2. Generate Installation Media | <ul><li>Centralized Cluster Management</li></ul> | Customized installation media is created and made available for platform install |
+| 3. Configure Site Firewall and Networking | <ul><li>IT Automation</li></ul> | Site networking stack is configured to allow access to and support installed platform | 
+| 4. Mount/Boot Installation Media | <ul><li>IT Automation</li></ul> | Out-of-band management of target hardware is leveraged to perform bootstrapping |
+| 5. Monitor Installtion Progress | <ul><li>IT Automation</li><li>Centralized Cluster Management</li></ul> | Logs and status are occasionally checked as the platform progresses towards readiness |
+| 6. Apply Security Baseline | <ul><li>Security, Compliance and Vulnerability</li></ul> | Foundational security and compliance settings are enforced |
+| 7. [ACP Standad Services](../rh-hub-standard-services/README.md) Deployed | <ul><li>Centralized Cluster Management</li><li>Declarative State Management</li></ul> | The core set of platform services are deployed and configured |
+| 8. Deploy Workloads | <ul><li>Centralized Cluster Management</li><li>Declarative State Management</li></ul> | Workload definitions are loaded onto the platform, and it begins deploying the workloads |
 
-### Closing an Application Vulnerability
+Once this process is complete, the new platform is configured and productive.
 
 ## Rationale
+The main rationale for deploying a set of services centrally are:
+1. Allowing for high scaling without requiring linear scaling of supporting resources.
+2. Consuming resources intelligently where they're more abundant, while keeping the deployment targets as agile as possible.
 
 ## Footnotes
 
