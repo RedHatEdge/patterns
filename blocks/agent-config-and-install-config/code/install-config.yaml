@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+baseDomain: your-domain.com
+compute:
+- architecture: amd64 
+  hyperthreading: Enabled
+  name: worker
+  replicas: 0
+controlPlane:
+  architecture: amd64
+  hyperthreading: Enabled
+  name: node
+  replicas: 3
+metadata:
+  name: example-cluster
+networking:
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23
+  machineNetwork:
+  - cidr: 172.16.2.0/23
+  networkType: OVNKubernetes 
+  serviceNetwork:
+  - 172.30.0.0/16
+platform: 
+  baremetal: {}
+pullSecret: 'your-pull-secret' 
+sshKey: 'your-ssh-key' 

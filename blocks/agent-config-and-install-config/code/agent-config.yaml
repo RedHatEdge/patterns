@@ -1,0 +1,94 @@
+---
+apiVersion: v1beta1
+kind: AgentConfig
+metadata:
+  name: example-cluster
+rendezvousIP: 172.16.2.2
+hosts:
+  - hostname: node0
+    interfaces:
+      - name: eno1
+        macAddress: b8:ca:3a:6e:69:40
+    rootDeviceHints: 
+      deviceName: /dev/disk/by-path/pci-0000:02:00.0-scsi-0:2:0:0
+    networkConfig: 
+      interfaces:
+        - name: eno1
+          type: ethernet
+          state: up
+          mac-address: b8:ca:3a:6e:69:40
+          ipv4:
+            enabled: true
+            address:
+              - ip: 172.16.2.2
+                prefix-length: 23
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 8.8.8.8
+            - 8.8.4.4
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 172.16.2.1
+            next-hop-interface: eno1
+            table-id: 254
+  - hostname: node1
+    interfaces:
+      - name: eno1
+        macAddress: 24:6e:96:69:56:90
+    rootDeviceHints: 
+      deviceName: /dev/disk/by-path/pci-0000:02:00.0-scsi-0:2:0:0
+    networkConfig: 
+      interfaces:
+        - name: eno1
+          type: ethernet
+          state: up
+          mac-address: 24:6e:96:69:56:90
+          ipv4:
+            enabled: true
+            address:
+              - ip: 172.16.2.3
+                prefix-length: 23
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 8.8.8.8
+            - 8.8.4.4
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 172.16.2.1
+            next-hop-interface: eno1
+            table-id: 254
+  - hostname: node2
+    interfaces:
+      - name: eno1
+        macAddress: b8:ca:3a:6e:17:d8
+    rootDeviceHints: 
+      deviceName: /dev/disk/by-path/pci-0000:02:00.0-scsi-0:2:0:0
+    networkConfig: 
+      interfaces:
+        - name: eno1
+          type: ethernet
+          state: up
+          mac-address: b8:ca:3a:6e:17:d8
+          ipv4:
+            enabled: true
+            address:
+              - ip: 172.16.2.4
+                prefix-length: 23
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 8.8.8.8
+            - 8.8.4.4
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 172.16.2.1
+            next-hop-interface: eno1
+            table-id: 254
