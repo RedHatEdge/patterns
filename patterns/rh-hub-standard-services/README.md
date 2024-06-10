@@ -102,7 +102,11 @@ An example look at the vulnerability dashboard.
 ![ACS Vulnerability Dashboard](./.images/acs-vulnerability-dashboard.png)
 
 ### Risk Ranking
+To better represent the potential risk of vulnerabilities and policy violations, the central management platform providles pre-weighted rankings of various issues, and then ranks them according to those rankings. The intention is to provide a for a opinionated flow to addressing vulnerabilities and policy violations.
 
+![Risk Ranking](./.images/risk-ranking.png)
+
+This capability provides a more comprehensive view into the operational status and security posture of platforms deployed at scale.
 
 ### Runtime Process Discovery
 As part of a centralized security approach, the executed application processes are also scanned and evaluated. This provides insight into the inner workings of the deployed applications, allowing for proper identification of undesired activites within the applications themselves, along with the ability to enforce and block deployment.
@@ -117,6 +121,10 @@ An example loook at process discovery:
 ![ACS Process Discovery](./.images/acs-process-discovery.png)
 
 ### Network Visualization and Policies
+Another capability of the centralized management platform is the ability to visualize and, if desired, apply policies to the networking layer of the target platform. Capturing network flows provides a deeper understanding of the deployed applications and how their various components interact.
+![Network Flow Gathering](./.images/flow-gathering.png)
+
+
 
 ### Compliance
 
