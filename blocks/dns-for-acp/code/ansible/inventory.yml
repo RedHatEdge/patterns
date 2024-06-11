@@ -1,0 +1,7 @@
+---
+all:
+  hosts:
+    helper:
+      ansible_connection: local
+      ansible_user: your-user
+      ansible_become_password: your-sudo-password

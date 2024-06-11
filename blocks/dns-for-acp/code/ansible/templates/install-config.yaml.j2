@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+baseDomain: {{ cluster_info.base_domain }}
+compute:
+- architecture: {{ all_node_settings.architecture }}
+  hyperthreading: {{ all_node_settings.hyperthreading }}
+  name: worker
+  replicas: {{ cluster_info.workers }}
+controlPlane:
+  architecture: {{ all_node_settings.architecture }}
+  hyperthreading: {{ all_node_settings.hyperthreading }}
+  name: master
+  replicas: {{ cluster_info.masters }}
+metadata:
+  name: {{ cluster_info.name }}
+networking:
+  clusterNetwork:
+  - cidr: {{ cluster_info.cluster_network.cidr | default('10.128.0.0/14') }}
+    hostPrefix: {{ cluster_info.cluster_network.host_prefix | default ('23') }}
+  machineNetwork:
+  - cidr: {{ cluster_info.host_network_cidr }}
+  networkType: OVNKubernetes 
+  serviceNetwork:
+  - {{ cluster_info.service_network | default('172.30.0.0/16') }}
+platform: 
+  baremetal:
+    apiVIPs:
+    - {{ cluster_info.api_ip }}
+    ingressVIPs:
+    - {{ cluster_info.ingress_ip }}
+pullSecret: '{{ pull_secret }}' 
+sshKey: '{{ ssh_key }}' 
