@@ -13,21 +13,14 @@ This block outlines the DNS requirements for running an ACP.
 
 ## Table of Contents
 * [Part 0 - Assumptions and Network Layout](#part-0---assumptions-and-network-layout)
-* [Part 1 - Outline of Steps](#part-1---outline-of-steps)
-* [Part 2 - Structuring Node Information](#part-2---structuring-node-information)
-  * [Section 1 - General Information](#section-1---general-information)
-  * [Section 2 - Cluster Information](#section-2---cluster-information)
-  * [Section 3 - Node Specific Information](#section-3---node-specific-information)
-  * [Section 4 - All Node Settings](#section-4---all-node-settings)
-* [Part 3 - Templating agent-config.yaml](#part-3---templating-agent-configyaml)
-* [Part 4 - Templating install-config.yaml](#part-4---templating-install-configyaml)
-* [Part 5 - Creating an Inventory for the Helper Node](#part-5---creating-an-inventory-for-the-helper-node)
-* [Part 6 - Creating a Playbook](#part-6---creating-a-playbook)
-  * [Section 1 - Play Setup and Vars](#section-1---play-setup-and-vars)
-  * [Section 2 - Pre-tasks](#section-2---pre-tasks)
-  * [Section 3 - Tasks](#section-3---tasks)
-  * [Section 4 - Post-tasks](#section-4---post-tasks)
-* [Part 7 - Running the Playbook](#part-7---running-the-playbook)
+* [Part 1 - Outline of DNS Requirements](#part-1---outline-of-dns-requirements)
+* [Part 2 - Create Forward Zone File](#part-2---create-forward-zone-file)
+* [Part 3 - Create Reverse Zone File](#part-3---create-reverse-zone-file)
+* [Part 4 - Main Configuration and Includes](#part-4---main-configuration-and-includes)
+  * [Section 1 - Main Configuration](#section-1---main-configuration)
+  * [Section 2 - Including Zone Files](#section-2---including-zone-files)
+* [Part 5 - Containerized Bind](#part-5---containerized-bind)
+* [Part 6 - Running and Testing](#part-6---running-and-testing)
 
 ## Part 0 - Assumptions and Network Layout
 This block has a few key assumptions, in an attempt to keep things digestable:
