@@ -1,5 +1,5 @@
-# Automation for Creating Installation Media
-This block is an example of using Ansible to create installation media for a cluster, such as one that will become an ACP.
+# Setting Up DNS for an ACP
+This block outlines the DNS requirements for running an ACP.
 
 ## Information
 | Key | Value |
@@ -31,12 +31,9 @@ This block is an example of using Ansible to create installation media for a clu
 
 ## Part 0 - Assumptions and Network Layout
 This block has a few key assumptions, in an attempt to keep things digestable:
-1. A compact, three node cluster will be deployed.
+1. Bind will be used to provide DNS in this example, however multiple software stacks can provide DNS.
 2. Network configuration has been completed.
-3. DNS has been configured and is available.
-4. Internet access is avaiable, however this can be used without it.
-5. Static addresses will be used for the cluster links, however DHCP is also an option.
-6. A "helper" system is used as the target for Ansible. This system could simply be a laptop or temporary device.
+3. Static addresses will be used for the cluster links, however DHCP is also an option.
 
 The following example subnets/VLANs will be used:
 | VLAN | Subnet | Description |
@@ -48,21 +45,22 @@ The following example subnets/VLANs will be used:
 | 2004 | 172.16.5.0/24 | Second dedicated network for bridged virtual machines |
 | 2005 | 172.16.6.0/24 | Third dedicated network for bridged virtual machines |
 
+The following network information will be used:
+| IP Address | Device | Description |
+| --- | --- | --- |
+| 172.16.2.1 | Router | Router IP address for subnet |
+| 172.16.2.2 | Rendezvous | Rendezvous IP address for bootstrapping cluster, temporary |
+| 172.16.2.2 | node0 | node0's cluster IP address |
+| 172.16.2.3 | node1 | node1's cluster IP address |
+| 172.16.2.4 | node1 | node2's cluster IP address |
+| 172.16.2.10 | API | Cluster's API address |
+| 172.16.2.11 | Ingress | Cluster's ingress address |
+
 Topology:
 ![Topology](./.images/topology.png)
 
-## Part 1 - Outline of Steps
-The process for creating installation media is outlined in the [OpenShift Installation Docs](https://docs.openshift.com/container-platform/4.15/installing/installing_with_agent_based_installer/installing-with-agent-based-installer.html), however most of the steps are repeatable and predictable, meaning some simple automation can help ensure consistency.
+## Part 1 - Outline of DNS Requirements
 
-The main steps are:
-1. Install nmstate
-2. Create an installation directory
-3. Download the `openshift-install` utility
-4. Create `install-config.yaml`
-5. Create `agent-config.yaml`
-6. Use the `openshift-install` utility to create installation media
-
-The objective of our automation will be to take in node information from a simplified format and translate it to the appropriate format for the `openshift-install` utility to consume.
 
 ## Part 2 - Structuring Node Information
 The necessary information for creating an `agent-config.yaml` and `install-config.yaml` can be grouped logically, and also consolidated to avoid repeating common information applicable to multiple nodes.
