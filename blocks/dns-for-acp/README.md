@@ -7,7 +7,7 @@ This block outlines the DNS requirements for running an ACP.
 | **Platform:** | Red Hat OpenShift |
 | **Scope:** | Bootstrapping |
 | **Tooling:** | CLI, yaml, Ansible |
-| **Pre-requisite Blocks:** | <ul><li>[Introduction to Agent Config and Install Config](../agent-config-and-install-config/README.md)</li></ul> |
+| **Pre-requisite Blocks:** | N/A |
 | **Pre-requisite Patterns:** | N/A |
 | **Example Application**: | N/A |
 
@@ -55,49 +55,22 @@ The following network information will be used:
 | 172.16.2.4 | node1 | node2's cluster IP address |
 | 172.16.2.10 | API | Cluster's API address |
 | 172.16.2.11 | Ingress | Cluster's ingress address |
+| 10.1.3.106 | DNS | DNS server address
 
-Topology:
-![Topology](./.images/topology.png)
-
-## Part 1 - Outline of DNS Requirements
-
-
-## Part 2 - Structuring Node Information
-The necessary information for creating an `agent-config.yaml` and `install-config.yaml` can be grouped logically, and also consolidated to avoid repeating common information applicable to multiple nodes.
-
-### Section 1 - General Information
-The first set of information contains what rendezvous IP address to use, in this case, the same address as the first node in the cluster, a pull secret, and an ssh key for troubleshooting.
-```yaml
-rendezvous_ip: 172.16.2.2
-# Pull secrets can be found here: https://console.redhat.com/openshift/downloads#tool-pull-secret
-pull_secret: 'your-pull-secret'
-ssh_key: 'your-ssh-key'
-```
-
-### Section 2 - Cluster Information
-This block contains base information about the cluster.
+The following cluster information will be used:
 ```yaml
 cluster_info:
-  # Name will become part of the base zone of the cluster: **example-cluster**.your-domain.com
   name: example-cluster
-  # A specific version, or 'stable' for latest stable release
   version: stable
-  # The base DNS zone for the cluster:  example-cluster.**your-domain.com**
   base_domain: your-domain.com
-  # The number of control plane nodes
   masters: 3
-  # The number of worker nodes - set to 0 for single-node and three-node clusters
   workers: 0
-  # The ip address to use for the API
   api_ip: 172.16.2.10
-  # The ip address to use for ingress
   ingress_ip: 172.16.2.11
-  # The network CIDR of the network the nodes reside in
   host_network_cidr: 172.16.2.0/23
 ```
 
-### Section 3 - Node Specific Information
-The next section is information specific to the individual nodes - usually their name, IP address, and mac address of the interface to be used for the cluster link.
+The following node information will be used:
 ```yaml
 nodes:
   - name: node0
@@ -114,241 +87,244 @@ nodes:
       ip_address: 172.16.2.4
 ```
 
-### Section 4 - All Node Settings
-If there are certain configuration settings that apply to all nodes, such as DNS servers or routes, they can be grouped together:
+Topology:
+![Topology](./.images/topology.png)
 
+## Part 1 - Outline of DNS Requirements
+The DNS requirements for OpenShift are outlined in the [installation docs](https://docs.openshift.com/container-platform/4.15/installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.html#agent-install-dns-none_preparing-to-install-with-agent-based-installer), and include a set of required resolvable addresses to support the cluster.
+
+For the example cluster, the following is required.
+| Component | Record | Record Type | Record Value | Description |
+| --- | --- | --- | --- | --- |
+| API | api.example-cluster.your-domain.com | A/AAAA | 172.16.2.10 | Forward lookup for cluster API |
+| API | 10.2.16.172.in-addr.arpa. | PTR | 10 | Reverse lookup for cluster API |
+| Ingress | *.apps.example-cluster.your-domain.com | A/AAAA | 172.16.2.11 | Wildcard forward lookup for ingress |
+| node0 | node0.example-cluster.your-domain.com | A/AAAA | 172.16.2.2 | Forward lookup for node0 |
+| node0 | 2.2.16.172.in-addr.arpa. | PTR | 2 | Reverse lookup for node 0 |
+| node1 | node1.example-cluster.your-domain.com | A/AAAA | 172.16.2.3 | Forward lookup for node1 |
+| node1 | 3.2.16.172.in-addr.arpa. | PTR | 3 | Reverse lookup for node 1 |
+| node2 | node2.example-cluster.your-domain.com | A/AAAA | 172.16.2.4 | Forward lookup for node2 |
+| node2 | 4.2.16.172.in-addr.arpa. | PTR | 4 | Reverse lookup for node 2 |
+
+The rest of this block is focused on using Bind for DNS resolution with the above records loaded. If using another DNS solution, refer to it's documentation for how to create records.
+
+## Part 2 - Create Forward Zone File
+The forward zone file contains information about the zone that bind will be the authorative zone for, and what records should exist within that zone, pulled from the table above.
+
+The zone will be the DNS zone of the cluster: `example-cluster.your-domain.com`.
+
+```
+$TTL    86400
+@	 IN	SOA	dns.example-cluster.your-domain.com. admin.example-cluster.your-domain.com. (
+                        ; domain options
+                        3       ; Serial
+                        604800  ; Refresh
+                        86400   ; Retry
+                        2419200 ; Expire
+                        604800  ; Negative Cache TTL
+                        )
+; Authoratitive name server as stated above
+            IN NS   dns.example-cluster.your-domain.com.
+; Resolve dns.example-cluster.your-domain.com to an address
+dns IN A 10.1.3.106
+; Shortnames used we're "in" the forward zone
+node0 IN A 172.16.2.2
+node1 IN A 172.16.2.3
+node3 IN A 172.16.2.4
+api IN A 172.16.2.10
+*.apps IN A 172.16.2.11
+```
+
+## Part 3 - Create Reverse Zone File
+The rerverse zone file contains the reverse lookup records from the table above, and is formatted similiarily to a forward zone file:
+```
+$TTL    86400
+@	IN	SOA	dns.example-cluster.your-domain.com. root.example-cluster.your-domain.com. (
+    1997022700        ; serial
+    28800             ; refresh
+    14400             ; retry
+    3600000           ; expire
+    86400             ; minimum
+)
+      IN	    NS      dns.example-cluster.your-domain.com.
+;
+2     IN      PTR     node0.example-cluster.your-domain.com.
+3     IN      PTR     node1.example-cluster.your-domain.com.
+4     IN      PTR     node2.example-cluster.your-domain.com.
+10    IN      PTR     api.example-cluster.your-domain.com.
+```
+
+## Part 4 - Main Configuration and Includes
+Two files contain the main configuration information for Bind, with one responsible for base settings, and another for including the zones files from above.
+
+### Section 1 - Main Configuration
+This configuration file sets the listening addresses, controls who can query, and starts the include chain:
+```
+options {
+        listen-on port 53 { 0.0.0.0; };
+        directory "/var/named";
+        recursion yes;
+        allow-query { any; };
+        allow-recursion { any; };
+        forwarders {
+                1.1.1.1;
+                1.0.0.1;
+                8.8.8.8;
+                8.8.4.4;
+        };
+};
+include "/etc/named/files.zones";
+```
+
+### Section 2 - Including Zone Files
+The second file contains paths to the zones files from earlier:
+```
+// forward
+zone "example-cluster.your-domain.com" IN {
+        type master;
+        file "/etc/named/forward.zone";
+        allow-update { none; };
+};
+
+// reverse
+zone "2.16.172.in-addr.arpa" IN {
+        type master;
+        file "/etc/named/reverse.zone";
+};
+```
+
+## Part 5 - Containerized Bind
+With the config files crafted, an easy way to deploy and test is to run Bind within a container, and use configmaps to capture and mount the configuration files.
+
+A single kube yaml file can be used, which Podman can read:
 ```yaml
-all_nodes_settings:
-  installation_device: /dev/disk/by-path/pci-0000:02:00.0-scsi-0:2:0:0
-  cluster_link:
-    interface: eno1
-    subnet_length: 23
-  dns_servers:
-    - 8.8.8.8
-    - 8.8.4.4
-  routes:
-    - destination: 0.0.0.0/0
-      router_address: 172.16.2.1
-      interface: eno1
-      table_id: 254
-  architecture: amd64
-  hyperthreading: 'Enabled'
-```
-
-
-## Part 3 - Templating agent-config.yaml
-Ansible leverages the jinja2 templating engine which we'll use to create a template of an `agent-config.yaml` file. In addition, we'll use the [`default`](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_filters.html#providing-default-values) filter in ansible to prefer node-specific values if they're defined, and if not, fall back to the value in `all_nodes_settings`.
-
-The template will loop through nodes and settings that are defined as lists or dicts as needed.
-```jinja
----
-apiVersion: v1beta1
-kind: AgentConfig
-metadata:
-  name: {{ cluster_info.name }}
-rendezvousIP: {{ rendezvous_ip }}
-hosts:
-{% for node in nodes %}
-  - hostname: {{ node.name }}
-    interfaces:
-      - name: {{ node.cluster_link.inteface | default(all_node_settings.cluster_link.interface) }}
-        macAddress: {{ node.cluster_link.mac_address }}
-    rootDeviceHints:
-      deviceName: {{ node.installation_device | default(all_node_settings.installation_device) }}
-    networkConfig:
-      interfaces:
-        - name: {{ node.cluster_link.inteface | default(all_node_settings.cluster_link.interface) }}
-          type: ethernet
-          state: up
-          mac-address: {{ node.cluster_link.mac_address }}
-          ipv4:
-            enabled: true
-            address:
-              - ip: {{ node.cluster_link.ip_address }}
-                prefix-length: {{ node.cluster_link.subnet_length | default(all_node_settings.cluster_link.subnet_length) }}
-            dhcp: false
-      dns-resolver:
-        config:
-          server:
-{% if node.dns_servers is defined %}
-{% for dns_server in node.dns_servers | default(all_node_settings.dns_servers) %}
-            - {{ dns_server }}
-{% endfor %}
-{% endif %}
-      routes:
-        config:
-{% for route in node.routes | default(all_node_settings.routes) %}
-          - destination: {{ route.destination }}
-            next-hop-address: {{ route.router_address }}
-            next-hop-interface: {{ route.interface }}
-            table-id: {{ route.table_id }}
-{% endfor %}
-{% endfor %}
-```
-
-## Part 4 - Templating install-config.yaml
-Same idea as above, the static `install-config.yaml` will be converted into a template for Ansible to fill in.
-
-Some default values in this template have been pulled from the default values found in the OpenShift installtion docs.
-```jinja
 ---
 apiVersion: v1
-baseDomain: {{ cluster_info.base_domain }}
-compute:
-- architecture: {{ all_node_settings.architecture }}
-  hyperthreading: {{ all_node_settings.hyperthreading }}
-  name: worker
-  replicas: {{ cluster_info.workers }}
-controlPlane:
-  architecture: {{ all_node_settings.architecture }}
-  hyperthreading: {{ all_node_settings.hyperthreading }}
-  name: master
-  replicas: {{ cluster_info.masters }}
+kind: ConfigMap
 metadata:
-  name: {{ cluster_info.name }}
-networking:
-  clusterNetwork:
-  - cidr: {{ cluster_info.cluster_network.cidr | default('10.128.0.0/14') }}
-    hostPrefix: {{ cluster_info.cluster_network.host_prefix | default ('23') }}
-  machineNetwork:
-  - cidr: {{ cluster_info.host_network_cidr }}
-  networkType: OVNKubernetes 
-  serviceNetwork:
-  - {{ cluster_info.service_network | default('172.30.0.0/16') }}
-platform: 
-  baremetal:
-    apiVIPs:
-    - {{ cluster_info.api_ip }}
-    ingressVIPs:
-    - {{ cluster_info.ingress_ip }}
-pullSecret: '{{ pull_secret }}' 
-sshKey: '{{ ssh_key }}'  
-```
+  name: dns-configmap
+data:
+  named.conf: |
+    options {
+            listen-on port 53 { 0.0.0.0; };
+            directory "/var/named";
+            recursion yes;
+            allow-query { any; };
+            allow-recursion { any; };
+            forwarders {
+                    1.1.1.1;
+                    1.0.0.1;
+                    8.8.8.8;
+                    8.8.4.4;
+            };
+    };
+    include "/etc/named/files.zones";
+  files.zones: |
+    // forward
+    zone "example-cluster.your-domain.com" IN {
+            type master;
+            file "/etc/named/forward.zone";
+            allow-update { none; };
+    };
 
-## Part 5 - Creating an Inventory for the Helper Node
-With the templates prepared, an inventory is needed for the helper node. This can be a remote system, but could also be the local device running Ansible.
-
-To use the local system, use `ansible_connection: local` in the inventory:
-```yaml
+    // reverse
+    zone "2.16.172.in-addr.arpa" IN {
+            type master;
+            file "/etc/named/reverse.zone";
+    };
+  forward.zone: |
+    $TTL    86400
+    @	 IN	SOA	dns.example-cluster.your-domain.com. admin.example-cluster.your-domain.com. (
+                            ; domain options
+                            3       ; Serial
+                            604800  ; Refresh
+                            86400   ; Retry
+                            2419200 ; Expire
+                            604800  ; Negative Cache TTL
+                            )
+    ; Authoratitive name server as stated above
+                IN NS   dns.example-cluster.your-domain.com.
+    ; Resolve dns.example-cluster.your-domain.com to an address
+    dns IN A 10.1.3.106
+    ; Shortnames used we're "in" the forward zone
+    node0 IN A 172.16.2.2
+    node1 IN A 172.16.2.3
+    node3 IN A 172.16.2.4
+    api IN A 172.16.2.10
+    *.apps IN A 172.16.2.11
+  reverse.zone: |
+    $TTL    86400
+    @	IN	SOA	dns.example-cluster.your-domain.com. root.example-cluster.your-domain.com. (
+        1997022700        ; serial
+        28800             ; refresh
+        14400             ; retry
+        3600000           ; expire
+        86400             ; minimum
+    )
+          IN	    NS      dns.example-cluster.your-domain.com.
+    ;
+    2     IN      PTR     node0.example-cluster.your-domain.com.
+    3     IN      PTR     node1.example-cluster.your-domain.com.
+    4     IN      PTR     node2.example-cluster.your-domain.com.
+    10    IN      PTR     api.example-cluster.your-domain.com.
 ---
-all:
-  hosts:
-    helper:
-      ansible_connection: local
-      ansible_user: your-user
-      ansible_become_password: your-sudo-password
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dns
+spec:
+  hostNetwork: true
+  containers:
+    - name: dns
+      image: quay.io/jswanson/dns:1.0.1
+      securityContext:
+        privileged: true
+      ports:
+        - containerPort: 53
+          name: dns-port
+      volumeMounts:
+        - name: dns-config-volume
+          mountPath: /etc/named
+          readOnly: true
+  volumes:
+    - name: dns-config-volume
+      configMap:
+        name: dns-configmap
 ```
 
-## Part 6 - Creating a Playbook
-With the other components ready, all that remains is to create a playbook that leverages our templates and inventory, and encompasses the steps in the installation docs.
+In this file, a configmap is created that contains key/value pairs of the name of the config file, then the contents. These will be mounted into /etc/named within the container. Then, a pod is specified to run with the configuration files mounted in.
 
-### Section 1 - Play Setup and Vars
-The first section of the playbook sets up the play, leveraging the helper node, and sets the target directory for the rendered files and installation media to be placed in.
-```yaml
----
-- name: Create installation media
-  hosts:
-    - helper
-  # Can be overriden via extra-vars if desired
-  vars:
-    install_dir: "/home/{{ ansible_user }}/ocp-install"
+## Part 6 - Running and Testing
+With the appropriate configuration files and kube yaml created, Podman can be used to run the containerized DNS server:
+```
+podman play kube dns.yaml
 ```
 
-### Section 2 - Pre-tasks
-The pre-tasks section of the playbook handles installing `nmstate` and downloading/placing the OpenShift installation and CLI tooling into the appropriate places. Pre-tasks are always executed before tasks and post-tasks, even if they're declared later in the playbook.
-```yaml
-  pre_tasks:
-    - name: Ensure nmstate is present
-      ansible.builtin.package:
-        name: nmstate
-      become: true
-    - name: Create install_dir
-      ansible.builtin.file:
-        path: "{{ install_dir }}"
-        state: directory
-        mode: '0755'
-    - name: Download ocp installer
-      ansible.builtin.get_url:
-        url: "https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/{{ cluster_info.version | default('stable') }}/openshift-install-linux.tar.gz"
-        dest: "{{ install_dir }}"
-        mode: '0755'
-    - name: Extract install tooling
-      ansible.builtin.unarchive:
-        src: "{{ install_dir }}/openshift-install-linux.tar.gz"
-        dest: "{{ install_dir }}"
-        remote_src: true
-    - name: Download oc CLI tool
-      ansible.builtin.get_url:
-        url: "https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/{{ cluster_info.version | default('stable') }}/openshift-client-linux.tar.gz"
-        dest: "{{ install_dir }}"
-        mode: '0755'
-    - name: Extract oc CLI tool
-      ansible.builtin.unarchive:
-        src: "{{ install_dir }}/openshift-client-linux.tar.gz"
-        dest: "{{ install_dir }}"
-        remote_src: true
-    - name: Copy OC tool to /bin
-      ansible.builtin.copy:
-        src: "{{ install_dir }}/oc"
-        dest: /bin/oc
-        owner: root
-        group: root
-        mode: '0755'
-        remote_src: true
-      become: true
+Once the pod starts, `nslookup` can be used to test resolution of both configured records as well as recursive lookups:
 ```
+> nslookup node0.example-cluster.your-domain.com 10.1.3.106
+Server:		10.1.3.106
+Address:	10.1.3.106#53
 
-### Section 3 - Tasks
-The tasks section of the playbook templates out our `agent-config.yaml` and `install-config.yaml` files, and calls the `openshift-install` tool to create our installation media.
-```yaml
-  tasks:
-    - name: Template out install-config.yaml
-      ansible.builtin.template:
-        src: templates/install-config.yaml.j2
-        dest: "{{ install_dir }}/install-config.yaml"
-        mode: '0644'
-    - name: Template out agent-config.yaml
-      ansible.builtin.template:
-        src: templates/agent-config.yaml.j2
-        dest: "{{ install_dir }}/agent-config.yaml"
-        mode: '0644'
-    - name: Create installer ISO
-      ansible.builtin.command:
-        cmd: ./openshift-install --dir ./ agent create image
-      args:
-        chdir: "{{ install_dir }}/"
-        creates: "{{ install_dir }}/agent.x86_64.iso"
-```
+Name:	node0.example-cluster.your-domain.com
+Address: 172.16.2.2
 
-### Section 4 - Post-tasks
-The post-tasks section runs tasks related to copying the installation media to a web server on the helper node. This section is entirely optional, but useful if the ISO will be mounted to out-of-band management later on, or is not being generated on the local system.
-```yaml
-  post_tasks:
-    - name: Block for tasks to host on web server, if requested
-      when:
-        - host_on_webserver is defined
-        - host_on_webserver
-      become: true
-      block:
-        - name: Install web server
-          ansible.builtin.dnf:
-            name: httpd
-        - name: Allow 80 through firewalld
-          ansible.posix.firewalld:
-            port: 80/tcp
-            immediate: true
-            permanent: true
-            zone: "{{ firewalld_zone | default('public') }}"
-            state: enabled
-        - name: Copy iso to web location
-          ansible.builtin.copy:
-            src: "{{ install_dir }}/agent.x86_64.iso"
-            dest: /var/www/html/
-            remote_src: true
-```
+> nslookup 172.16.2.2 10.1.3.106
+2.2.16.172.in-addr.arpa	name = node0.example-cluster.your-domain.com.
 
-## Part 7 - Running the Playbook
-With everything set and defined, our automation can now be leveraged to create installation media without human intervention:
-```
-ansible-playbook code/ansible/create-install-media.yml --inventory code/ansible/inventory.yml --extra-vars @code/ansible/extra-vars.yml -vv
-```
+> nslookup test-thing.apps.example-cluster.your-domain.com 10.1.3.106
+Server:		10.1.3.106
+Address:	10.1.3.106#53
+
+Name:	test-thing.apps.example-cluster.your-domain.com
+Address: 172.16.2.11
+
+> nslookup redhat.com 10.1.3.106
+Server:		10.1.3.106
+Address:	10.1.3.106#53
+
+Non-authoritative answer:
+Name:	redhat.com
+Address: 52.200.142.250
+Name:	redhat.com
+Address: 34.235.198.240

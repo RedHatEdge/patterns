@@ -1,0 +1,11 @@
+// forward
+zone "example-cluster.your-domain.com" IN {
+        type master;
+        file "/etc/named/forward.zone";
+        allow-update { none; };
+};
+
+// reverse
+zone "2.16.172.in-addr.arpa" IN {
+        type master;
+        file "/etc/named/reverse.zone";

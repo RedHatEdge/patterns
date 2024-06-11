@@ -1,0 +1,14 @@
+$TTL    86400
+@	IN	SOA	dns.example-cluster.your-domain.com. root.example-cluster.your-domain.com. (
+    1997022700        ; serial
+    28800             ; refresh
+    14400             ; retry
+    3600000           ; expire
+    86400             ; minimum
+)
+      IN	    NS      dns.example-cluster.your-domain.com.
+;
+2     IN      PTR     node0.example-cluster.your-domain.com.
+3     IN      PTR     node1.example-cluster.your-domain.com.
+4     IN      PTR     node2.example-cluster.your-domain.com.
+10    IN      PTR     api.example-cluster.your-domain.com.

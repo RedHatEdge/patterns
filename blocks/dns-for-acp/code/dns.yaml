@@ -1,0 +1,92 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dns-configmap
+data:
+  named.conf: |
+    options {
+            listen-on port 53 { 0.0.0.0; };
+            directory "/var/named";
+            recursion yes;
+            allow-query { any; };
+            allow-recursion { any; };
+            forwarders {
+                    1.1.1.1;
+                    1.0.0.1;
+                    8.8.8.8;
+                    8.8.4.4;
+            };
+    };
+    include "/etc/named/files.zones";
+  files.zones: |
+    // forward
+    zone "example-cluster.your-domain.com" IN {
+            type master;
+            file "/etc/named/forward.zone";
+            allow-update { none; };
+    };
+
+    // reverse
+    zone "2.16.172.in-addr.arpa" IN {
+            type master;
+            file "/etc/named/reverse.zone";
+    };
+  forward.zone: |
+    $TTL    86400
+    @	 IN	SOA	dns.example-cluster.your-domain.com. admin.example-cluster.your-domain.com. (
+                            ; domain options
+                            3       ; Serial
+                            604800  ; Refresh
+                            86400   ; Retry
+                            2419200 ; Expire
+                            604800  ; Negative Cache TTL
+                            )
+    ; Authoratitive name server as stated above
+                IN NS   dns.example-cluster.your-domain.com.
+    ; Resolve dns.example-cluster.your-domain.com to an address
+    dns IN A 10.1.3.106
+    ; Shortnames used we're "in" the forward zone
+    node0 IN A 172.16.2.2
+    node1 IN A 172.16.2.3
+    node3 IN A 172.16.2.4
+    api IN A 172.16.2.10
+    *.apps IN A 172.16.2.11
+  reverse.zone: |
+    $TTL    86400
+    @	IN	SOA	dns.example-cluster.your-domain.com. root.example-cluster.your-domain.com. (
+        1997022700        ; serial
+        28800             ; refresh
+        14400             ; retry
+        3600000           ; expire
+        86400             ; minimum
+    )
+          IN	    NS      dns.example-cluster.your-domain.com.
+    ;
+    2     IN      PTR     node0.example-cluster.your-domain.com.
+    3     IN      PTR     node1.example-cluster.your-domain.com.
+    4     IN      PTR     node2.example-cluster.your-domain.com.
+    10    IN      PTR     api.example-cluster.your-domain.com.
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dns
+spec:
+  hostNetwork: true
+  containers:
+    - name: dns
+      image: quay.io/jswanson/dns:1.0.1
+      securityContext:
+        privileged: true
+      ports:
+        - containerPort: 53
+          name: dns-port
+      volumeMounts:
+        - name: dns-config-volume
+          mountPath: /etc/named
+          readOnly: true
+  volumes:
+    - name: dns-config-volume
+      configMap:
+        name: dns-configmap

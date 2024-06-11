@@ -1,0 +1,19 @@
+$TTL    86400
+@	 IN	SOA	dns.example-cluster.your-domain.com. admin.example-cluster.your-domain.com. (
+                        ; domain options
+                        3       ; Serial
+                        604800  ; Refresh
+                        86400   ; Retry
+                        2419200 ; Expire
+                        604800  ; Negative Cache TTL
+                        )
+; Authoratitive name server as stated above
+            IN NS   dns.example-cluster.your-domain.com.
+; Resolve dns.example-cluster.your-domain.com to an address
+dns IN A 10.1.3.106
+; Shortnames used we're "in" the forward zone
+node0 IN A 172.16.2.2
+node1 IN A 172.16.2.3
+node3 IN A 172.16.2.4
+api IN A 172.16.2.10
+*.apps IN A 172.16.2.11
