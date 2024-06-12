@@ -14,11 +14,11 @@ This pattern dives into recommendations for embedding Red Hat Device Edge on dev
 ## Abstract
 | Key | Value |
 | --- | --- |
-| **Platform(s)** | TBD |
-| **Scope** | TBD |
-| **Tooling** | TBD |
+| **Platform(s)** | Red Hat Device Edge |
+| **Scope** | Manufacturing, Onboarding |
+| **Tooling** | FDO |
 | **Pre-requisite Blocks** | TBD |
-| **Example Application** | TBD |
+| **Example Application** | Process Control, IoT Gateway, Smart Building Management |
 
 ## Problem
 **Problem Statement:** Small form-factor devices, espically those headed to industrial sites, are routinely shipped with unsupported operating systems and without workloads, resulting in a heavy burden for secure onboarding and installation being placed on system integrators or end customers.
@@ -55,6 +55,8 @@ For reverence, this visualization of FDO can be used:
 ![Provisioning with FDO](https://fidoalliance.org/wp-content/uploads/2021/04/FDO-Onboarding-image-1024x576.jpg)
 
 ### Phase 1 - Setup and Preparation
+This phase is about creating the necessary services to support large-scale manufacturing of devices that are being issued vouchers, and to be able to onboard them as they reach their final destination.
+
 #### Step 1 - Creating FDO Infrastructure
 In this step, the necessary FDO infrastructure is created and exposed for consumption. As the device manufacturer, the following components are required:
 - **Manufacturing server:** Located at the manufacturer's premises, the Manufacturing server signs the device, creates a voucher to set the device ownership, and binds it to a specific platform or cloud.
@@ -103,6 +105,8 @@ As part of this preparation, container images for the example workload have been
 ![Prep Content for Onboarding](./.images/prep-for-onboarding.png)
 
 ### Phase 2 - Manufacture Devices
+This phase focuses on applying images to devices as to allow for future secure deployment.
+
 #### Step 1 - Applying Image to Devices
 ![Installing Base Image](./.images/installing-base-image.png)
 
@@ -114,6 +118,8 @@ As devices are manufactured, one of the last steps to be completed is applying t
 Once complete, the devices are prepared to be shipped to their destination and securely onboarded. In addition, the devices can be stored for long periods of time, without issue, however pulling updates once onboarded at their destination is recommended.
 
 ### Phase 3 - Setup for Secure Onboarding
+This phase focuses on contextualizing the desired state for the devices, and associating the vouchers with that state.
+
 #### Step 1 - Gathering Desired State for Devices
 With the devices ready to be deployed, their desired state after onboarding can be identified.
 
@@ -128,12 +134,46 @@ Responsibility for pulling and starting applications will be offloaded to Podman
 After onboarding, the device will download these configuration files, load them, then begin pulling and starting the applications.
 
 #### Step 2 - Contextualizing Vouchers with Desired State
+Contextualizing vouchers simply refers to tieing the vouchers for devices to specific post-onboarding conditions, as to allow for customizations and desired state to be applied automatically upon onboarding.
 
-
-1. Contextualize vouchers with workloads
+This can be done by customer, deployment, product line, or any logical boundry desired.
+![Associating Vouchers](./.images/vouchers-to-desired-state.png)
 
 ### Phase 4 - Deploy Devices
-1. Ensure connectivity to rendezvous server
-2. Connect devices
-3. Onboard devices
+As the devices are now flashed with the correct image and vouchers have been properly moved, devices can land at their final destinations and be onboarded. After onboarding, the devices will pull their desired state and begin working towards it.
 
+#### Step 1 - Connecting Devices
+As the devices reach their final deployment locations, the proper connections are made to allow for the automated process to work. These connections are mainly power and networking, but could also include specialized IO or other connections depending on the intent of the device.
+
+#### Step 2 - Automatic Onboarding
+With the devices connected, the onboarding process begins. The FDO process is initiated, which attests to the devices. Once completed, the desired state for the devices is deployed, and they begin to work towards it. This process could involve pulling container images or other software, applying configuration files, and even performing operating system or firmware updates before starting up workloads.
+
+## Resulting Context
+The end results of implimenting this solution are:
+1. Devices can be manufactured at scale
+2. Desired state can be pre-determined
+3. Devices can be securely onboarded at any deployment location
+4. The devices are responsible for achieving their desired state and constantly work to maintain it
+
+## Examples
+A main example for this solution is the purchase of a device to be deployed into a factory with the purpose of performing building management, process control, and IoT gateway functionality.
+![Desired State](./.images/device-desired-state.png)
+
+Once the device is recieved, onboarding and configuration should happen automatically.
+
+The backend setup, having already been built, enables this automated process.
+![Backend Setup](./.images/state-defined-and-stored.png)
+
+Once the device has been shipped and connected at the deployment location, the onboarding process handles configuration and application deployment without intervention from personnel at the site.
+![End User Use Case](./.images/end-user-use-case.png)
+
+## Rationale
+Secure attestation and onboarding, along with automated workload and application deployment, are two key requirements for devices being deployed outside of protected spaces, such as datacenters. This solution enables both, meeting the requirements of end users and suppliers.
+
+## Footnotes
+
+## Version
+1.0.0
+
+## Authors
+- Josh Swanson (jswanson@redhat.com)
