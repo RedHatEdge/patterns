@@ -1,0 +1,17 @@
+---
+all:
+  children:
+    servers:
+      node0:
+        ansible_host: 172.16.2.2
+        idrac_address: 172.16.0.3
+      node1:
+        ansible_host: 172.16.2.3
+        idrac_address: 172.16.0.4
+      node2:
+        ansible_host: 172.16.2.4
+        idrac_address: 172.16.0.5
+  vars:
+    idrac_auth:
+      username: root
+      password: calvin
