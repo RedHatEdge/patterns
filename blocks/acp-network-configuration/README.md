@@ -86,7 +86,7 @@ Topology:
 ## Part 1 - Defining Configuration
 To get started, the desired network configuration will be defined. For clarity within this block, we'll just be defining the storage interfaces, however this process scales for multiple uses.
 
-Just as during cluster installation where cluster interface configuration was defined via [nmstate](nmstate.io), the same format is used for additional interface configuration:
+Just as during cluster installation where cluster interface configuration was defined via [nmstate](https://nmstate.io), the same format is used for additional interface configuration:
 ```yaml
 ---
 nodeNetworkConfigurationPolicies:
