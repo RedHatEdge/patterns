@@ -13,8 +13,11 @@ This block outlines how to setup local storage for consumption later in converge
 
 ## Table of Contents
 * [Part 0 - Assumptions and Network Layout](#part-0---assumptions-and-network-layout)
-* [Part 1 - Installing via Operator](#part-1---installing-via-operator)
-* [Part 2 - Accessing ArgoCD](#part-2---accessing-argocd)
+* [Part 1 - Defining Configuration](#part-1---defining-configuration)
+* [Part 2 - Installing the Local Storage Operator](#part-2---installing-the-local-storage-operator)
+* [Part 3 - Local Volume Discovery](#part-3---local-volume-discovery)
+* [Part 4 - Local Volume Set](#part-4---local-volume-set)
+* [Part 5 - Created Storage Class](#part-5---created-storage-class)
 
 ## Part 0 - Assumptions and Network Layout
 This block has a few key assumptions, in an attempt to keep things digestable:
@@ -111,7 +114,7 @@ localStorage:
       - NonRotational
 ```
 
-## Part 1 - Installing the Local Storage Operator
+## Part 2 - Installing the Local Storage Operator
 Local storage functionality is provided by the local storage operator, which can be installed via GitOps. Refer to the [GitOps Deployment](../gitops-deployment-k8s/README.md) block for more information.
 
 The installation happens over different phases, as some configuration components need to happen after others have completed.
@@ -174,7 +177,7 @@ spec:
 >
 > Calling out sync wave 1 is not technically required, however it is in included for clarity.
 
-## Part 2 - Local Volume Discovery
+## Part 3 - Local Volume Discovery
 Local volume discovery is the functionality that identifies disks on specified nodes that can be used to create a volume set. This is a dynamic discovery approach, allowing for automatic discovery of devices.
 
 In the example cluster, all 3 nodes have 4 disks that will be discovered as available for consumption, so all nodes from `.Values.localStorage.nodes` are templated into the `nodeSelector`.
@@ -218,7 +221,7 @@ local-storage-operator-d575d99b8-z4d6h   1/1     Running   1          22h
 
 Sync wave 2 is specified, as the operator needs to reach a healthy state for the LocalVolumeDiscovery cluster resource definition to exist.
 
-## Part 3 - Local Volume Set
+## Part 4 - Local Volume Set
 A local volume set takes discovered disks and presents them for consumption via a storage class. Multiple sets can be created with different disk selection criteria, if desired.
 
 The example cluster has a uniform set of disks, all of which will be consumed in a single storage class, so a single local volume set can be used.
@@ -244,7 +247,7 @@ spec:
 
 This should be configured after local volume discovery has started, so sync wave 3 is specified. In addition, the `deviceInclusionSpec` matches "any disk that is not a rotational disk", meaning the installed SSDs will be selected.
 
-## Part 4 - Created Storage Class
+## Part 5 - Created Storage Class
 Once initialization of the local volume set finishes, a storage class will be automatically created that maps requests to the underlying disks.
 
 ```yaml
