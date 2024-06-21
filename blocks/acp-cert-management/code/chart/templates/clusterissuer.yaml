@@ -1,0 +1,12 @@
+{{ if .Values.certManager }}
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ .Values.certManager.issuer.name }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+{{- toYaml .Values.certManager.issuer.spec | nindent 2 }}
+{{ end }}

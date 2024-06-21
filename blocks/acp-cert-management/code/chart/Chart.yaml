@@ -1,0 +1,6 @@
+apiVersion: v2
+name: cert-manager
+description: This helm chart installs the cert-manager operator and, optionally, requests certificates for the API and cluster ingress
+type: application
+version: 1.0.0
+appVersion: "1.0.0"

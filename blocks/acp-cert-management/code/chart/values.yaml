@@ -1,0 +1,36 @@
+---
+certManager:
+  issueAPICert: true
+  issueIngressCert: true
+  secrets:
+    - name: zero-ssl-eabsecret
+      stringData:
+        secret: redacted
+    - name: cloudflare-api-token-secret
+      stringData:
+        api-token: redacted
+  issuer:
+    name: zerossl-production
+    spec:
+      acme:
+        server: https://acme.zerossl.com/v2/DV90
+        email: your-email@you.com
+        privateKeySecretRef:
+          name: zerossl-prod
+        externalAccountBinding:
+          keyID: redacted
+          keySecretRef:
+            name: zero-ssl-eabsecret
+            key: secret
+          keyAlgorithm: HS256
+        solvers:
+          - dns01:
+              cloudflare:
+                email: your-email@you.com
+                apiTokenSecretRef:
+                  name: cloudflare-api-token-secret
+                  key: api-token
+            selector:
+              dnsZones:
+                  - acp.basementinnovation.center
+                  - basementinnovation.center
