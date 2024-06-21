@@ -1,8 +1,13 @@
+{{ if .Values.localStorage }}
 ---
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
-  name: openshift-gitops-operator
-  namespace: openshift-gitops-operator
+  name: local-operator-group
+  namespace: openshift-local-storage
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
-  upgradeStrategy: Default
+  targetNamespaces:
+  - openshift-local-storage
+{{ end }}

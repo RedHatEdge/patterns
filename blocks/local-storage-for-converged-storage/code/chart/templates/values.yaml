@@ -1,0 +1,13 @@
+---
+localStorage:
+  nodes:
+    - node0
+    - node1
+    - node2
+  storageClassName: local-disks
+  volumeMode: Block
+  deviceInclusionSpec:
+    deviceTypes:
+      - disk
+    deviceMechanicalProperties:
+      - NonRotational
