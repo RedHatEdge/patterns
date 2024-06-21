@@ -1,0 +1,10 @@
+{{- if .Values.nodeNetworkConfigurationPolicies }}
+---
+apiVersion: nmstate.io/v1
+kind: NMState
+metadata:
+  name: nmstate
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+{{ end }}

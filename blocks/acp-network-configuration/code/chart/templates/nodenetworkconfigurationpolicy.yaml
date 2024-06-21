@@ -1,0 +1,18 @@
+{{- if .Values.nodeNetworkConfigurationPolicies }}
+{{- range .Values.nodeNetworkConfigurationPolicies }}
+---
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: {{ .name }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: {{ .node }}
+  desiredState:
+    interfaces:
+{{- toYaml .interfaces | nindent 4 }}
+{{- end }}
+{{- end }}
