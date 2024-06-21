@@ -16,9 +16,9 @@ This pattern gives a technical look at installing the core services on top of an
 | --- | --- |
 | **Platform(s)** | Red Hat OpenShift |
 | **Scope** | Platform Installation |
-| **Tooling** | <ul><li>Red Hat Ansible</li></ul> |
-| **Pre-requisite Blocks** | <ul><li>[Example ACP Networking](../../blocks/example-network-config/README.md)</li><li>[DNS for ACPs](../../blocks/dns-for-acp/README.md)</li><li>[Agent Config and Install Config](../../blocks/agent-config-and-install-config/README.md)</li><li>[Installation Media Automation](../../blocks/install-media-playbook/README.md)</li><li>[Installation via Out-of-Band Management](../../blocks/install-via-oob/README.md)</li></ul> |
-| **Pre-requisite Patterns** | <ul><li>[ACP Standard Architecture](../acp-standardized-architecture-ha/README.md)</li></ul> |
+| **Tooling** | <ul><li>Helm</li><li>Red Hat OpenShift GitOps</li></ul> |
+| **Pre-requisite Blocks** | <ul><li>[Getting Started with Helm](../../blocks/helm-getting-started/README.md)</li><li>[GitOps Deployment](../../blocks/gitops-deployment-k8s/README.md)</li><li>[Bootstrapping GitOps Functionality](../../blocks/bootstrapping-gitops/README.md)</li><li>[Local Storage for Converged Storage](../../blocks/local-storage-for-converged-storage/README.md)</li><li>[Network Configuration on an ACP](../../blocks/acp-network-configuration/README.md)</li><li>[Automated Certificate Management on ACP](../../blocks/acp-cert-management/README.md)</li><li>[Converged Storage with OpenShift Data Foundation](../../blocks/converged-storage-odf/README.md)</li><li>[General Networking Configuration for Virtualization]()</li><li>[Installing IT Automation Functionality on an ACP]()</li><li>[Deploying Virtualization Functionality]()</li></ul> |
+| **Pre-requisite Patterns** | <ul><li>[ACP Standard Architecture]()</li><li>[Red Hat Provided ACP Standard Services]()</li></ul> |
 | **Example Application** | N/A |
 
 ## Problem
@@ -136,12 +136,11 @@ The converged storage service is consumed to support the underlying database, wh
 
 This service provides tons of functionality, as under the covers, this service is an entire platform offering.
 
-Once all services are installed and ready, the platform reaches a functional state of being an ACP.
-
 ## Resulting Context
 The resulting context is a flexible platform that provides core services for consumption as workloads are deployed. The summation of these core services is the ability to run multiple types of workloads on a common platform, instead of needing dedicated or unique compute solutions. The installation and management of these services should be driven by code, allowing for ease of deployment and ease of operations over time.
 
 While some up-front information is gathered, the services attempt to make sane default choices, relative to the standardized ACP architecture.
+![Synced Services](./.images/synced-services.png)
 
 ## Examples
 A common example for this platform is the deployment of a virtualized workload, which requires automation to complete the installation.
