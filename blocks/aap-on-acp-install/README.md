@@ -22,7 +22,8 @@ This block outlines how to install Ansible Automation Platform, an IT automation
 This block has a few key assumptions, in an attempt to keep things digestable:
 1. A target platform is installed and reachable.
 2. The installation content for the ansible automation platform operator is available.
-3. Persistent storage is available, either by local or converged storage.
+3. Persistent storage is available, either by local or converged storage, or another storage solution.
+4. Virtualization functionality is enabled in the BIOS of the underlying compute resources.
 
 The following example subnets/VLANs will be used:
 | VLAN | Subnet | Description |
@@ -83,7 +84,7 @@ Topology:
 ![Topology](./.images/topology.png)
 
 ## Part 1 - Defining Configuration
-To get started, the desired network configuration of the IT automation platform will be defined. Most of the desired state will center on the persistent storage options.
+To get started, the desired configuration of the IT automation platform will be defined. Most of the desired state will center on the persistent storage options.
 
 ```yaml
 ---
@@ -180,7 +181,17 @@ spec:
 ## Part 4 - Investigating IT Automation Service Availability
 With the service now available, Controller can be accessed and leveraged to perform IT automation tasks. 
 
+### Getting Credentials
+The administrative password can be found in a secret stored in the `ansible-automation-platform` namespace, with the name `controller-admin-password`:
+![Admin Password](./.images/admin-password-secret.png)
 
-The administrative password can be found in a secret
+### Accessing the WebUI
+A route will be created for the instance of controller by default. The URL can be found under `Routes` in the `ansible-automation-platform` namespace:
+![Route](./.images/controller-route.png)
 
 
+### Logging In
+After following the URL, the username `admin` and password from the `controller-admin-password` can be used to access the dashboard and begin leveraging Controller:
+![Login Page](./.images/webui-login.png)
+
+![Dashboard](./.images/controller-dashboard.png)
