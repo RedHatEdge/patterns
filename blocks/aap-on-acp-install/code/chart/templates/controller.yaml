@@ -1,0 +1,14 @@
+{{ if .Values.ansibleAutomationPlatform.controller  }}
+---
+apiVersion: automationcontroller.ansible.com/v1beta1
+kind: AutomationController
+metadata:
+  name: {{ .Values.ansibleAutomationPlatform.controller.name }}
+  namespace: ansible-automation-platform
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  replicas: {{ .Values.ansibleAutomationPlatform.controller.replicas }}
+  postgres_storage_class: {{ .Values.ansibleAutomationPlatform.controller.storageClass }}
+{{ end }}

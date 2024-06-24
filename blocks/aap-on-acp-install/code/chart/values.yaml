@@ -1,0 +1,7 @@
+---
+ansibleAutomationPlatform:
+  version: stable-2.4
+  controller:
+    name: controller
+    storageClass: ocs-storagecluster-ceph-rbd
+    replicas: 1
