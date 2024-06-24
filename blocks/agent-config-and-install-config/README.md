@@ -2,11 +2,11 @@
 This block is an example of creating the necessary installation config files for install bare-metal OpenShift clusters, such as those that will be ACPs.
 
 ## Information
-**Platform:** Red Hat OpenShift
-**Scope:** Bootstrapping
-**Tooling:** CLI, yaml
-**Pre-requisite Patterns:** N/A
-**Example Application**: N/A
+- **Platform:** Red Hat OpenShift
+- **Scope:** Bootstrapping
+- **Tooling:** CLI, yaml
+- **Pre-requisite Patterns:** N/A
+- **Example Application**: N/A
 
 ## Table of Contents
 * [Part 0 - Assumptions and Network Layout](#part-0---assumptions-and-network-layout)
