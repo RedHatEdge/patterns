@@ -33,10 +33,10 @@ A few key assumptions are made:
 - The upstream network configuration is completed and verified
 
 ## Forces
-**Hardware Consolidation:** This pattern is focused allowing a single platform on a single set of hardware to run many workloads across many different network segments, with a limited number of physical network links.
-**Network-Level Isolation:** This pattern allows workloads to be isolated from others at the network level, creating logical boundries if desired.
-**Broad Hardware Compatibility:** This functionality is provided via the Linux kernel, meaning almost all supported hardware will be able to support this connectivity model, as the "heavy lifting" is done by the kernel's network stack.
-**Broad Workload Compatibility:** This pattern supports many traditional workloads that expect to be installed on a virtual machine that is "directly connected" to a network, meaning the connection mechanics are transparent to the virtual machine itself.
+- **Hardware Consolidation:** This pattern is focused allowing a single platform on a single set of hardware to run many workloads across many different network segments, with a limited number of physical network links.
+- **Network-Level Isolation:** This pattern allows workloads to be isolated from others at the network level, creating logical boundries if desired.
+- **Broad Hardware Compatibility:** This functionality is provided via the Linux kernel, meaning almost all supported hardware will be able to support this connectivity model, as the "heavy lifting" is done by the kernel's network stack.
+-  **Broad Workload Compatibility:** This pattern supports many traditional workloads that expect to be installed on a virtual machine that is "directly connected" to a network, meaning the connection mechanics are transparent to the virtual machine itself.
 
 ## Solution
 The networking stack of an ACP can be configured to allow for connectivity across VLANs using built-in functionality of the Linux kernel, without needing specialized hardware. Since the responsiblity of adding/removing VLAN tags falls to the networking stack, some CPU cycles are expended to support this functionality.
