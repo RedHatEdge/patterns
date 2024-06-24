@@ -23,7 +23,6 @@ This block has a few key assumptions, in an attempt to keep things digestable:
 1. A target platform is installed and reachable.
 2. The installation content for the ansible automation platform operator is available.
 3. Persistent storage is available, either by local or converged storage, or another storage solution.
-4. Virtualization functionality is enabled in the BIOS of the underlying compute resources.
 
 The following example subnets/VLANs will be used:
 | VLAN | Subnet | Description |
