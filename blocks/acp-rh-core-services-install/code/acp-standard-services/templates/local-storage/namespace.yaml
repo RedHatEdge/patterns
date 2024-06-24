@@ -1,0 +1,9 @@
+{{ if .Values.localStorage }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: openshift-local-storage
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+{{ end }}

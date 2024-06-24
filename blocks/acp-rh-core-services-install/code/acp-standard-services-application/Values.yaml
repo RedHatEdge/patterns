@@ -1,0 +1,114 @@
+---
+clusterSettings:
+  baseURL: acp.basementinnovation.center
+  version: 4.15
+localStorage:
+  nodes:
+    - node0
+    - node1
+    - node2
+  storageClassName: local-disks
+  volumeMode: Block
+  deviceInclusionSpec:
+    deviceTypes:
+      - disk
+    deviceMechanicalProperties:
+      - NonRotational
+nodeNetworkConfigurationPolicies:
+  - name: node0-storage
+    node: node0
+    interfaces:
+      - name: eno2
+        description: storage
+        type: ethernet
+        state: up
+        ipv4:
+          dhcp: false
+          enabled: true
+          address:
+            - ip: 172.16.1.2
+              prefix-length: 24
+        ipv6:
+          enabled: false
+  - name: node1-storage
+    node: node1
+    interfaces:
+      - name: eno2
+        description: storage
+        type: ethernet
+        state: up
+        ipv4:
+          dhcp: false
+          enabled: true
+          address:
+            - ip: 172.16.1.3
+              prefix-length: 24
+        ipv6:
+          enabled: false
+  - name: node2-storage
+    node: node2
+    interfaces:
+      - name: eno2
+        description: storage
+        type: ethernet
+        state: up
+        ipv4:
+          dhcp: false
+          enabled: true
+          address:
+            - ip: 172.16.1.4
+              prefix-length: 24
+        ipv6:
+          enabled: false
+certManager:
+  issueAPICert: true
+  issueIngressCert: true
+  secrets:
+    - name: zero-ssl-eabsecret
+      stringData:
+        secret: redacted
+    - name: cloudflare-api-token-secret
+      stringData:
+        api-token: redacted
+  issuer:
+    name: zerossl-production
+    spec:
+      acme:
+        server: https://acme.zerossl.com/v2/DV90
+        email: you@your-email.com
+        privateKeySecretRef:
+          name: zerossl-prod
+        externalAccountBinding:
+          keyID: redacted
+          keySecretRef:
+            name: zero-ssl-eabsecret
+            key: secret
+          keyAlgorithm: HS256
+        solvers:
+          - dns01:
+              cloudflare:
+                email: you@your-email.com
+                apiTokenSecretRef:
+                  name: cloudflare-api-token-secret
+                  key: api-token
+            selector:
+              dnsZones:
+                  - acp.basementinnovation.center
+                  - basementinnovation.center
+convergedStorage:
+  nodes:
+    - node0
+    - node1
+    - node2
+  network: 172.16.1.0/24
+  interface: eno2
+  totalNumDisks: 12
+  replicas: 3
+virtualization:
+  nonRoot: true
+  hostCPUPassThrough: true
+ansibleAutomationPlatform:
+  controller:
+    name: controller
+    storageClass: ocs-storagecluster-ceph-rbd
+    replicas: 1

@@ -1,0 +1,16 @@
+{{ if .Values.localStorage }}
+---
+apiVersion: local.storage.openshift.io/v1alpha1
+kind: LocalVolumeSet
+metadata:
+  name: local-disks
+  namespace: openshift-local-storage
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  storageClassName: {{ .Values.localStorage.storageClassName }}
+  volumeMode: {{ .Values.localStorage.volumeMode }}
+  deviceInclusionSpec:
+{{- toYaml .Values.localStorage.deviceInclusionSpec | nindent 4 }}
+{{ end }}

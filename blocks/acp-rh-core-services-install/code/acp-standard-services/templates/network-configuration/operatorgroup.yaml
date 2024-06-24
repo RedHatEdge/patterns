@@ -1,0 +1,14 @@
+{{- if .Values.nodeNetworkConfigurationPolicies }}
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  annotations:
+    olm.providedAPIs: NMState.v1.nmstate.io
+    argocd.argoproj.io/sync-wave: "1"
+  name: openshift-nmstate
+  namespace: openshift-nmstate
+spec:
+  targetNamespaces:
+  - openshift-nmstate
+{{ end }}

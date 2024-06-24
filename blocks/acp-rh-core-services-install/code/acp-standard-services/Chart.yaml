@@ -1,0 +1,6 @@
+apiVersion: v2
+name: acp-standard-services
+description: A Helm chart that installs the standard set of RH-provided services on an ACP
+type: application
+version: 1.0.0
+appVersion: "1.0.0"

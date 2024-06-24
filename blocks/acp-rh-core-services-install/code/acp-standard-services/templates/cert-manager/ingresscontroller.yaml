@@ -1,0 +1,13 @@
+{{ if .Values.certManager.issueIngressCert }}
+---
+apiVersion: operator.openshift.io/v1
+kind: IngressController
+metadata:
+  name: default
+  namespace: openshift-ingress-operator
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+spec:
+  defaultCertificate:
+    name: router-cert
+{{ end }}

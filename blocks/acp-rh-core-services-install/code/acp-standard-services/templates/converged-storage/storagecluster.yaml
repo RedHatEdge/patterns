@@ -1,0 +1,36 @@
+{{ if .Values.convergedStorage }}
+---
+apiVersion: ocs.openshift.io/v1
+kind: StorageCluster
+metadata:
+  name: {{ .Values.convergedStorage.name | default "ocs-storagecluster" }}
+  namespace: openshift-storage
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  monDataDirHostPath: /var/lib/rook
+  storageDeviceSets:
+    - config: {}
+      count: {{ .Values.convergedStorage.totalNumDisks }}
+      dataPVCTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: '1'
+          storageClassName: {{ .Values.localStorage.storageClassName }}
+          volumeMode: {{ .Values.localStorage.volumeMode }}
+      name: ocs-deviceset-{{ .Values.localStorage.storageClassName }}
+      replica: 1
+  network:
+    provider: multus
+    selectors:
+      cluster: openshift-storage/ocs-public-cluster
+      public: openshift-storage/ocs-public-cluster
+  externalStorage: {}
+  flexibleScaling: true
+  failureDomain: host
+  failureDomainKey: kubernetes.io/hostname
+{{ end }}
