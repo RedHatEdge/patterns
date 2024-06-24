@@ -137,7 +137,7 @@ This flow is simplified because the source and destination exist within the same
 | 3. | Virtual Machine 1 | Virtual Machine 4 | node0 | `enp4s0f0.2003` | Untagged | Adding VLAN tag 2003 via VLAN interface |
 | 4. | Virtual Machine 1 | Virtual Machine 4 | node0 | `enp4s0f0` | Tagged | Exiting via physical interface |
 | 5. | Virtual Machine 1 | Virtual Machine 4 | Switch | `Ethernet 1/3` | Tagged | Arrives at switch |
-| 7. | Virtual Machine 1 | Virtual Machine 4 | Switch | `Ethernet 1/6` | Tagged | Departing switch to ACP node |
+| 7. | Virtual Machine 1 | Virtual Machine 4 | Switch | `Ethernet 1/7` | Tagged | Departing switch to ACP node |
 | 8. | Virtual Machine 1 | Virtual Machine 4 | node0 | `enp4s0f0` | Tagged | Entering via physical interface |
 | 9. | Virtual Machine 1 | Virtual Machine 4 | node0 | `enp4s0f0.2003` | Tagged | Removing VLAN tag 2004 via VLAN interface |
 | 10. | Virtual Machine 1 | Virtual Machine 4 | node0 | `bridge2003` | Untagged | Entering bridge network |
@@ -153,7 +153,7 @@ Finally, similar to the second flow, going between virtual machines on different
 | 4. | Virtual Machine 1 | Virtual Machine 6 | node0 | `enp4s0f0` | Tagged | Exiting via physical interface |
 | 5. | Virtual Machine 1 | Virtual Machine 6 | Switch | `Ethernet 1/3` | Tagged | Arrives at switch |
 | 6. | Virtual Machine 1 | Virtual Machine 6 | Firewall | `Uplink 1` | Tagged | Routing and ACLs evaluated/enacted, tag changed from 2003 to 2005 |
-| 7. | Virtual Machine 1 | Virtual Machine 6 | Switch | `Ethernet 1/6` | Tagged | Departing switch to ACP node |
+| 7. | Virtual Machine 1 | Virtual Machine 6 | Switch | `Ethernet 1/7` | Tagged | Departing switch to ACP node |
 | 8. | Virtual Machine 1 | Virtual Machine 6 | node1 | `enp4s0f0` | Tagged | Entering via physical interface |
 | 9. | Virtual Machine 1 | Virtual Machine 6 | node1 | `enp4s0f0.2005` | Tagged | Removing VLAN tag 2004 via VLAN interface |
 | 10. | Virtual Machine 1 | Virtual Machine 6 | node1 | `bridge2005` | Untagged | Entering bridge network |
