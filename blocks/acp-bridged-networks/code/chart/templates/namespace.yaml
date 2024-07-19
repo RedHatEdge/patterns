@@ -1,0 +1,15 @@
+{{- if .Values.nodeNetworkConfigurationPolicies }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  labels:
+    kubernetes.io/metadata.name: openshift-nmstate
+    name: openshift-nmstate
+  name: openshift-nmstate
+spec:
+  finalizers:
+  - kubernetes
+{{ end }}
