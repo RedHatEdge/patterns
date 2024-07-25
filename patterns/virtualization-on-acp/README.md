@@ -1,5 +1,5 @@
-# Bridging Virtual Machines Directly to a Network
-This pattern gives a technical look at how virtual machines run on an ACP can be attached directly to a network, using the "traditional" bridged network configuration.
+# Virtualization on an ACP
+This pattern gives a technical look at how virtual machines are created and managed on an ACP via consumption of the virtualization and gitops services.
 
 ## Table of Contents
 * [Abstract](#abstract)
@@ -18,30 +18,32 @@ This pattern gives a technical look at how virtual machines run on an ACP can be
 | **Scope** | Virtualization |
 | **Tooling** | <ul><li>Red Hat OpenShift GitOps</li></ul> |
 | **Pre-requisite Blocks** | <ul><li>[Example ACP Networking](../../blocks/example-network-config/README.md)</li><li>[ACP Network Configuration](../../blocks/acp-network-configuration/)</li><li>[Creating Bridged Networks on an ACP](../../blocks/acp-bridge-networks/README.md)</li></ul> |
-| **Pre-requisite Patterns** | <ul><li>[ACP Standard Architecture](../acp-standardized-architecture-ha/README.md)</li></ul> |
+| **Pre-requisite Patterns** | <ul><li>[ACP Standard Architecture](../acp-standardized-architecture-ha/README.md)</li><li>[ACP Standard Services](../rh-acp-standard-services/README.md)</li></ul> |
 | **Example Application** | N/A |
 
 ## Problem
-**Problem Statement:** Often, virtual machines and their workloads are deployed across different layer 2 domains, known as VLANs, for various reasons such as security isolation, traffic grouping, and scalability. However, instead of 1:1 mappings of VLANs to physical interfaces, many VLANs are trunked down a single physical link. The platform must be able to understand and host workloads, including virtual machines, and provide the appropriate connectivity to various separated networks via VLANs.
+**Problem Statement:** ACPs are designed to handle multiple types of workloads concurrently while maintaining management and operations consistency. Virtual machines, a specific type of workload provided by the virtualization service, should have the same deployment and management flow as other types of workloads, such as containerized workloads. Ideally, virtual machines should also use the same tooling for the initial deployment and management.
 
 ## Context
-This pattern can be applied to ACPs where workloads need to communicate on different VLANs which are trunked down over a single (or multiple) physical links to the platform. While many different types of workloads can leverage the same connectivity model, virtual machines will be the focus for the examples below.
+This pattern can be applied to ACPs where virtual machines are required to run workloads, and the ACP has been setup and configured according the the [Standard HA ACP Architecture](../acp-standardized-architecture-ha/README.md). In addition, the standard set of [ACP Services](../rh-acp-standard-services/README.md) have been deployed and are ready to be consumed. GitOps tooling will be used to deploy the virtual machines, and can be used to update/change them over their lifecycle.
 
 A few key assumptions are made:
 - The intended context of the platform aligns to the [Standard HA ACP Architecture](../acp-standardized-architecture-ha/README.md)
+- The standard set of [ACP Services](../rh-acp-standard-services/README.md) are available for consumption.
 - Physical connections, such as power and networking, have been made to the target hardware
 - The upstream network configuration is completed and verified
 
 ## Forces
-- **Hardware Consolidation:** This pattern is focused allowing a single platform on a single set of hardware to run many workloads across many different network segments, with a limited number of physical network links.
-- **Network-Level Isolation:** This pattern allows workloads to be isolated from others at the network level, creating logical boundries if desired.
-- **Broad Hardware Compatibility:** This functionality is provided via the Linux kernel, meaning almost all supported hardware will be able to support this connectivity model, as the "heavy lifting" is done by the kernel's network stack.
--  **Broad Workload Compatibility:** This pattern supports many traditional workloads that expect to be installed on a virtual machine that is "directly connected" to a network, meaning the connection mechanics are transparent to the virtual machine itself.
+- **Management Tooling Consolidation:** This pattern is focused on leveraging common tooling to manage the deployment and lifecycle of virtual machines, identically to how other workloads are deployed and managed on an ACP.
+- **Extensibility:** The solution outlined in this pattern focuses on the initial deployment of a virtual machine, along with how to make adjustments during normal operation, however additional hooks/steps can be added with ease.
+- **Broad Applicability:** This pattern's solution works for almost all types of virtual machine, regardless of required compute resources, network connections, or operating system.
 
 ## Solution
-The networking stack of an ACP can be configured to allow for connectivity across VLANs using built-in functionality of the Linux kernel, without needing specialized hardware. Since the responsiblity of adding/removing VLAN tags falls to the networking stack, some CPU cycles are expended to support this functionality.
+The solution for this pattern involves consuming the virtualization and gitops services to deploy and manage virtual machines. This is accomplished by defining the desired virtual machines and their configurations, then leveraging GitOps tooling to run the deployment, and optionally, make changes over time.
 
-A combination of linux bridges, which are software-based network switches that exist entirely within the kernel, and VLAN interfaces, which segment traffic and add/subtrack VLAN tags, depending on flow. When used together, VLANs become virtual networks within the networking stack of the platform, and cross-VLAN traffic will exit the platform and be handled by the networking stack.
+The virtual machine definitions are stored as code, and automatically tracked and deployed by GitOps tooling. This allows for a clear audit trail and ease of management without needing another management tool specifically for virtual machines.
+
+### WIP BELOW ###
 
 An example topology, as visualized below, will be used to represent an example ACP being installed.
 ![Example Topology](./.images/topology.png)
