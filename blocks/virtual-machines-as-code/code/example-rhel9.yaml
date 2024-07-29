@@ -1,0 +1,89 @@
+---
+apiVersion: kubevirt.io/v1 # API of the virtualization service
+kind: VirtualMachine  # Desired resource
+metadata:
+  name: example-rhel9 # Name of the virtual machine
+  namespace: default # Namespace for the virtual machine
+  finalizers:
+    - kubevirt.io/virtualMachineControllerFinalize
+  labels:
+    app: example-rhel9 # More labels can be added if desired
+    kubevirt.io/dynamic-credentials-support: 'true'
+    vm.kubevirt.io/template: rhel9-server-small
+    vm.kubevirt.io/template.namespace: openshift
+    vm.kubevirt.io/template.revision: '1'
+    vm.kubevirt.io/template.version: v0.27.0
+spec:
+  dataVolumeTemplates: # Clones the data source for RHEL9 systems for this virtual machine, essentially "create from template"
+    - apiVersion: cdi.kubevirt.io/v1beta1
+      kind: DataVolume
+      metadata:
+        name: example-rhel9
+      spec:
+        sourceRef:
+          kind: DataSource
+          name: rhel9
+          namespace: openshift-virtualization-os-images
+        storage:
+          resources:
+            requests:
+              storage: 30Gi
+  running: true # Start the virtual machine after provisioning
+  template:
+    metadata:
+      annotations:
+        vm.kubevirt.io/flavor: small
+        vm.kubevirt.io/os: rhel9
+        vm.kubevirt.io/workload: server
+      creationTimestamp: null
+      labels:
+        kubevirt.io/domain: example-rhel9
+        kubevirt.io/size: small
+    spec:
+      architecture: amd64
+      domain:
+        cpu: # CPU resources to allocate to the virtual machine
+          cores: 4
+          sockets: 1
+          threads: 1
+        devices:
+          disks:
+            - disk:
+                bus: virtio
+              name: rootdisk
+            - disk: # cloud-init uses a dedicated disk
+                bus: virtio
+              name: cloudinitdisk
+          interfaces:
+            - name: default
+              masquerade: {}
+              model: virtio
+          networkInterfaceMultiqueue: true
+          rng: {}
+        features:
+          acpi: {}
+          smm:
+            enabled: true
+        firmware:
+          bootloader:
+            efi: {}
+        machine:
+          type: pc-q35-rhel9.2.0
+        memory:
+          guest: 16Gi
+        resources: {}
+      networks:
+        - name: default
+          pod: {}
+      terminationGracePeriodSeconds: 180
+      volumes:
+        - dataVolume:
+            name: example-rhel9
+          name: rootdisk
+        - cloudInitNoCloud: # Fed into cloud-init
+            userData: |-
+              #cloud-config
+              user: cloud-user
+              password: "your-password-here"
+              chpasswd: { expire: False }
+          name: cloudinitdisk
