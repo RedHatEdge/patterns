@@ -13,10 +13,11 @@ This block outlines what autounattend files are, how they are structured, and in
 
 ## Table of Contents
 * [Part 0 - Assumptions and Network Layout](#part-0---assumptions-and-network-layout)
-* [Part 1 - Defining Configuration](#part-1---defining-configuration)
-* [Part 2 - Installing the Virtualization Operator](#part-2---installing-the-virtualization-operator)
-* [Part 3 - HyperConverged Instance](#part-3---hyperconverged-instance)
-* [Part 4 - Investigating Virtualization Functionality](#part-4---investigating-virtualization-functionality)
+* [Part 1 - Introduction to Autounattend Files](#part-1---introduction-to-autounattend-files)
+* [Part 2 - Example Autounattend.xml File](#part-2---example-autounattendxml-file)
+* [Part 3 - Example Post-Install.ps1 File](#part-3---example-post-installps1-file)
+* [Part 4 - Crafting a ConfigMap](#part-4---crafting-a-configmap)
+* [Part 5 - Creating a ConfigMap via the CLI](#part-5---creating-a-configmap-via-the-cli)
 
 ## Part 0 - Assumptions and Network Layout
 This block has a few key assumptions, in an attempt to keep things digestable:
