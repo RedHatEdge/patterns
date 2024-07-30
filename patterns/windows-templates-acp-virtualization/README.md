@@ -55,7 +55,7 @@ After completing these steps, cleanup of the temporary resources should occur, l
 ### copy-installer-iso and create-install-destination
 These two steps, which happen simultaneously at the beginning of the pipeline run, set up some initial resources that are used by later steps in the pipeline.
 
-First, the `copy-installer-iso` task creates a copy of the [uploaded installer ISOs](../link-to-block) that will later be attached to the temporary virtual machine. This functionality is provided by the converged storage service of the platform.
+First, the `copy-installer-iso` task creates a copy of the [uploaded installer ISOs](../../blocks/importing-installer-isos/README.md) that will later be attached to the temporary virtual machine. This functionality is provided by the converged storage service of the platform.
 ![Copy Installer ISO](./.images/copy-installer-iso.png)
 
 The `create-install-destination` step requests a block of storage from the converged storage service that will be used as the boot/installation disk for the temporary virtual machine's operating system to be installed to. After the installation and post-install tasks have been completed, this storage will be snapshotted and used as the source for the virtual machine template.
