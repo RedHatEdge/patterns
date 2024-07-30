@@ -6,15 +6,20 @@ To request content be added to this repo, [open an issue](https://github.com/Red
 ## Planned Patterns
 | Name | Description | Assignee |
 | --- | --- | --- |
-| Virtualization on an ACP | Walk through deploying virtual machines onto an ACP using appropriate tooling | Josh |
 | SR-IOV for Virtual Machines | High performant networking configuration for virtualized workloads | Josh |
 | Exposing Services on a Virtual Machine via MetalLB | Using MetalLB to expose services on a virtual machine | Josh |
 | Exposing Services on a Virtual Machine via Load Balancer | Using load balancing to expose a service on a virtual machine | Josh |
 | Exposing Services on a Virtual Machine via NodePort | Using a nodeport service to expose a service on a virtual machine | Josh |
 | Virtual Machine Connectivity Comparison | Compare connectivity models for virtual machines and their services | Josh |
-| Preparing Windows Virtual Machine Templates | Walk through creating templates for Windows virtual machines | Josh |
 
 ## Planned Blocks
 | Name | Description | Supports Pattern | Assignee |
 | --- | --- | --- | --- |
 | Configuring SR-IOV on an ACP | How to install/configure SR-IOV for NICs | SR-IOV for Virtual Machines | Josh |
+| Attaching VMs to a Bridged Network | How to add a network interface to a bridge | Virtualization on an ACP | Josh |
+| Importing Installer ISOs | How to import OS install ISOs | Creating Windows Virtual Machine Templates for Virtualization on an ACP | Josh |
+| Autounattend for Windows | How to setup autounattend and post-install scripts for unattended Windows installs | Creating Windows Virtual Machine Templates for Virtualization on an ACP | Josh |
+| Attaching Autounattend Files to Windows Virtual Machines | Creating Windows Virtual Machine Templates for Virtualization on an ACP | Josh |
+| OpenShift Pipelines Install | How to install OpenShift Pipelines functionality with OS management tasks | Creating Windows Virtual Machine Templates for Virtualization on an ACP | Josh |
+| Creating Windows Template Prep Pipelines | How to create pipelines to create windows templates | Creating Windows Virtual Machine Templates for Virtualization on an ACP | Josh |
+| Creating Virtual Machine Templates and Cluster Preferences | Setting up the additional assets for template-based VM deployment of Windows | Creating Windows Virtual Machine Templates for Virtualization on an ACP| Josh |
