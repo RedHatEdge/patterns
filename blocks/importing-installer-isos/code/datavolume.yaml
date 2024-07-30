@@ -1,0 +1,19 @@
+---
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: server2019-installer-iso
+  namespace: openshift-cnv
+  annotations:
+    "cdi.kubevirt.io/storage.bind.immediate.requested": "true"
+spec:
+  pvc:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+    volumeMode: Block
+  source:
+    http:
+      url: "http://10.0.0.10/server2019.iso"
