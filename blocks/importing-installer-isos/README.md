@@ -1,5 +1,5 @@
-# Installing Virtualization on an ACP
-This block outlines how to install virtualization functionality on an ACP, and includes a preview of the installed assets.
+# Importing Installer ISOs onto an ACP
+This block outlines how to import operating system installation ISOs to storage on an ACP.
 
 ## Information
 | Key | Value |
@@ -13,10 +13,9 @@ This block outlines how to install virtualization functionality on an ACP, and i
 
 ## Table of Contents
 * [Part 0 - Assumptions and Network Layout](#part-0---assumptions-and-network-layout)
-* [Part 1 - Defining Configuration](#part-1---defining-configuration)
-* [Part 2 - Installing the Virtualization Operator](#part-2---installing-the-virtualization-operator)
-* [Part 3 - HyperConverged Instance](#part-3---hyperconverged-instance)
-* [Part 4 - Investigating Virtualization Functionality](#part-4---investigating-virtualization-functionality)
+* [Part 1 - Introduction to DataVolumes](#part-1---introduction-to-data-volumes)
+* [Part 2 - Uploading Installer ISOs](#part-2---uploading-installer-isos)
+* [Part 3 - Creating the DataVolume via the CLI](#part-3---creating-the-datavolume-via-the-cli)
 
 ## Part 0 - Assumptions and Network Layout
 This block has a few key assumptions, in an attempt to keep things digestable:
