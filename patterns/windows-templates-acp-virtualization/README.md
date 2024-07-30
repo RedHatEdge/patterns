@@ -71,21 +71,50 @@ At install time, Windows automatically looks for an `autounattend` file, and if 
 This step simply monitors the state of the virtual machine, waiting until the state is "Stopped", meaning the operating system shut down. This happens at the end of the `post-install.ps1` script mounted to the virtual machine in a previous step, and denotes the end of the installation and post-installation configuration steps. The virtual machine must reach this state to safely proceed onward in creating the template.
 ![Wait for Virtual Machine Install](./.images/wait-for-virtual-machine-install.png)
 
+### snapshot-virtual-machine-disk
+The next step takes a snapshot of the virtual disk that the virtual machine installed to. This snapshot is created to be cloned from and deployed repeatedly, allowing for mass deployment of virtual machines from this common source. In addition, the snapshot is created with a tag, allowing for versioning and roll forward/back as needed.
+![Snapshot Virtual Machine Disk](./.images/snapshot-virtual-machine-disk.png)
 
-### WIP BELOW ###
+### create-template-data-source
+With the snapshot created, the data source for the template must be updated to point to it. The virtual machine template leverages a data source to know what data to clone when deploying a new virtual machine, which allows for the template to point to the same data source even if the underlying data changes. As data sources act like pointers, they can be modified to point to new or different data without needing to be deleted and re-created. In addition, because the snapshots are versioned, the data source can be quickly modified to roll back to a previous snapshot, if needed, due to issues.
+![Create Template Data Source](./.images/create-template-data-source.png)
 
-Required blocks:
-- Importing installer ISOs
-- Autounattend for Windows
-- Attaching autounattend files to Windows virtual machines
-- OpenShift Pipelines
-- Creating Windows Template Prep pipelines
+### cleanup-template-virtual-machine, delete-copied-installer-iso, and delete-template-vm-disk
+The last three steps focus on cleaning up the created temporary resources, now that the required data for virtual machine deployment has been captured and made ready for use.
+
+The resources that are deleted are: the temporary installation disk, the copied operating system installation iso, and the temporary virtual machine.
+![Cleanup Tasks](./.images/cleanup-tasks.png)
+
+Note: these steps always execute, meaning that even if a previous step fails, the pipeline will clean up the created resources as to avoid clutter. Pod-level logs are retained.
 
 ## Resulting Context
+The resulting context is the ability to deploy virtual machines from an automatically created template data source at scale, with the process to create the data source being repeatable and easily consumed.
+
+Kicking off the pipeline can be done from the web interface or other mechanisms, as desired. When initiating the process, the version number can be specified as to be used by the tasks throughout the run.
+![Start Pipeline](./.images/start-pipeline.png)
+
+As tasks run and are completed, the platform automatically captures and logs the output for increased visibility.
+![Logged Task Output](./.images/logged-task-output.png)
+
+Once the pipeline is completed, the run information will be displayed, along with information about the tasks within the run.
+![Completed Run](./.images/completed-run.png)
+
+![Completed Tasks](./.images/completed-tasks.png)
 
 ## Examples
+Using this pattern's solution, templates can easily be created for Windows operating systems. Two common operating systems to prepare for and run on the platform are Server 2019 and Windows 10. These use the same pipeline structure and tasks, with slight differences in the `autounattend.xml` and `post-install.ps1` files, relative to the operating system.
+
+To ensure consistent versioning across the independent operating system templates, two pipelines are created, using the same set of tasks, with minor customizations.
+![Two Pipelines](./.images/two-pipelines.png)
+
+Once each has been run, the virtual machine templates will show that a data source is available.
+![Source Available](./.images/source-available.png)
+
+Now, virtual machines can be deployed at scale via the web interface or other methods, such as gitops.
+![Deployed Virtual Machines](./.images/deployed-virtual-machines.png)
 
 ## Rationale
+The rationale for this pattern is to have a completely automated way to create templates for common operating systems to run on the virtualization service of an ACP. This process should be easily consumed, as to remove any barriers to entry for using platform functionality at scale.
 
 ## Footnotes
 
