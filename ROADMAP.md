@@ -17,6 +17,5 @@ To request content be added to this repo, [open an issue](https://github.com/Red
 | --- | --- | --- | --- |
 | Configuring SR-IOV on an ACP | How to install/configure SR-IOV for NICs | SR-IOV for Virtual Machines | Josh |
 | Attaching VMs to a Bridged Network | How to add a network interface to a bridge | Virtualization on an ACP | Josh |
-| Creating Windows Template Prep Pipelines | How to create pipelines to create windows templates | Creating Windows Virtual Machine Templates for Virtualization on an ACP | Josh |
 | Creating Virtual Machine Templates and Cluster Preferences | Setting up the additional assets for template-based VM deployment of Windows | Creating Windows Virtual Machine Templates for Virtualization on an ACP | Josh |
 | Running Pipelines via CLI | How to initiate a pipeline run from the CLI (or other tooling) | Creating Windows Virtual Machine Templates for Virtualization on an ACP | Josh |
