@@ -113,3 +113,12 @@ Once the operator installation is complete, a CertManager resource can be create
 # CertManager
 oc apply -f code/operators/cert-manager/certmanager.yaml
 ```
+
+## Part 5 - Available Examples
+The `code/` directory includes sub-directories for various operator installations.
+
+| Operator Name | Subdirectory |
+| --- | --- |
+| Openshift GitOps | `code/openshift-gitops` |
+| Openshift Pipelines | `code/openshift-pipelines` |
+| Cert Manager | `code/cert-manager `|
