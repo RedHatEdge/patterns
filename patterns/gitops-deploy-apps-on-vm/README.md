@@ -72,11 +72,11 @@ Once this phase completes, the application should be installed and ready for con
 ## Resulting Context
 The resulting context is the ability to perform end-to-end application deployments of applications that require virtual machines, all from a single service hosted on the platform. The full flow is handled by one service, even though multiple services contribute in reaching the end result of a deployed application.
 
-### WIP BELOW ###
-
 ## Examples
+PLACEHOLDER FOR NOW
 
 ## Rationale
+The Rationale for this pattern is to drive greater consumption and easier on-ramping of consumption of services on the platform, while keeping the interface to consume them more simplistic. Ideally, the entire process from infrastructure deployment to application deployment is automated, and driven through a single interface for easy troubleshooting and simplicity.
 
 ## Footnotes
 
