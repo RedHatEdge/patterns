@@ -1,0 +1,97 @@
+---
+vlans:
+  - name: out-of-band
+    vlan_id: 2000
+    enabled: true
+    state: active
+  - name: Storage
+    vlan_id: 2001
+    enabled: true
+    state: active
+  - name: cluster
+    vlan_id: 2002
+    enabled: true
+    state: active
+  - name: virtual-machines-1
+    vlan_id: 2003
+    enabled: true
+    state: active
+  - name: virtual-machines-2
+    vlan_id: 2004
+    enabled: true
+    state: active
+  - name: virtual-machines-3
+    vlan_id: 2005
+    enabled: true
+    state: active
+interfaces:
+  - name: Ethernet1/48
+    description: uplink-to-unifi
+    speed: 1000
+    enabled: true
+  - name: Ethernet1/1
+    description: node0-cluster
+    enabled: true
+  - name: Ethernet1/2
+    description: node0-storage
+    enabled: true
+  - name: Ethernet1/3
+    description: node0-virtualization
+    enabled: true
+  - name: Ethernet1/5
+    description: node1-cluster
+    enabled: true
+  - name: Ethernet1/6
+    description: node1-storage
+    enabled: true
+  - name: Ethernet1/7
+    description: node1-virtualization
+    enabled: true
+  - name: Ethernet1/9
+    description: node2-cluster
+    enabled: true
+  - name: Ethernet1/10
+    description: node2-storage
+    enabled: true
+  - name: Ethernet1/11
+    description: node2-virtualization
+    enabled: true
+l2_interfaces:
+  # Uplink
+  - name: Ethernet1/48
+    trunk:
+      native_vlan: 2000
+      allowed_vlans: 2000,2001,2002,2003,2004,2005
+  # Cluster links
+  - name: Ethernet1/1
+    access:
+      vlan: 2002
+  - name: Ethernet1/5
+    access:
+      vlan: 2002
+  - name: Ethernet1/9
+    access:
+      vlan: 2002
+  # Storage links
+  - name: Ethernet1/2
+    access:
+      vlan: 2001
+  - name: Ethernet1/6
+    access:
+      vlan: 2001
+  - name: Ethernet1/10
+    access:
+      vlan: 2001
+  # Virtual machine links
+  - name: Ethernet1/3
+    trunk:
+      native_vlan: 2003
+      allowed_vlans: 2003,2004,2005
+  - name: Ethernet1/7
+    trunk:
+      native_vlan: 2003
+      allowed_vlans: 2003,2004,2005
+  - name: Ethernet1/11
+    trunk:
+      native_vlan: 2003
+      allowed_vlans: 2003,2004,2005
