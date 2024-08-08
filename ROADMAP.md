@@ -11,6 +11,8 @@ To request content be added to this repo, [open an issue](https://github.com/Red
 | Exposing Services on a Virtual Machine via Load Balancer | Using load balancing to expose a service on a virtual machine | Josh |
 | Exposing Services on a Virtual Machine via NodePort | Using a nodeport service to expose a service on a virtual machine | Josh |
 | Virtual Machine Connectivity Comparison | Compare connectivity models for virtual machines and their services | Josh |
+| Sizing Guide | Sizing an ACP Based on Amount of IO | Josh |
+
 
 ## Planned Blocks
 | Name | Description | Supports Pattern | Assignee |
