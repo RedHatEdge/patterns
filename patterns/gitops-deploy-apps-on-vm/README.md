@@ -135,6 +135,9 @@ Once complete, the appropriate configurations should now be applied and ready:
 
 ![Ptr Records](./.images/ptr-records.png)
 
+In addition, the application tile now shows synced:
+![Application Synced](./.images/application-synced.png)
+
 ## Rationale
 The Rationale for this pattern is to drive greater consumption and easier on-ramping of consumption of services on the platform, while keeping the interface to consume them more simplistic. Ideally, the entire process from infrastructure deployment to application deployment is automated, and driven through a single interface for easy troubleshooting and simplicity.
 
