@@ -1,4 +1,4 @@
-# Using GitOps to Setup Infrastructure and Install Applications on Virtual Machines
+# Automated Creation of Virtual Machines and Application Installation
 This pattern gives a technical look at how the gitops service of an ACP can be used to both provision required infrastructure and configure the automation service to install applications.
 
 ## Table of Contents
@@ -73,7 +73,67 @@ Once this phase completes, the application should be installed and ready for con
 The resulting context is the ability to perform end-to-end application deployments of applications that require virtual machines, all from a single service hosted on the platform. The full flow is handled by one service, even though multiple services contribute in reaching the end result of a deployed application.
 
 ## Examples
-PLACEHOLDER FOR NOW
+An example of this pattern would be using the solution to install and configure an instance of Active Directory. While AD is usually treated as an infrastructure service, the setup and management procedure mirrors that of other applications, and thus the same tools, technologies, and processes can be leveraged.
+
+### Phase 1
+Aligning to the phases above, phase 1 sets up the base constructs that will contain the resources required to run AD. In addition, the base configuration is loaded into the application definition, which are leveraged throughout deployment to achive desired state.
+
+The application definition is loaded and available:
+![Application Tile](./.images/application-tile.png)
+
+And the required configuration of the automation service is loaded as part of the application definition:
+![Automation Definition](./.images/automation-definition.png)
+
+Before the start of the sync of the application to the target desination, all resources show as OutOfSync, however this changes as synchronization is started:
+![Application Pre-Sync](./.images/application-pre-sync.png)
+
+As the sync starts, resources begin to be deployed:
+![Sync Started](./.images/sync-started.png)
+
+And k8s-native resources are created. In this example, services have been created:
+![k8s Services](./.images/k8s-services.png)
+
+### Phase 2:
+In phase 2, the supporting compute infrastructure is brought up, and the IT automation service is configured with the necessary automation to complete the application installation.
+
+On the ACP, the virtual machines are deployed from templates and started:
+![Virtual Machines](./.images/virtual-machines.png)
+
+And the virtual machines are started:
+![Virtual Machine Start](./.images/virtual-machine-starting.png)
+
+In addition, a k8s-native resource, called a job, configures the IT automation service with the required configurations:
+![K8s Jobs](./.images/k8s-jobs.png)
+
+The configuration in-progress:
+![Applying Configuration](./.images/applying-configuration.png)
+
+Resources now available in the IT automation service, such as inventories and job templates:
+![Controller Inventory](./.images/controller-inventory.png)
+
+![Controller Job Templates](./.images/controller-templates.png)
+
+### Phase 3
+In phase 3, continuation of the deployment and configuration is handed off to the IT automation service, which then runs the configuration automation.
+
+Another job is used to used to trigger the automation launch:
+![Run Automation Job](./.images/run-automation-job.png)
+
+This job calls out to the IT automation service and waits for the automation to complete:
+![Calling IT Automation](./.images/calling-it-automation-service.png)
+
+### Phase 4
+Finally, phase 4 is where the IT automation service takes over, and continues the application deployment and configuration until completition.
+
+The automation workflow, created earlier, has been invoked and is running:
+![Running Workflow](./.images/running-workflow.png)
+
+Once complete, the appropriate configurations should now be applied and ready:
+![Domain Controllers](./.images/domain-controllers.png)
+
+![Areas](./.images/areas.png)
+
+![Ptr Records](./.images/ptr-records.png)
 
 ## Rationale
 The Rationale for this pattern is to drive greater consumption and easier on-ramping of consumption of services on the platform, while keeping the interface to consume them more simplistic. Ideally, the entire process from infrastructure deployment to application deployment is automated, and driven through a single interface for easy troubleshooting and simplicity.
