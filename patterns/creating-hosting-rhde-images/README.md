@@ -1,5 +1,5 @@
-# Creating and Hosting Red Hat Device Images Images on an ACP
-This pattern gives a technical look at how to create and host RHDE images on an ACP, using the ACP's built in functionality to create, curate, and host the images. These can then be deployed to edge devices that can communicate with the ACP, or used to create virtual machines on the ACP itself.
+# Self-Healing Distributed Control Nodes
+This pattern outlines how to leverage distributed control nodes running Red Hat Device Edge to automatically reloate workloads in the event of a device failure. This behavior is described as self-healing, as the DCNs form an autonomus cluster capable of scheduling and coordination when needed.
 
 ## Table of Contents
 * [Abstract](#abstract)
@@ -18,38 +18,32 @@ This pattern gives a technical look at how to create and host RHDE images on an 
 | **Scope** | Virtualization |
 | **Tooling** | <ul><li>Red Hat OpenShift GitOps</li></ul> |
 | **Pre-requisite Blocks** | <ul><li>[Example ACP Networking](../../blocks/example-network-config/README.md)</li><li>[ACP Network Configuration](../../blocks/acp-network-configuration/)</li><li>[Creating Bridged Networks on an ACP](../../blocks/acp-bridge-networks/README.md)</li><li>[Creating Virtual Machines via Code](../../blocks/virtual-machines-as-code/README.md)</li><li>[Importing Installer ISOs](../../blocks/importing-installer-isos/README.md)</li><li>[Enabling Tekton Virtual Machine Tasks](../../blocks/enabling-tekton-vm-tasks/README.md)</li><li>[Creating Virtual Machine Tempaltes and Cluster Preferences](../../blocks/ocp-virt-templates-and-preferences/README.md)</li></ul> |
-| **Pre-requisite Patterns** | <ul><li>[ACP Standard Architecture](../acp-standardized-architecture-ha/README.md)</li><li>[ACP Standard Services](../rh-acp-standard-services/README.md)</li></ul> |
+| **Pre-requisite Patterns** | <ul><li>[ACP Standard Architecture](../acp-standardized-architecture-ha/README.md)</li><li>[ACP Standard Services](../rh-acp-standard-services/README.md)</li><li>[Creating and Hosting RHDE Images](../creating-hosting-rhde-images/README.md)</ul> |
 | **Example Application** | N/A |
 
 ## Problem
-**Problem Statement:** Red Hat Device Edge, an operating system typically used for purpose built, lower compute devices, requires device images to be composed before being deployed. The composure step requires some compute capacity and an instance of Red Hat Enterprise Linux. Without the availability of a compute platform, a dedicated system must be built and maintained, increasing management burden and overhead costs.
+**Problem Statement:** When DCNs are tasked with running mission critical workloads, their failure can lead to service interruption, loss of functionality, and ultimately, loss of revenue. Ideally, DCNs should be able to automatically relocate and recover workloads in the event of a node failure. This functionality should exist for any workload on a DCN, assuming it is relocatable, and should happen without manual intervention.
 
 ## Context
-This pattern can be applied to ACPs where virtualization, pipeline functionality, and the IT automation service has been enabled. Virtualization and IT automation services are offered by both highly available and non-highly available ACPs, and enabled as part of the standard set of ACP services. Pipeline functionality is easily added to ACPs if desired.
+This pattern can be applied to DCNs that are running RHDE and have the clustering components installed in their image, and have network communication established between the desired DCNs. In addition, the workloads to be relocated or recovered have been deployed to each DCN and validated to be working.
 
 A few key assumptions are made:
-- The intended context of the platform aligns to the [Standard HA ACP Architecture](../acp-standardized-architecture-ha/README.md)
-- The standard set of [ACP Services](../rh-acp-standard-services/README.md) are available for consumption.
-- Physical connections, such as power and networking, have been made to the target hardware
-- The upstream network configuration is completed and verified
-- The virtualization service has been installed is ready to be leveraged
-- The IT automation service has been installed and is ready to be leveraged
-- The pipeline functionality has been enabled and is ready to be leveraged
+- The workload(s) to be reloated are not locked to a specific DCN within the cluster, or dependent on a physical connection provided by a single DCN
+- The DCNs have the clustering components installed as part of their base image
+- The DCNs can communicate with each other over a network, or over multiple networks
 
 ## Forces
-- **Reapeatability:** This pattern' solution should be repeatable over time, allowing for tweaks to desired images, or simply to repeat with newer package sets for effective lifecycle management.
-- **Customizability:** The pattern's process should allow for images to be generated with full customizations, such as different package sets or for different use cases, such as headless IPCS, or HMIs.
-- **Ease of Consumption:** This pattern's solution should be easily leveraged, allowing for guick and efficient image generation and hosting.
-- **Self-contained:** An ACP aligned to the assumptions above is able to provide all of the required functionalty and provide the solution outlined below.
+- **Availability:** This pattern's solution is primarily focused on workload availability, ensuring that downtime is minimized as much as possible.
+- **Customizability:** The pattern's solution works for multiple types of workloads, such as bare-metal and containerized, and more. In addition, specific behaviors, such as co-location of workloads, are configurable.
+- **Flexibility:** The created cluster should be able to be grown or shrunk as needed, without interrupting existing workloads or existing cluster members.
+- **Autonomy:** Once configured and started, the cluster should perform all recovery and relocatable actions without needing manual intervention.
 
 ## Solution
-The solution for this pattern is to create and consume a pipeline hosted on an ACP that drives the image compose process, gathers the resulting image, hosts it on the ACP for devices to provision from, and optionally, creates virtual machine templates that can be used for virtualization on the platform itself.
+The solution for this pattern is to leverage pacemaker clustering across DCNs running RHDE, where the workloads to monitor and relocate and configured within the cluster, and any additional recovery or co-location constraints have also been configured.
 
 ![Pipeline Overview](./.images/pipeline-overview.png)
 
-The pipeline takes an image definition as input, then leverages services provided on the ACP to drive the creation and storage of the composed image. Once complete, the underlying infrastructure created is destroyed, as it is no longer needed.
-
-As this pipeline is the cornerstone of the solution of this pattern, it will be walked through in detail below.
+Once the cluster is es
 
 ### Pipeline Overview
 
