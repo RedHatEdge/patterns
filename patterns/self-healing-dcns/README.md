@@ -1,5 +1,5 @@
-# Creating and Hosting Red Hat Device Images Images on an ACP
-This pattern gives a technical look at how to create and host RHDE images on an ACP, using the ACP's built in functionality to create, curate, and host the images. These can then be deployed to edge devices that can communicate with the ACP, or used to create virtual machines on the ACP itself.
+# Creating a Self-Healing DCN Cluster
+This pattern gives a technical look at how to create a clsuter across distributed control nodes, where workloads will be automatically recovered in the event of an node failure.
 
 ## Table of Contents
 * [Abstract](#abstract)
@@ -14,57 +14,87 @@ This pattern gives a technical look at how to create and host RHDE images on an 
 ## Abstract
 | Key | Value |
 | --- | --- |
-| **Platform(s)** | Red Hat OpenShift |
-| **Scope** | Virtualization |
-| **Tooling** | <ul><li>Red Hat OpenShift GitOps</li></ul> |
-| **Pre-requisite Blocks** | <ul><li>[Example ACP Networking](../../blocks/example-network-config/README.md)</li><li>[ACP Network Configuration](../../blocks/acp-network-configuration/)</li><li>[Creating Bridged Networks on an ACP](../../blocks/acp-bridge-networks/README.md)</li><li>[Creating Virtual Machines via Code](../../blocks/virtual-machines-as-code/README.md)</li><li>[Importing Installer ISOs](../../blocks/importing-installer-isos/README.md)</li><li>[Enabling Tekton Virtual Machine Tasks](../../blocks/enabling-tekton-vm-tasks/README.md)</li><li>[Creating Virtual Machine Tempaltes and Cluster Preferences](../../blocks/ocp-virt-templates-and-preferences/README.md)</li></ul> |
-| **Pre-requisite Patterns** | <ul><li>[ACP Standard Architecture](../acp-standardized-architecture-ha/README.md)</li><li>[ACP Standard Services](../rh-acp-standard-services/README.md)</li></ul> |
+| **Platform(s)** | Red Hat Device Edge |
+| **Scope** | Virtualization, Containerization |
+| **Tooling** | <ul><li>Red Hat Ansible Automation Platform</li></ul> |
+| **Pre-requisite Blocks** | N/A |
+| **Pre-requisite Patterns** | <ul><li>[Creating RHDE Images on an ACP](../create-rhde-images-on-acp/README.md)</li>></ul> |
 | **Example Application** | N/A |
 
 ## Problem
-**Problem Statement:** Red Hat Device Edge, an operating system typically used for purpose built, lower compute devices, requires device images to be composed before being deployed. The composure step requires some compute capacity and an instance of Red Hat Enterprise Linux. Without the availability of a compute platform, a dedicated system must be built and maintained, increasing management burden and overhead costs.
+**Problem Statement:** Distributed control nodes are often single points of failure, meaning that in the event of a hardware or network failure, the workloads on the DCN are lost. These workloads should be automatically recovered to another eligible DCN in the event of a failure.
 
 ## Context
-This pattern can be applied to ACPs where virtualization, pipeline functionality, and the IT automation service has been enabled. Virtualization and IT automation services are offered by both highly available and non-highly available ACPs, and enabled as part of the standard set of ACP services. Pipeline functionality is easily added to ACPs if desired.
+This pattern can be applied to DCNs for many types of workloads, where multiple DCNs are eligible to run the workloads. These DCNs should be in close "proximity" to one another, as to ease the transition of workload takeover in the event of a failure.
 
 A few key assumptions are made:
-- The intended context of the platform aligns to the [Standard HA ACP Architecture](../acp-standardized-architecture-ha/README.md)
-- The standard set of [ACP Services](../rh-acp-standard-services/README.md) are available for consumption.
-- Physical connections, such as power and networking, have been made to the target hardware
-- The upstream network configuration is completed and verified
-- The virtualization service has been installed is ready to be leveraged
-- The IT automation service has been installed and is ready to be leveraged
-- The pipeline functionality has been enabled and is ready to be leveraged
+- All DCNs that are to be clustered have the appropriate packages installed in the image.
+- All DCNs have similiar connectivity.
+- All DCNs have similar resources to properly handle workloads.
+- Workloads can be relocated and restarted without external factors causing recovery issues.
 
 ## Forces
-- **Reapeatability:** This pattern' solution should be repeatable over time, allowing for tweaks to desired images, or simply to repeat with newer package sets for effective lifecycle management.
-- **Customizability:** The pattern's process should allow for images to be generated with full customizations, such as different package sets or for different use cases, such as headless IPCS, or HMIs.
-- **Ease of Consumption:** This pattern's solution should be easily leveraged, allowing for guick and efficient image generation and hosting.
-- **Self-contained:** An ACP aligned to the assumptions above is able to provide all of the required functionalty and provide the solution outlined below.
+- **Customizability:** The pattern's solution should work for many, if not all, types of workloads that are found on DCNs.
+- **Ease of Consumption:** This pattern's solution should allow for easy creation and consumption of the created clusters.
+- **Self-contained:** A DCN cluster should be completely self-sufficient, not requiring any external control planes or other functionality outside of the clustered nodes.
+- **Low Overhead:** The DCN cluster should work on limited compute, small form-factor devices that are not able to handle full ACP functionality due to resource constraints.
 
 ## Solution
-The solution for this pattern is to create and consume a pipeline hosted on an ACP that drives the image compose process, gathers the resulting image, hosts it on the ACP for devices to provision from, and optionally, creates virtual machine templates that can be used for virtualization on the platform itself.
+The solution for this pattern is to create a self-healing cluster on the desired DCNs, then configure the cluster to monitor workloads, and recover them if a DCN fails, or if network issues occur.
 
-![Pipeline Overview](./.images/pipeline-overview.png)
+For example, to run software control in a control cabinet, a DCN can be configured with two connections: one to the site network, and one to a process network.
 
-The pipeline takes an image definition as input, then leverages services provided on the ACP to drive the creation and storage of the composed image. Once complete, the underlying infrastructure created is destroyed, as it is no longer needed.
+![Non-HA Soft Control Cabinet](./.images/non-redundant-soft-control.png)
 
-As this pipeline is the cornerstone of the solution of this pattern, it will be walked through in detail below.
+Input data from the sensors is related up to remote IO, communicated over the process network to the IPC, the soft control computes instructions for the drive, then sends those instructions back down the process network.
 
-### Pipeline Overview
+To make this solution more resiliant, more IPCs could be added, all with the same compute resources and connectivity:
+
+![Redundant Soft Control Cabinet](./.images/redundant-soft-control.png)
+
+This configuration would allow for faster recovery of lost workloads, such as soft control. However, an additional setup can be taken to round out this solution: adding a self-healing cluster on the IPCs, and having it watch the soft control workload:
+
+![Self Healing Soft Control Cabinet](./.images/self-healing-soft-control.png)
+
+With the creation of the self-healing cluster, the DCNs all become eligible to run the soft control workload:
+
+![Cluster View](./.images/cluster-view.png)
+
+Then, in the event of a failure of a DCN, the soft control workload will automatically be recovered to another DCN:
+
+![Failure Recovery](./.images/failure-recovery.png)
+
+This behavior is fully configurable: workloads can be recovered but not started, or automatically started, depending on the configuration of the workload. In addition, multiple workloads can be monitored by the cluster, all with independent actions in case of failure.
 
 
 ## Resulting Context
-The resulting context is the ability to specify image requirements or definitions, and have the platform automically handle the process to create and host those images. Image composition and hosting should happen without manual intervention, and be easily repeated and customized, removing any management burden associated with the process.
+The resulting context is the ability to have workloads automatically recovered by other nodes within the self-healing cluster, providing self-healing and redundancy for the workloads. An outage of a single DCN no longer means long-running downtime for the workloads it was responsible for, instead, the impact is limited, and the hardware can be recovered or replaced independently of normal operations.
+
+This methodology can be extended to multiple workloads on the same set of DCNs, and can be used with different types of workloads, such as virtualized, containerized, bare-metal, or a combination of all three.
+
+In addition, other resources, such as floating IP addresses, can be created and managed by the cluster, allowing for consistent addressing and communications after a failure and recovery.
 
 ## Examples
+Two key examples will be considered for this pattern: a self-healing cluster within a single control cabinet, and a cluster that spans across three control cabinets.
 
-### Creating a kernel-rt/Deterministic Image
-### Creating an HMI Image
-### Creating an Updated Image
+### Self-Healing Within a Cabinet
+A self-healing cluster could be set up on DCNs located within a cabinet, allowing for the functions of those DCNs to move freely between them:
+
+![Self-Healing Soft Control Cabinet](./.images/self-healing-soft-control.png)
+
+In this example, the failure of a single DCN will not remove the ability for the cabinet to function, and depending on the configuration of the workloads, may automatically recover from a DCN failure.
+
+### Self-Healing Between Cabinets
+Self healing clusters can also be stretched between multiple cabinets, potentially allowing for more resiliency to failures at multiple points.
+
+![Self-Healing Between Cabinets](./.images/self-healing-between-cabinets.png)
+
+In this example, the networks and self-healing cluster are spanned across multiple cabinets. In the event of a failure of components in cabinet 1, cabinet 2 could take over and continue operations.
+
+Network topologies play a large part in enabling this functionality, however if connectivity can be made redundant, then further resilency is achieved.
 
 ## Rationale
-The rationale for this pattern is to have a completely automated way to create and host RHDE images, such that device provisioning and management is far more easily adopted over having to manually maintain infrastructure to serve the same purpose. Simple image defintiions should be fed into this automated process, with the expected output being consumable images.
+The rationale for this pattern is to have self-healing capabilities on small form-factor hardware, allowing for availability of services in the event of hardware failure. It helps prevent a single device from causing long running impacts to availability, without needing large hardware investments. The automatic self-healing can also help lower operational costs and incease availability over time, as much of the recovery actions are performed without intervention.
 
 ## Footnotes
 
@@ -72,4 +102,6 @@ The rationale for this pattern is to have a completely automated way to create a
 1.0.0
 
 ### Authors
+- Tim Mirth (tmirth@redhat.com)
+- Dave Rapini (drapini@redhat.com)
 - Josh Swanson (jswanson@redhat.com)
