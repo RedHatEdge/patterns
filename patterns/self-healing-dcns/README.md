@@ -1,5 +1,5 @@
 # Creating a Self-Healing DCN Cluster
-This pattern gives a technical look at how to create a clsuter across distributed control nodes, where workloads will be automatically recovered in the event of an node failure.
+This pattern gives a technical look at how to create a cluster across distributed control nodes, where workloads will be automatically recovered in the event of a node failure.
 
 ## Table of Contents
 * [Abstract](#abstract)
