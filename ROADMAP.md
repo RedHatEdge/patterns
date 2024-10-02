@@ -16,7 +16,6 @@ To request content be added to this repo, [open an issue](https://github.com/Red
 | Bootstrap Setup | Setup bootstrap to serve OCP content for install and standard services install | Josh |
 | Self-Healing DCNs | How workloads can fail and be recovered between DCN nodes | Josh |
 | Creating and Hosting RHDE Images on an ACP | How a Red Hat Device Image can be created and hosted using an ACP's core services | Josh |
-| Non-HA ACP | ACP in a non-highly available configuration | Josh |
 
 ## Planned Blocks
 | Name | Description | Supports Pattern | Assignee |
