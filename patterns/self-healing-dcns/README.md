@@ -94,7 +94,7 @@ In this example, the networks and self-healing cluster are spanned across multip
 Network topologies play a large part in enabling this functionality, however if connectivity can be made redundant, then further resilency is achieved.
 
 ## Rationale
-The rationale for this pattern is to have self-healing capabilities on small form-factor hardware, allowing for availability of services in the event of hardware failure. It helps prevent a single device from causing long running impacts to availability, without needing large hardware investments. The automatic self-healing can also help lower operational costs and incease availability over time, as much of the recovery actions are performed without intervention.
+The rationale for this pattern is to have self-healing capabilities on small form-factor hardware, allowing for availability of services in the event of hardware failure. It helps prevent a single device from causing long running impacts to availability, without needing large hardware investments and in some cases allowing the ability to add DCNs after initial deployment. The automatic self-healing can also help lower operational costs and incease availability over time, as much of the recovery actions are performed without intervention.
 
 ## Footnotes
 
