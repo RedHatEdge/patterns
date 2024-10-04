@@ -28,7 +28,11 @@ hosts:
         config:
           server:
 {% if node.dns_servers is defined %}
-{% for dns_server in node.dns_servers | default(all_node_settings.dns_servers) %}
+{% for dns_server in node.dns_servers %}
+            - {{ dns_server }}
+{% endfor %}
+{% else %}
+{% for dns_server in all_node_settings.dns_servers %}
             - {{ dns_server }}
 {% endfor %}
 {% endif %}
