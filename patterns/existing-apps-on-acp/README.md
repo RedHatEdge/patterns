@@ -54,6 +54,30 @@ The following services will be highlighted:
 ## Solution
 The solution is to both deploy an ACP according to the published standard architectures and consume the offered services to achieve the desired result.
 
+To highlight the function of each service in this solution, an existing software stack will be used as an example: an MES stack, which uses 3 Windows-based systems: a database, a core execution system, and a web frontend system.
+![MES Application](./.images/mes-application.png)
+
+Today, this application lives on a virtualization platform that is also hosting other virtualized application:
+![Virtualization Platform with Applications](./.images/virt-platform-with-apps.png)
+
+If this virtualization platform is hyperconverged, then the underlying hardware is often abstracted into consumable pools and presented for consumption by hosted virtualized workloads by platform services:
+![Hyperconverged Platform](./.images/hyperconverged-platform.png)
+
+Often, connectivity for the virtual machines follows a "directly connected" model, where physical connections of the underlying hardware, and virtual connections from the virtual machines to the platform are combined to create logical connections between the virtual machines and the networking stack. This allows the virtual machines and their applications to appear directly connected to the network, even if multiple virtual machines on the platform are sharing a single physical link:
+![Direct Connected Virtual Machines](./.images/direct-connected-virtual-machines.png)
+
+An ACP can provide the same functionality, and provide more services that improve operational efficiency, streamline lifecycle management, and run applications that are containerized as opposed to just virtualized applications.
+
+### Declarative State Management Service
+
+### Virtualization Service
+
+### Network Configuration Service
+
+### Storage Service
+
+### IT Automation Service
+
 ## Resulting Context
 
 ## Examples
@@ -66,5 +90,4 @@ The solution is to both deploy an ACP according to the published standard archit
 1.0.0
 
 ### Authors
-- Hendrik van Niekerk (hvanniek@redhat.com)
 - Josh Swanson (jswanson@redhat.com)
