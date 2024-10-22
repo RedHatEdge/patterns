@@ -143,10 +143,29 @@ For the example use case of an MES installed on virtual machines, each virtual m
 
 
 ## Resulting Context
+The resulting context from this pattern is to run existing virtualized workloads on an ACP, providing a like for like experience from the workload's perspective. This provides a viable alternative to existing platforms, and allows for migration of existing applications onto a more modern, capable platform.
+
+In addition, this pattern's solution leverages the additional functionality of an ACP over existing platforms, allowing for constant desired state reconciliation, and for completely automated installion and ongoing management workflows. These cababilities are provided by an ACP's core set of services, meaning they're pre-configured and ready for consumption.
+
+By consuming these services, a more complete and robust operational state is achieved, simplifying lifecycle management, application updates/upgrades, leading to lower management overhead and soft costs.
 
 ## Examples
 
 ## Rationale
+The rationale behind this pattern is two-fold:
+1. Provide full functionality for existing workloads to run on a modern platform
+2. Lower the overall costs and challenges associated with running compute at edge locations
+
+### 1. Provide full functionality for existing workloads to run on a modern platform
+This expectation can be considered a baseline requirement for platforms running at edge locations. It is expected, to support ongoing business operations, that platforms be able to accommodate existing workloads, without requiring changes to the deployed application.
+
+Since applications deployed at the edge are typically mission-critical, their availability and uptime is paramount to business success.
+
+### 2. Lower the overall costs and challenges associated with running compute at edge locations
+Two threads emerge from this rationale point: leveraging services and tooling to improve operations, and providing next-generation functionality alongside support for current workloads.
+
+1. By leveraging the core services of an ACP, manual intervention in steps such as application installation and upgrades can be reduced or eliminated, increasing consistency and speed. In addition, constant enforcement of the desired state prevents drift and outages, without requiring manual intervention, further reducing management overhead and costs. Consuming these services, provided by an ACP, enable better outcomes for the business.
+2. As next generation workloads are introduced by vendors, it will be necessary to have next generation platform functionality to support them. An ACP already provides support for many next generation workloads today, and gains functionality through in-place upgrades, which the platform itself manages. This strategy reduces risk associated with adopting new applications, and limits risks associated with platform lifecycle maintenance tasks.
 
 ## Footnotes
 
