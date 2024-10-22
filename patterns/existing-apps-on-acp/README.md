@@ -69,10 +69,57 @@ Often, connectivity for the virtual machines follows a "directly connected" mode
 An ACP can provide the same functionality, and provide more services that improve operational efficiency, streamline lifecycle management, and run applications that are containerized as opposed to just virtualized applications.
 
 ### Declarative State Management Service
+The declarative state management service takes definitions for resources provided by the platform, and enforces those definitions against the platform.
+
+This service can configure and manage any resource on the platform, however for this use case, it's used to drive the deployment and management of the required infrastructure components, mainly, virtual machines.
+
+In this example, the declarative state mangement service consumes the resources provided by the virtualization service to deploy virtual machines. In addition, the service tracks the created resources, and reconciles against the intended state if resources are changed. Should a change be detected, the virtualization service is once again consumed to reconcile the resource.
+![Declarative State Management Service](./.images/declarative-state-management-service.png)
+
+**Pros:**
+- Constant enforcement of resource definitions, preventing drift
+- Automatic tracking of resources and supporting elements created by the platform
+- Visualizes the state of the deployed resources
+- Changes are made through code, allowing for auditing and safety checks
+
+**Cons:**
+- Requires building/obtaining definitions for resources, such as virtual machines
+- Definitions must be stored in a repository the service can access
 
 ### Virtualization Service
+The virtualization service provides resources and functionality for running virtual machines. Most commonly, this service handles the configuration and lifecycle of virtual machines, and also provides full functionality for templating, snapshotting, cloning, and other common functions.
+
+The resources provided by this service can be consumed directly, however, it's recommended to leverage the declarative state management service, which then consumes the virtualization service, for an enterprise-grade deployment and lifecycle management workflow.
+
+For this example of running an virtualized MES, the virtualization service is responsible for deploying the virtual machines from a template.
+![Virtualization Service](./.images/virtualization-service.png)
+
+**Pros:**
+- Provides a consistent interface to manage virtual machines at scale
+- Automatically manages supporting resources necessary for virtual machines
+- Provides for fine-grained control around each virtual machine
+- Provides full templating and deployment from template functionality
+
+**Cons:**
+- Virtual machine templates must be set up for some operating systems before being able to run deployments 
+- Provided templates may need customization to meet enterprise requirements
 
 ### Network Configuration Service
+The network configuration service manages the configuration of physical and logical network connections of the underlying hardware supporting the platform. It automatically applies the desired configuration to interfaces, and if necessary, rolls back incorrect configurations if they fail to apply.
+
+This service is leveraged to provide connectivity to virtual machines that mirrors the connectivity of existing virtualization platforms, by both performing the necessary configuration of the phyiscal interfaces, but also creating the logical connections within the ACP the virtual machines will be attached to.
+
+By default, an ACP provides an software-defined network that resources leverage to communicate. In this use case, that SDN is bypassed, which sacrifices some of the native SDN functionality in favor of a more traditional connectivity model for the virtual machines.
+![Network Configuration Service](./.images/network-configuration-service.png)
+
+**Pros:**
+- Provides a like-for-like connectivity experience for virtualized workloads
+- Allows for industrial procotols to be handled by applications within virtual machines
+- Configuration is automatically applied and enforced
+
+**Cons:**
+- Requires some understanding of networking concepts
+- Offloads some network functionality, such as isolation, to the networking stack from the platform's SDN
 
 ### Storage Service
 
