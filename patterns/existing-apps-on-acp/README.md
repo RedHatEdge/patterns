@@ -43,7 +43,7 @@ The following services will be highlighted:
 | Network Configuration | Configures and manages network connectivity of the platform | Replicates existing network connectivity patterns on existing platforms to an ACP |
 | Storage | Provides consumable storage in multiple formats and topologies | Provides storage for running existing workloads, supporting their persistent data needs |
 | IT Automation | Provides a task-orentated idempotent automation framework for managing application lifecycles | Automates and orchestrates existing workload lifecycle operations, such as installation and upgrading |
-| Declarative State Configuration | Provides a simplified interface to describe infrastructure requirements with constant enforcement | Allows for simple description of the required infrastructure, which is then deployed and enforced on the ACP |
+| Declarative State Configuration Service | Provides a simplified interface to describe infrastructure requirements with constant enforcement | Allows for simple description of the required infrastructure, which is then deployed and enforced on the ACP |
 
 ## Forces
 1. **Mirroring Existing Functionality:** This pattern provides identical functionality with existing platforms for virtual workloads, allowing for identical functionality when running on an ACP.
@@ -139,8 +139,14 @@ For the example use case of an MES installed on virtual machines, each virtual m
 - Dynamic storage for non-highly available architectures require configuration for data redundancy
 
 ### IT Automation Service
+The IT automation service provides functionality for managing and configuring systems both hosted on an ACP and outside of the platform, using an easy to understand programming format. The service provides functionality for consuming automation from code repos, various connection methods, and abstraction of target-specific commands or interfaces.
 
+The objective of the service for this use case is to automate away lifecycle management tasks related to running virtual machines, such as operating system updates and configuration, as well as application lifecycle management tasks, such as installation, tuning, and upgrades.
 
+An ACP's other core services handle the management of the infrastructure that supports the example MES workload, but don't directly manage the operating system within the virtual machine, or the application itself. This is where the IT automation service is leveraged: to round out functionality by complimenting the other ACP services, and provide a robust set of capabilities for full end-to-end management of workloads running on the platform.
+
+During the initial install of the MES onto virtual machines provided by the platform, the IT automation service handles gathering up the required software packages, installing those software packages, and configuring the application components to communicate with each other.
+![IT Automation Service](./.images/it-automation-service.png)
 
 ## Resulting Context
 The resulting context from this pattern is to run existing virtualized workloads on an ACP, providing a like for like experience from the workload's perspective. This provides a viable alternative to existing platforms, and allows for migration of existing applications onto a more modern, capable platform.
@@ -150,6 +156,20 @@ In addition, this pattern's solution leverages the additional functionality of a
 By consuming these services, a more complete and robust operational state is achieved, simplifying lifecycle management, application updates/upgrades, leading to lower management overhead and soft costs.
 
 ## Examples
+The solution section of this pattern covers running an existing MES deployment on top of an ACP, along with desciptions and utilization of the involved core services provided by the platform.
+
+A second use can also be considered: running a fully containerized workload on the same platform as an existing workload that's deployed to virtual machines, such as the MES discussed here.
+![Colocated Workloads](./.images/colocated-workloads.png)
+
+In this example, the deployment of the MES is kept on virtual machines, and deployed to an ACP. In addition, another application, a distributed control system, has been completely modernized, leveraging a microservice architecture, and is also deployed to the same ACP.
+
+Despite different application architectures, and leveraging different functionality and services, the workloads are consolidated onto a single platform, highlighting an ACP's capabilities to run both existing and new workloads without requiring more overhead.
+
+In this example, the MES is consuming data, via the API endpoints of the DCS, allowing data to be gathered, transformed, and displayed in the MES. This enables higher level business functions to have greater visibility into the processes running at the edge site.
+
+In addition, the control plane functions and core services of the ACP are also run on the platform, alongside the other two workloads, enabling these workloads, as well as providing key functionality for their deployment and operation.
+
+This example showcases the benefits to businesses in adopting a modern approach to edge computing: adopting a platform, such as an ACP, provides a suite of services and capabilities beyond what current platforms allow, while still having full support for existing workloads, which can be migrated to the platform.
 
 ## Rationale
 The rationale behind this pattern is two-fold:
