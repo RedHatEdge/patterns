@@ -122,8 +122,25 @@ By default, an ACP provides an software-defined network that resources leverage 
 - Offloads some network functionality, such as isolation, to the networking stack from the platform's SDN
 
 ### Storage Service
+The storage service abstracts physical storage devices into consumable pool(s) that workloads on the ACP can leverage for persistent data needs. The service is capable of discovering and automatically managing physical devices, handles replication and failover, and presents these capabilities in a consumable, performant way.
+
+For this workload, the storage service is expected to present consumable blocks of storage to be used for virtual machine's boot and data disks, and to provide access across the platform. Should a virtual machine be live-migrated or rescheduled to another node, the storage service handles access to the data, backed by the underlying physical disks.
+
+For the example use case of an MES installed on virtual machines, each virtual machine requires at least one virtual hard drive for the operating system, with some requiring more. The storage service provides capacity and functionality for those virtual hard drives.
+![Storage Service](./.images/storage-service.png)
+
+**Pros:**
+- Provides consistent storage across platform architectures
+- Provides uniform access to data across nodes in highly-available deployments
+- Storage can be consumed by many types of workloads, including containerized and virtualized
+
+**Cons:**
+- Converged storage requires highly-available architectures and compute/memory capacity to run
+- Dynamic storage for non-highly available architectures require configuration for data redundancy
 
 ### IT Automation Service
+
+
 
 ## Resulting Context
 
