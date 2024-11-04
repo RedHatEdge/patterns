@@ -148,6 +148,14 @@ An ACP's other core services handle the management of the infrastructure that su
 During the initial install of the MES onto virtual machines provided by the platform, the IT automation service handles gathering up the required software packages, installing those software packages, and configuring the application components to communicate with each other.
 ![IT Automation Service](./.images/it-automation-service.png)
 
+**Pros:**
+- Lowers the amount of human intervention required to deploy and maintain applications
+- Provides higher consistency when deploying applications, especially between sites
+
+**Cons:**
+- Requires creation of automation to handle software deployment
+- Consumes resources of the ACP (compute/memory/storage) to run the IT automation service
+
 ## Resulting Context
 The resulting context from this pattern is to run existing virtualized workloads on an ACP, providing a like for like experience from the workload's perspective. This provides a viable alternative to existing platforms, and allows for migration of existing applications onto a more modern, capable platform.
 
