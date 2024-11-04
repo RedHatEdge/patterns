@@ -14,8 +14,9 @@ To request content be added to this repo, [open an issue](https://github.com/Red
 | Sizing Guide | Sizing an ACP Based on Amount of IO | Josh |
 | Offline ACP Install | Install an ACP without internet connection from bootstrap | Josh |
 | Bootstrap Setup | Setup bootstrap to serve OCP content for install and standard services install | Josh |
-| Self-Healing DCNs | How workloads can fail and be recovered between DCN nodes | Josh |
 | Creating and Hosting RHDE Images on an ACP | How a Red Hat Device Image can be created and hosted using an ACP's core services | Josh |
+| Application Deployment from Cloud to Edge | How to use a hub and ACPs to deploy applications to edge devices | Josh |
+| 
 
 ## Planned Blocks
 | Name | Description | Supports Pattern | Assignee |
