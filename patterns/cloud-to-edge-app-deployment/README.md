@@ -30,172 +30,152 @@ To support application deployment at scale, ACPs, optionally along with a hub cl
 In addition, customization between sites, deployment targets, and applications should be possible, allowing for fine-grained deployments that meet operational requirements.
 
 ## Context
-An ACP provides a consistent, unified platform for next generation containerized workloads, as well as existing workloads that rely heavily on existing platform functionality, such as virtualizaiton.
+ACPs are, fundamentally, deployment targets for workloads running at sites. They provide a consistent set of services that come together to power and automate these workloads: declarative state management, converged storage, IT automation, and more.
 
-To support ongoing business operations, an ACP can be configured to mirror the functionality of existing platforms to support existing workloads, while keeping the forward focus for next generation workloads.
+As part of the declarative state management service, application deployments can be defined and rolled out to ACPs deployed at scale, either from a hub or simply to the platform itself. In addition, the declarative state management service is also capable of managing deployments to targets beyond the platform, allowing for application deployments to be defined at the hub or ACP level, then rolled out across the platform and to far edge targets, all using the same declarative method and tooling provided by the declarative state management service.
 
-This use case can be considered "table-stakes", as existing mission-critical workloads must continue to function identically as they do currently on a new platform, as they do currently on an existing platform. This allows for a simplified migration story, and allows for modernization over time.
+This use case highlights leveraging ACPs as deployment targets: reliable platforms to run mission-critical workloads. It also highlights how ACPs can be used as springboards to drive deployments to targets beyond the platform itself. Finally, it also showcases how a hub can be used as a higher level orchestrator, pushing application deployments down to ACPs at scale.
 
-This pattern will highlight how various services of an ACP are consumed to provide a like for like experience for these workloads.
+This pattern's examples will showcase the various options, working through the levels that could be included when deploying applications at scale.
 
-The following services will be highlighted:
-| Service | Description | Usage in this Pattern |
-| --- | --- | --- |
-| Virtualization | Provides virtual machines and lifecycle functionality across different guest operating systems | Provides compute blocks, in the form of virtual machines, for running existing applications |
-| Network Configuration | Configures and manages network connectivity of the platform | Replicates existing network connectivity patterns on existing platforms to an ACP |
-| Storage | Provides consumable storage in multiple formats and topologies | Provides storage for running existing workloads, supporting their persistent data needs |
-| IT Automation | Provides a task-orentated idempotent automation framework for managing application lifecycles | Automates and orchestrates existing workload lifecycle operations, such as installation and upgrading |
-| Declarative State Configuration Service | Provides a simplified interface to describe infrastructure requirements with constant enforcement | Allows for simple description of the required infrastructure, which is then deployed and enforced on the ACP |
+Deployment options highlighted in this pattern:
+| Deployment Source | Deployment Target | Method | Description |
+| --- | --- | --- | --- |
+| Hub | ACP | Push, Pull | Defining application deployments centrally from a hub to be deployed to ACPs |
+| ACP | Edge Device | Push, Pull | Defining application deployments at the ACP level, deployed to edge devices |
+| Hub | Edge Device | Push, Pull | Defining application deployments at the highest level, then using an ACP to drive deployments out to edge devices |
 
 ## Forces
-1. **Mirroring Existing Functionality:** This pattern provides identical functionality with existing platforms for virtual workloads, allowing for identical functionality when running on an ACP.
-2. **ACP Value-Add:** This pattern calls out the functionality provided by an ACP that is above and beyond what an existing platform provides, specific to running existing workloads.
-3. **Hyperconverged Approach:** Mirroring existing platforms, an ACP should consume a small number of systems and present unified, consumable pools of storage and compute to support workloads.
-4. **Limited Supporting Resources:** An ACP should not require much/any intervention from non-techical on-site resources, instead handling as many functions as possible autonomously.
+1. **Scalablility:** This pattern's solution scales to many ACPs, each handling many deployments to edge devices.
+2. **Customization:** This pattern's solution allows for customization of each application deployment, if required, for fine-grained control of deployments.
+3. **Consistency:** This pattern's solution drives a high level of consistency across deployments, as tooling and technology is responsible for the application rollouts instead of manual processes.
+4. **Reconciliation:** The defined application deployments are automatically reconciled by the deployment target, offloading responsibility and improving consistency.
 
 ## Solution
-The solution is to both deploy an ACP according to the published standard architectures and consume the offered services to achieve the desired result.
+The solution is to leverage the declarative state management service, and the functionality it provides, to consume application deployment definitions and manage the deployments.
 
-To highlight the function of each service in this solution, an existing software stack will be used as an example: an MES stack, which uses 3 Windows-based systems: a database, a core execution system, and a web frontend system.
-![MES Application](./.images/mes-application.png)
+In the simplest configuration, an application deployment definition is created and stored in a code repository, and a configuration is made against the declarative state management service to consume that application deployment definition. From there, the declarative state management service will pull the application deployment definition, validate it, and initiate the deployment.
+![Simple Deployment](./.images/simple-deployment.png)
 
-Today, this application lives on a virtualization platform that is also hosting other virtualized application:
-![Virtualization Platform with Applications](./.images/virt-platform-with-apps.png)
+Because the declarative state management service acts as a bridge between the code repository storing the deployment definition and the deployment target, in this case, the same ACP where the service is running, the code repository becomes the source of truth for the deployed applications.
 
-If this virtualization platform is hyperconverged, then the underlying hardware is often abstracted into consumable pools and presented for consumption by hosted virtualized workloads by platform services:
-![Hyperconverged Platform](./.images/hyperconverged-platform.png)
+The service also acts in a constant state of reconciliation, routinely checking the deployed applications to see if they match their deployment definition in the code repository. If they drift, they are reconciled by the service automatically.
 
-Often, connectivity for the virtual machines follows a "directly connected" model, where physical connections of the underlying hardware, and virtual connections from the virtual machines to the platform are combined to create logical connections between the virtual machines and the networking stack. This allows the virtual machines and their applications to appear directly connected to the network, even if multiple virtual machines on the platform are sharing a single physical link:
-![Direct Connected Virtual Machines](./.images/direct-connected-virtual-machines.png)
+For example, is a component of the application is deleted, it will be automatically recreated by the declarative state management service, bringing it back into alignment with the definition in the code repository.
+![Component Deleted](./.images/component-deleted.png)
 
-An ACP can provide the same functionality, and provide more services that improve operational efficiency, streamline lifecycle management, and run applications that are containerized as opposed to just virtualized applications.
+While this functionality protects against application drift, it also can be leveraged for application updates or configuration changes. If the application deployment definition is updated, the deployed application is modified through the normal reconciliation process to match the new definition.
+![Application Update](./.images/application-update.png)
 
-### Declarative State Management Service
-The declarative state management service takes definitions for resources provided by the platform, and enforces those definitions against the platform.
+The most straightforward example is used here in the solution section, however the [examples](#examples) section of this pattern shows how the solution is scaled across ACPs, edge devices, and more.
 
-This service can configure and manage any resource on the platform, however for this use case, it's used to drive the deployment and management of the required infrastructure components, mainly, virtual machines.
-
-In this example, the declarative state mangement service consumes the resources provided by the virtualization service to deploy virtual machines. In addition, the service tracks the created resources, and reconciles against the intended state if resources are changed. Should a change be detected, the virtualization service is once again consumed to reconcile the resource.
-![Declarative State Management Service](./.images/declarative-state-management-service.png)
-
-**Pros:**
-- Constant enforcement of resource definitions, preventing drift
-- Automatic tracking of resources and supporting elements created by the platform
-- Visualizes the state of the deployed resources
-- Changes are made through code, allowing for auditing and safety checks
-
-**Cons:**
-- Requires building/obtaining definitions for resources, such as virtual machines
-- Definitions must be stored in a repository the service can access
-
-### Virtualization Service
-The virtualization service provides resources and functionality for running virtual machines. Most commonly, this service handles the configuration and lifecycle of virtual machines, and also provides full functionality for templating, snapshotting, cloning, and other common functions.
-
-The resources provided by this service can be consumed directly, however, it's recommended to leverage the declarative state management service, which then consumes the virtualization service, for an enterprise-grade deployment and lifecycle management workflow.
-
-For this example of running an virtualized MES, the virtualization service is responsible for deploying the virtual machines from a template.
-![Virtualization Service](./.images/virtualization-service.png)
-
-**Pros:**
-- Provides a consistent interface to manage virtual machines at scale
-- Automatically manages supporting resources necessary for virtual machines
-- Provides for fine-grained control around each virtual machine
-- Provides full templating and deployment from template functionality
-
-**Cons:**
-- Virtual machine templates must be set up for some operating systems before being able to run deployments 
-- Provided templates may need customization to meet enterprise requirements
-
-### Network Configuration Service
-The network configuration service manages the configuration of physical and logical network connections of the underlying hardware supporting the platform. It automatically applies the desired configuration to interfaces, and if necessary, rolls back incorrect configurations if they fail to apply.
-
-This service is leveraged to provide connectivity to virtual machines that mirrors the connectivity of existing virtualization platforms, by both performing the necessary configuration of the phyiscal interfaces, but also creating the logical connections within the ACP the virtual machines will be attached to.
-
-By default, an ACP provides an software-defined network that resources leverage to communicate. In this use case, that SDN is bypassed, which sacrifices some of the native SDN functionality in favor of a more traditional connectivity model for the virtual machines.
-![Network Configuration Service](./.images/network-configuration-service.png)
-
-**Pros:**
-- Provides a like-for-like connectivity experience for virtualized workloads
-- Allows for industrial procotols to be handled by applications within virtual machines
-- Configuration is automatically applied and enforced
-
-**Cons:**
-- Requires some understanding of networking concepts
-- Offloads some network functionality, such as isolation, to the networking stack from the platform's SDN
-
-### Storage Service
-The storage service abstracts physical storage devices into consumable pool(s) that workloads on the ACP can leverage for persistent data needs. The service is capable of discovering and automatically managing physical devices, handles replication and failover, and presents these capabilities in a consumable, performant way.
-
-For this workload, the storage service is expected to present consumable blocks of storage to be used for virtual machine's boot and data disks, and to provide access across the platform. Should a virtual machine be live-migrated or rescheduled to another node, the storage service handles access to the data, backed by the underlying physical disks.
-
-For the example use case of an MES installed on virtual machines, each virtual machine requires at least one virtual hard drive for the operating system, with some requiring more. The storage service provides capacity and functionality for those virtual hard drives.
-![Storage Service](./.images/storage-service.png)
-
-**Pros:**
-- Provides consistent storage across platform architectures
-- Provides uniform access to data across nodes in highly-available deployments
-- Storage can be consumed by many types of workloads, including containerized and virtualized
-
-**Cons:**
-- Converged storage requires highly-available architectures and compute/memory capacity to run
-- Dynamic storage for non-highly available architectures require configuration for data redundancy
-
-### IT Automation Service
-The IT automation service provides functionality for managing and configuring systems both hosted on an ACP and outside of the platform, using an easy to understand programming format. The service provides functionality for consuming automation from code repos, various connection methods, and abstraction of target-specific commands or interfaces.
-
-The objective of the service for this use case is to automate away lifecycle management tasks related to running virtual machines, such as operating system updates and configuration, as well as application lifecycle management tasks, such as installation, tuning, and upgrades.
-
-An ACP's other core services handle the management of the infrastructure that supports the example MES workload, but don't directly manage the operating system within the virtual machine, or the application itself. This is where the IT automation service is leveraged: to round out functionality by complimenting the other ACP services, and provide a robust set of capabilities for full end-to-end management of workloads running on the platform.
-
-During the initial install of the MES onto virtual machines provided by the platform, the IT automation service handles gathering up the required software packages, installing those software packages, and configuring the application components to communicate with each other.
-![IT Automation Service](./.images/it-automation-service.png)
-
-**Pros:**
-- Lowers the amount of human intervention required to deploy and maintain applications
-- Provides higher consistency when deploying applications, especially between sites
-
-**Cons:**
-- Requires creation of automation to handle software deployment
-- Consumes resources of the ACP (compute/memory/storage) to run the IT automation service
+The application definition can contain any resource the platform has available, such as pods, deployments, routes, services, virtual machines, storage, and more. In addition, this service can also be used to configure and manage core components and services of the platform, if desired.
 
 ## Resulting Context
-The resulting context from this pattern is to run existing virtualized workloads on an ACP, providing a like for like experience from the workload's perspective. This provides a viable alternative to existing platforms, and allows for migration of existing applications onto a more modern, capable platform.
+The resulting context from this pattern is the ability to run applications at scale, where a source of truth is applied and reconciled against the target deployment locations, such as an ACP, edge devices, or across many different sites.
 
-In addition, this pattern's solution leverages the additional functionality of an ACP over existing platforms, allowing for constant desired state reconciliation, and for completely automated installion and ongoing management workflows. These cababilities are provided by an ACP's core set of services, meaning they're pre-configured and ready for consumption.
+This means that application deployments become more consistent, with a significantly easier management strategy than manually deploying applications across ACPs. In addition, visibility is provided into the current deployment state, allowing for easier troubleshooting if necessary.
 
-By consuming these services, a more complete and robust operational state is achieved, simplifying lifecycle management, application updates/upgrades, leading to lower management overhead and soft costs.
+By leveraging the declarative state management service, a more complete and robust operational state is achieved, allowing for easier lifecycle management, greater flexibility, and lower overall operational burden when running applications at scale.
 
 ## Examples
-The solution section of this pattern covers running an existing MES deployment on top of an ACP, along with desciptions and utilization of the involved core services provided by the platform.
+The [solution](#solution) section highlights an example of leveraging the declarative state management service directly on an ACP to deploy applications to that same ACP, however a few additional examples are highlighted here, showcasing how the service can be used to scale deployments:
+- Scaling Deployments Across ACPs from a Hub
+- Scaling Deployments Across Edge Devices from an ACP
+- Scaling Deployments Across Edge Devices from a Hub
+- Templating Application Deployments
 
-A second use can also be considered: running a fully containerized workload on the same platform as an existing workload that's deployed to virtual machines, such as the MES discussed here.
-![Colocated Workloads](./.images/colocated-workloads.png)
+### Scaling Deployments Across ACPs from a Hub
+ACPs are fully feature-complete without a hub, however, when managing ACPs at scale, a hub provides a central point to drive configuration and application deployments. This architecture is commonly referred to as a "hub and spoke" style deployment, where ACPs would be the spokes, connected back to a central hub, where configuration and deployment information are pulled from.
 
-In this example, the deployment of the MES is kept on virtual machines, and deployed to an ACP. In addition, another application, a distributed control system, has been completely modernized, leveraging a microservice architecture, and is also deployed to the same ACP.
+Because the declarative state management service runs on the hub and on ACPs, application definitions can be created that target many ACPs, allowing for a simplified and centralized deployment process.
+![Hub to ACP Deployments](./.images/hub-to-acp-deployments.png)
 
-Despite different application architectures, and leveraging different functionality and services, the workloads are consolidated onto a single platform, highlighting an ACP's capabilities to run both existing and new workloads without requiring more overhead.
+This approach allows for a high degree of scaling without having to interface with each ACP directly, instead, the ACPs are connected back to a central hub, and pull application deployments from it. The hub provides a centralized point of configuration and visibility, and facilitates deployments out to the ACPs at scale.
 
-In this example, the MES is consuming data, via the API endpoints of the DCS, allowing data to be gathered, transformed, and displayed in the MES. This enables higher level business functions to have greater visibility into the processes running at the edge site.
+While the hub performs some high level rendering functions, responsibility for the deployment of the applications and constant reconciliation is still the responsibility of the ACPs themselves, as they're running the declarative state management service. This facilitates local autonomy at the ACP level: if the hub cluster experiences an outage, or connectivity to it is lost, applications continue to function as they were, according to the last known deployment definition. Should a component of the application drift or be deleted, it will be reconciled by the instnace of the declarative state management service running on that ACP.
+![Component Deleted](./.images/component-deleted.png)
 
-In addition, the control plane functions and core services of the ACP are also run on the platform, alongside the other two workloads, enabling these workloads, as well as providing key functionality for their deployment and operation.
+Once connection is re-established to the hub, deployment definitions will be automatically pulled, and if an update to an application deployment definition has been made, it will be automatically applied.
 
-This example showcases the benefits to businesses in adopting a modern approach to edge computing: adopting a platform, such as an ACP, provides a suite of services and capabilities beyond what current platforms allow, while still having full support for existing workloads, which can be migrated to the platform.
+Typically, the pull model is used for the connection between the ACPs and the hub, as this method simplifies the required connectivity changes to facilitate communication: the ACPs simply need to be allowed to call out to the hub, as opposed to requiring the hub to communicate directly via an inbound connection, from the point of reference of the ACP. Outbound connections are usually preferred at sites, as they are viewed as more secure and easier to manage.
+
+**Pros:**
+- Easier management of a large number of ACPs, as all configuration and deployments are driven from a single location
+- Provides a singular point to review application deployment status and, if required, adjust deployment targets
+- Simplified lifecycle management for applications, as definitions are rendered in bulk centrally
+
+**Cons:**
+- Requires resources and a platform to run hub services
+- Either inbound connectivity for pull mode, or outbound connectivity for push mode, is required, which may require firewall or network changes
+- ACPs must be registered to the hub to operate in pull mode
+
+### Scaling Deployments Across Edge Devices from an ACP
+ACPs and the declarative state management service can also be used to drive application deployments to edge devices. These devices typically have limited compute availability, and do not run the declarative state management service. Instead, the service on the ACP is extended, allowing it to manage deployments to targets outside of the ACP itself, and to take on the responsibility for deployment and reconciliation, offloading that work to where more compute is available.
+![ACP to Edge Devices Deployment](./.images/acp-to-edge-devices.png)
+
+In this example, the declarative state management service on the ACP is responsible for creating the connection between the code repository and the edge devices, acting as an intermediary. The service renders the application deployment into the individual components to deploy, then pushes those definitions out to the edge devices.
+
+This approach removes the need for the edge devices to run the declarative state management service, and instead offloads the reconciliation to the ACP. As the edge devices often have very limited compute resources, this frees up resources for more applications to be run on a single device.
+
+Similar to the example above, the edge devices inherit some responsibility for the applications. In the event of a failure of an application component, the device will attempt to recover it. In addition, if the device looses power or is rebooted, it will automatically attempt to recover and reschedule the workload.
+
+However, because the declarative state management service is running externally to the edge devices, the reconciliation is handled from the ACP. This means that if a change is made to the application on the device and the connection from the ACP is lost, the application drift will not be reconciled until the connection back to the ACP is restored.
+
+**Pros:**
+- Simplified application deployment flow to a large number of edge devices, as the ACP provides a centralized place to drive deployments from
+- Allows for per-device or per-application customizations, as required
+- Leverages already running functionality on the ACP, instead of additional management software
+
+**Cons:**
+- Requires registering the edge devices to the ACP's declarative state management service
+- Connectivity between the ACP and the edge devices is required, ideally for push deployments, however pull is also possible
+
+### Scaling Deployments Across Edge Devices from a Hub
+The previous two examples have shown how to run deployments from one source to a destination (or set of destinations) directly, however, another approach can also be taken. Using the declarative state management service, an ACP can be used as an intermediary, allowing a hub to drive deployments all the way down to edge devices.
+![Hub to Edge Devices](./.images/hub-to-edge-devices.png)
+
+This approach combines the functionality of the two previous examples, where the hub renders deployment definitions for the applications that will run on the ACPs, and the ACPs render and deploy applications the edge devices. However, one additional configuration is added: the hub also renders the deployment deployment definitions for the edge devices, which are then pulled down by the ACPs.
+
+The difference in these deployment definitions, as opposed to the standard application deployment definitions, is that they actually contain the configurations for the declarative state configuration service on the ACPs, as opposed to the components of the application to deploy. Essentially, what's being rendered and applied are the configurations that tell the desired state configuration service of that ACP to deploy an application to an edge device.
+
+Similar to the above examples, this can be run in both pull and push mode. In the diagram, pull and push are combined: the application definitions are pulled to the ACPs from the hub cluster, then pushed to the edge devices from the ACPs.
+
+**Pros:**
+- Centralized deployment location: originating from the hub
+- Allow for deployments to ACPs and to edge devies in a single flow
+- Brings all deployments under a unified operational approach, regardless of site/target
+
+**Cons:**
+- Increased complexity of deployments, as some are "meta" deployments, which are configurations to the declarative state management service
+- Connectivity does need to be allowed/configured for deployments to flow from hub to edge devices
+
+### Templating Application Deployments
+The final example leverages a feature of the desired state management service: templating out application deployments. This removes the requirement to define every application deployment statically, instead, offloading templating functionality to the service. This greatly simplifies application deployments across a large number of sites, while only needing to maintain one application deployment template.
+![Application Deployment Template](./.images/application-deployment-template.png)
+
+As opposed to statically defining application deployments for site 1 and site 2, an application deployment template is instead created. This is consumed by the declarative state management service, which then renders an application deployment definition from the application deployment, according to the application deployment template.
+
+In this example, an application is templated and rendered for every acp at all locations, as specified in the application deployment template. This could be customized to search for specific labels or architectures, such as highly-available ACPs instead of non highly-available ACPs, for example.
+
+This is also dynamic, as the templating is run routinely to ensure all appropriate deployment targets have a rendered application definition. For example, if a new site is brought online and registered to the hub cluster, the declarative state management service will automatically render a new deployment definition, which will result in the application being deployed.
+![Adding New Site](./.images/adding-new-site.png)
+
+**Pros:**
+- Only one application definition needs to be maintained, as opposed to many statically linked to deployment targets
+- Templating is performed automatically
+- Customizations per deployment are possible
+
+**Cons:**
+- Deployments do not wait for change control/other processes, they begin as soon as a new match to the application deployment template is found
+- Per deployment customization requires maintaining a flexible application deployment definition
 
 ## Rationale
-The rationale behind this pattern is two-fold:
-1. Provide full functionality for existing workloads to run on a modern platform
-2. Lower the overall costs and challenges associated with running compute at edge locations
+The rationale behind this pattern is to lower the overall costs, challenges, and risks associated with deploying applications to a large number of deployment targets, specifically edge deployments.
 
-### 1. Provide full functionality for existing workloads to run on a modern platform
-This expectation can be considered a baseline requirement for platforms running at edge locations. It is expected, to support ongoing business operations, that platforms be able to accommodate existing workloads, without requiring changes to the deployed application.
+By leveraging built in functionality, deployments can be templated, applied, upgraded, rolled-back, and removed as needed, without needing to interact with a large set of disparate tools. In addition, deployments are automatically reconciled, increasing their availability, and improving business continuity overall.
 
-Since applications deployed at the edge are typically mission-critical, their availability and uptime is paramount to business success.
-
-### 2. Lower the overall costs and challenges associated with running compute at edge locations
-Two threads emerge from this rationale point: leveraging services and tooling to improve operations, and providing next-generation functionality alongside support for current workloads.
-
-1. By leveraging the core services of an ACP, manual intervention in steps such as application installation and upgrades can be reduced or eliminated, increasing consistency and speed. In addition, constant enforcement of the desired state prevents drift and outages, without requiring manual intervention, further reducing management overhead and costs. Consuming these services, provided by an ACP, enable better outcomes for the business.
-2. As next generation workloads are introduced by vendors, it will be necessary to have next generation platform functionality to support them. An ACP already provides support for many next generation workloads today, and gains functionality through in-place upgrades, which the platform itself manages. This strategy reduces risk associated with adopting new applications, and limits risks associated with platform lifecycle maintenance tasks.
+ACPs provide the core service to achieve these goals as part of the standard deployment package, to simplify the overall operational experience, and allow for faster onboarding and quicker realization of value.
 
 ## Footnotes
 
