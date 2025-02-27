@@ -13,7 +13,10 @@ This block outlines how to configure the internal registry to use persistent sto
 
 ## Table of Contents
 * [Part 0 - Assumptions and Network Layout](#part-0---assumptions-and-network-layout)
-* [Part 1 - Attaching ConfigMaps to a Windows Virtual Machine](#part-1---attaching-configmaps-to-a-windows-virtual-machine)
+* [Part 1 - Reviewing Existing Deployment Automation](#part-1---reviewing-existing-deployment-automation)
+* [Part 2 - Reviewing Available Customizations](#part-2---reviewing-available-customizations)
+* [Part 3 - Deploying the Chart](#part-3---deploying-the-chart)
+
 
 ## Part 0 - Assumptions and Network Layout
 This block has a few key assumptions, in an attempt to keep things digestable:
