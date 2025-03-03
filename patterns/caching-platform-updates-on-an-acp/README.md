@@ -21,7 +21,7 @@ This pattern aims to significantly speed up the platform update process by cachi
 | **Platform(s)** | TBD |
 | **Scope** | TBD |
 | **Tooling** | TBD |
-| **Pre-requisite Blocks:** | <ul><li>[Backing the Internal Registry with Persistent Storage](../../blocks/backing-internal-registry-with-storage-ha/README.md)</li><li>[Mirroring Update Content](../../blocks/mirroring-update-content/README.md)</ul> |
+| **Pre-requisite Blocks:** | <ul><li>[Backing the Internal Registry with Persistent Storage](../../blocks/backing-internal-registry-with-storage-ha/README.md)</li><li>[Mirroring Update Content](../../blocks/mirroring-update-content/README.md)</li><li>[Setting Update Content Sources for an ACP](../../blocks/setting-update-content-source/README.md)</li></ul> |
 | **Example Application** | TBD |
 
 ## Problem
