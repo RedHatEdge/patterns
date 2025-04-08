@@ -1,5 +1,9 @@
-# Automated Creation of Virtual Machines and Application Installation
-This pattern gives a technical look at how the gitops service of an ACP can be used to both provision required infrastructure and configure the automation service to install applications.
+# Building, Testing, and Hosting Images for DCNs on an ACP or Hub
+This pattern outlines a solution for building, testing, and hosting DCN images on an ACP or hub, leveraging core services and built-in functionality. 
+
+As the images that will be deployed to DCNs need to be built, tested, and ultimately hosted for consumption by the DCNs, a platform that can provide tooling and capability to meet the steps required to complete this process is required.
+
+This solution can be deployed centrally onto a hub, optionally using ACPs to mirror or cache the images, or can be deployed to ACPs themselves, depending on requirements.
 
 ## Table of Contents
 * [Abstract](#abstract)
@@ -18,11 +22,11 @@ This pattern gives a technical look at how the gitops service of an ACP can be u
 | **Scope** | Virtualization |
 | **Tooling** | <ul><li>Red Hat OpenShift GitOps</li></ul> |
 | **Pre-requisite Blocks** | <ul><li>[TODO](../../blocks/todo)</li></ul> |
-| **Pre-requisite Patterns** | <ul><li>[ACP Standard Architecture](../acp-standardized-architecture-ha/README.md)</li><li>[ACP Standard Services](../rh-acp-standard-services/README.md)</li><li>[Virtualization on ACPs](../virtualization-on-acp/README.md)</ul> |
+| **Pre-requisite Patterns** | <ul><li>[Image Mode for Distributed Control Nodes](../image-mode-for-dcns/README.md)</li></ul> |
 | **Example Application** | N/A |
 
 ## Problem
-**Problem Statement:** Often, virtual machines require applications to be deployed after they've been provisioned, as they're usually deployed from clean or empty templates of just operating system images. This flow may involve multiple tools, when a single tool or single flow is optimal for easy of use.
+**Problem Statement:** The images that will be deployed to distributed control nodes need to be built, tested, and hosted on a platform that's reachable from the DCNs, and also has the build, test, and host functionality available to drive the process. Since the number of DCN images may grow as the number of deployed DCNs grows, the 
 
 ## Context
 This pattern can be applied to ACPs where deployment of an application involves both the need to provision and manage virtual machines, as well as run some post-deployment automation to handle application installation. It uses a single service to drive consumption of other ACP services to accomplish the full flow.

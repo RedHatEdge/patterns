@@ -169,7 +169,7 @@ If, however, after a new image version that introduced a faulty configuration to
 After a number of failed health checks, the healthcheck service will initiate a rollback to a previous version:
 ![Healthcheck Rollback](./.images/healthcheck-rollback.png)
 
-This functionality fhelps ensure systems and workloads are running as expected, and takes appropriate actions without manual intervention.
+This functionality helps ensure systems and workloads are running as expected, and takes appropriate actions without manual intervention.
 
 ## Rationale
 The rationale behind this pattern is two-fold:
