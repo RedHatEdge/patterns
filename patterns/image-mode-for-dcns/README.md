@@ -38,6 +38,14 @@ In addition, during normal operation, the systems can be rolled forward or backw
 
 This approach mirrors the container-native approach to application deployment: building in application and configuration code to container images, then simply deploying them at scale. This approach is extended, using software functionality known as [bootable container](https://developers.redhat.com/articles/2024/09/24/bootc-getting-started-bootable-containers), to extend this operational methodology to bare-metal systems, including DCNs. This allows for greater operational efficiency and greater consistency when running a large fleet of devices with multiple purposes.
 
+ADD
+## Forces
+- **Customizability:** This pattern's solution allows for full control and customization of the images that are applied to the DCNs, mirroring the current operating system paradigm functionality, while adding 
+- **Modularity:** This pattern's solution can be consumed as a single large flow, or optionally, broken apart, where the individual components are leveraged when needed.
+- **Broad Applicability:** This pattern's solution works across different virtual machine operating systems and across applications, as operating system specific and application specific elements are handled transparently by the gitops and it automation services.
+- **Reusability:** This pattern's solution can be replicated for many different applications, simply changing out definitions or pointers to automation code bases.
+- **Transparency:** By loading both definitions of infrastructure and automation configuration into platform-native assets, all components and steps related to the full deployment process are visible within the deployment location and context.
+
 ## Solution
 The solution is to to leverage container methodoloy of building images that contain the required operating elements, such as customizations, configurations, applications, and health checks into an image, then deploying it as a bootable, immutable image onto a bare-metal system which is then deployed to the field. No post-deployment configuration or automation is required, instead, the devices boot the image with the included customizations and configurations, and start the specified application(s).
 

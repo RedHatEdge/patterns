@@ -26,10 +26,12 @@ This solution can be deployed centrally onto a hub, optionally using ACPs to mir
 | **Example Application** | N/A |
 
 ## Problem
-**Problem Statement:** The images that will be deployed to distributed control nodes need to be built, tested, and hosted on a platform that's reachable from the DCNs, and also has the build, test, and host functionality available to drive the process. Since the number of DCN images may grow as the number of deployed DCNs grows, the 
+**Problem Statement:** The images that will be deployed to distributed control nodes, based off [bootable containers](https://developers.redhat.com/articles/2024/09/24/bootc-getting-started-bootable-containers) need to be built, tested, and hosted on a platform that's reachable from the DCNs, and also has the build, test, and host functionality available to drive the process. This build, test, and host process mirrors the processes used for containerized applications today, and since the images are simply bootable containers, there's significant enough overlap that methodologies and tooling can be shared and re-used.
+
+In addition, the number of DCN images may grow as the number of deployed DCNs grows, requiring a platform capable of providing for a large number of images being built, tested, and hosted, without requiring heavy customization to support the required scale.
 
 ## Context
-This pattern can be applied to ACPs where deployment of an application involves both the need to provision and manage virtual machines, as well as run some post-deployment automation to handle application installation. It uses a single service to drive consumption of other ACP services to accomplish the full flow.
+This pattern can be applied to environments where DCN images need to be built, tested, and hosted for the DCNs to retrieve during provisioning or update cycles. It relies on core functionality provided by ACPs and hubs, and can be applied to either, or both, as dictated by connectivity, locality, or image customization requirements.
 
 A few key assumptions are made:
 - The intended context of the platform aligns to the [Standard HA ACP Architecture](../acp-standardized-architecture-ha/README.md)
@@ -38,6 +40,8 @@ A few key assumptions are made:
 - The upstream network configuration is completed and verified
 - The application's required operating systems as available as [templates](../windows-templates-acp-virtualization/README.md) within the ACP's virtualization service.
 - The application deployment has been automated and is ready for deployment by the ACP's [IT automation](../rh-acp-standard-services/README.md) service.
+
+Since this pattern can be applied to multiple target platforms, a target of an ACP deployed at a remote site will be used throughout most of the pattern documentation for beveritry.
 
 ## Forces
 - **Single Service Entrypoint:** This pattern outlines how a single service on an ACP can drive others to accomplish a complex flow without needing to manually interface with other services, instead opting to drive consumption under one umbrella.
