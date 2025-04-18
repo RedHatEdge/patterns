@@ -11,6 +11,7 @@ This pattern gives a technical look at creating Red Hat Device Edge images when 
 * [Examples](#examples)
 * [Rationale](#rationale)
 
+
 ## Abstract
 | Key | Value |
 | --- | --- |
