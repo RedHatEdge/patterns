@@ -1,5 +1,5 @@
 # Red Hat Provided ACP Standard Services
-This pattern gives a technical look at the core services supported by Red Hat on an Advanced Compute Platform.
+This pattern gives a technical look at the core services supported by Red Hat on an Advanced Compute Platform.  
 
 ## Table of Contents
 * [Abstract](#abstract)
