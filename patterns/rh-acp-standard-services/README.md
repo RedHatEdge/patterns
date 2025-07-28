@@ -50,6 +50,7 @@ The main services, provided by Red Hat, are as follows:
 | Network Interface Management | [Kubernetes NMState Operator](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.15/html/networking/kubernetes-nmstate) | Provides declarative configuration of network interfaces to support workloads such as storage, virtualization, and general workloads |
 | IT Automation | [Red Hat Ansible Automation Platform](https://www.redhat.com/en/technologies/management/ansible) | Provides IT-level idempotent automation of workloads, networks, and more, both on the platform and outside of it |
 | Declarative State Management | [Red Hat OpenShift GitOps](https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops) | Provides declarative management of the platform's core services and workloads, delegating responsiblity to the platform itself |
+| Compliance | [Red Hat OpenShift Compliance Operator](https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/security_and_compliance/index#compliance-operator) | Provides functionality for specifying a compliance baseline for an ACP, then automates compliance to the specified baseline across the platform components. It also provides reporting functionality for use during audits or operational readiness evaluations |
 
 These services provide the core set of functionality for running and operating an ACP, along with capabilities beyond the platform itself as desired. They are all shipped and supported by Red Hat.
 
