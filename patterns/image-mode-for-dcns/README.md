@@ -55,7 +55,7 @@ The current deployment methodology for operating systems for DCNs is not imaged 
 First, the base set of systems is installed onto a device when installing it:
 ![Current Deployment OS Packages](./.images/current-deployment-os-packages.png)
 
-This process combines the individual transactions of hundreds of packages into a single big transtion, with iterates over the installation of the packages required to install the operating system.
+This process combines the individual transactions of hundreds of packages into a single big transaction, which iterates over the installation of the packages required to install the operating system.
 
 Next, additional packages are added on top of the operating system packages to support the desired workload. These packages could be to support virtualized workloads, or containerized workloads, or bare-metal workloads that require additional functions and libraries from the operating system.
 ![Current Deployment Additional Packages](./.images/current-deployment-additional-packages.png)
