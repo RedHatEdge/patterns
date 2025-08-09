@@ -143,7 +143,7 @@ Then, three images are built from that common base, according to the requirement
 - An IoT gateway image, where container runtime packages and network configurations are added
 ![Image Mode Three Images](./.images/image-mode-three-images.png)
 
-Then, each image is further built on my adding site-specific configurations, such as PTP time sources:
+Then, each image is further built on by adding site-specific configurations, such as PTP time sources:
 ![Image Mode Site Specific Configurations](./.images/image-mode-site-specific.png)
 
 These images, having started out as a single generic base image, then having had multiple layers of content added, now are ready to deploy to the various devices at the sites.
