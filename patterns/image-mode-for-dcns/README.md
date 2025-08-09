@@ -96,7 +96,7 @@ Then, configurations are added to create another itermediary image.
 Finally, the workload is added, to create the final, ready to deploy image.
 ![Image Mode Add Application](./.images/image-mode-add-application.png)
 
-This final image contains everything required to un the workload, needing only to be deployed to the target system. Once deployed, the system can be booted, and will begin running the workload.
+This final image contains everything required to run the workload, needing only to be deployed to the target system. Once deployed, the system can be booted, and will begin running the workload.
 ![Image Mode Install System](./.images/image-mode-install-system.png)
 
 This methodology allows for the final image to be deployed to the device, then booted. No post-installation work is required, instead, the device can simply be deployed, and will immediately be productive and ready.
