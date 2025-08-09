@@ -40,7 +40,7 @@ This approach mirrors the container-native approach to application deployment: b
 
 ## Forces
 - **Customizability:** This pattern's solution allows for full control and customization of the images that are applied to the DCNs, mirroring the current operating system paradigm functionality, while recieving the benefits of image-mode deployment methodology.
-- **Customizability:** This pattern's solution can be fully customized according to the required content and confirugations of the DCNs, regardless or role or use case.
+- **Customizability:** This pattern's solution can be fully customized according to the required content and configuration of the DCNs, regardless or role or use case.
 - **Broad Applicability:** This pattern's solution works for any physical system or virtual machine that will be using image mode.
 - **Reusability:** This pattern's solution can be replicated for many different operating system images, optionally spanning across sites, geos, or other groupings.
 
