@@ -68,7 +68,7 @@ Finally, after these three layers have been applied, the workload can then be de
 
 The last three phases (adding additional packages, adding configurations, and deploying the workload) are all completed after the initial system installation has occured, and require either manual intervention to complete, or require the use of an automation tool.
 
-This post-installation customization approach introduces the opportunity for configuration drift, due to manual intervention and possible errors when completing the required setup tasks, or require investment in knowledge, expertise, and training on an automation tool. In addition, an automation tool may require connectivity to the systems themselves to complete the various tasks, which can further complcate the deployment of the system.
+This post-installation customization approach introduces the opportunity for configuration drift, due to manual intervention and possible errors when completing the required setup tasks, or require investment in knowledge, expertise, and training on an automation tool. In addition, an automation tool may require connectivity to the systems themselves to complete the various tasks, which can further complicate the deployment of the system.
 
 **Pros:**
 - Large existing knowledge base due to the widespread use of this type of deployment methodology
