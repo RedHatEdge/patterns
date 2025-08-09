@@ -101,7 +101,7 @@ This final image contains everything required to run the workload, needing only 
 
 This methodology allows for the final image to be deployed to the device, then booted. No post-installation work is required, instead, the device can simply be deployed, and will immediately be productive and ready.
 
-In addition, each step in this process, if one as one flow, becomes individual layers that can be deployed individually, updated individually, or if desired, before the source for a new image.
+In addition, each step in this process becomes individual layers that can be deployed individually, updated individually, or if desired, be the source for a new image.
 
 For example, if two systems both share the same configurations and both require the same set of additional packages, such as a container runtime or virtualization packages, but run different workloads, a single image can be the source for both, cutting down on duplicate steps, and instead only branching at the end.
 
