@@ -14,7 +14,7 @@ This repo is a collection of blocks and patterns that can be used for communicat
 | [App of Apps Pattern](./blocks/app-of-apps/README.md) | Defining and using the app-of-apps pattern | :white_check_mark: |
 
 ## Patterns
-[Patterns](./patterns/) are blcoks that have been assembled to create something more akin to a full architecture or deployment. They use one to many blocks, and highlight how individual concepts are integrated together.
+[Patterns](./patterns/) are blocks that have been assembled to create something more akin to a full architecture or deployment. They use one to many blocks, and highlight how individual concepts are integrated together.
 
 ## Available Patterns
 | Name | Description | Status |
