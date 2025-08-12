@@ -48,54 +48,58 @@ A few key assumptions are made:
 - **Security:** This pattern's solution should allow for ACPs to be operated in highly protected, highly trusted environments where external connectivity is considered too much of a risk to the platform.
 - **Consistency:** This pattern's solution should be repeatable across sites with similar constraints and requirements, allowing for a large number of sites to run similiar platform installations where appropriate.
 - **Customization:** This pattern's solution should allow for customization across deployment hardware footprints, according to power, cooling, and budgetary constraints relative to the desired workloads for that platform.
-- **Observability:**
-- **Managability:**
+- **Observability:** This pattern's solution should provide visibility into the operational status of the platform and the workloads from a central location, allowing for greater operational efficiency across deployment locations
+- **Managability:** This pattern's solution should be easily managed from both the site perspective and the fleet perspective, allowing for lower overall soft costs associated with operating the platform
+- **Ease of Use:** This pattern's solution should be consumable by non-IT individuals, allowing for tooling and user experiences that overlay the underlying technical details in favor of simplified, approachable flows
+- **Flexibility:** This pattern's solution should be adaptable to many different types of workloads, allowing for configuration and reconfiguration of the platform to support new requirements or scale up/out as needed
+
+## Solution
+The solution includes three main layers to the overall industrial edge platform: the hub layer, the advanced compute platform layer, and the distributed control node layer. A full architectural deployment may not necessitate (or allow for) all three layers, however this does not limit the overall compute functionality the platform is able to provide.
+
+![Architecture Layers](./.images/architecture-layers.png)
+
+Each layer is targeted at a specific set of workloads, but by no means is exclusive to only those workloads. Instead, workloads can be shifted and moved as required by connectivity, compute requirements, failure domains, or other driving forces. The below information is provided as a guide to start placing elements of the platform into an architecture. Overlayed to the existing Purdue operational model for OT environments, a rough mapping helps visualize where the layers of the platform would be integrated into existing environments:
+![!Purdue to Layers](./.images/purdue-to-layers.png)
+
+### The Hub Layer
+The hub layer represents the highest-level management plane, where the other two layers are predominately managed from. The lifecycle management, application deployment, and centralized observability and monitoring services live at this layer. 
+
+The overall goal of the [hub services](../rh-hub-standard-services/README.md) is to provide for centralized, easily consumable flows for deploying, updating, and managing the other two layers as they are deployed at scale to remote sites. This allows for full control from a centralized location to the advanced compute layer, (optionally) through the advanced compute layer, down to the distributed control node layer.
+![Hub to Device via ACP](../cloud-to-edge-app-deployment/.images/hub-to-edge-devices.png)
+
+Since this layer most likely lives in an IT-managed compute domain, yet can make changes against large numbers of systems in the OT domain, strong RBAC and change processes are required to ensure the operational requirements of OT are met, while still gaining the benefits of centralized management via IT tooling and technologies.
+
+This layer can be leveraged even when connectivity is limited or intermittment, however it cannot be used if the sites are completely disconnected. To facilitate fully disconnected sites, hub services can be installed on an ACP at the site to allow for consumption of their functionality.
+
+### The Advanced Compute Layer
+The advanced compute layer lives at sites, typically on reasonably powerful hardware, and provides a hyperconverged-style compute platform designed to run many types of workloads, ranging from traditional virtualized workloads through containerized workloads through next generation workloads, such as AI workloads and serverless workloads.
+
+The goal of the platform is to provide a consistent, managable platform that allows for all different types of workloads to be run on the same platform, supported by a consistent set of [standard services](../rh-acp-standard-services/README.md) that are consumed to support those workloads.
+![Workloads on Platforms](../acp-standardized-architecture-ha/.images/acp-with-workloads.png)
+
+Typically, the ACP is responsible for running manufacturing execution systems, distributed control systems, supervisory control and data aquisition systems, and other systems found at industrual sites, that support the operation of the site towards product or part production.
+
+The platform is deployable in different architectures, such as [highly-available](../acp-standardized-architecture-ha/README.md) and [non-highly available](../acp-standardized-architecture-non-ha/README.md), to support as many deployment locations and constraints as possible. However, despite the deployment differences, the platform's provided services remain consistent.
+
+An ACP provides a solid, stable platform that, in addition to running workloads, also can act as a [management conduit for distributed control](../build-test-host-dcn-images-on-acp/README.md) nodes, allowing for a high degree of site autonomy. An ACP can be operated in a fully connected, [partially connected](../caching-platform-updates-on-an-acp/README.md), or [fully disconnected](../disconnected-acp/README.md) environment, without compromising on the features or functionality of the platform itself.
+
+### The Distributed Control Node Layer
+The distributed control node layer lives at the "bottom" of the architecture, primarily on small form factor, purpose-built devices. These systems are usually dedicated to a single task, and operate in an [image](../image-mode-for-dcns/README.md) mode for increased resiliancy.
+![Image Mode for DCNs](../image-mode-for-dcns/.images/image-mode-install-system.png)
+
+These devices are often standalone, yet can optionally be [clustered](../self-healing-dcns/README.md) to provide some failover or redundancy capability if desired.
+![DCN Clustering](../self-healing-dcns/.images/self-healing-between-cabinets.png)
+
+The main workloads for these devices are human-machine interfaces that show realtime data, IoT gateways that gather data from industrial devices and sensors, software-defined control systems, computer-vision systems, and other workloads that typically reside out on the manufacturing floor or within a control cabinet.
+
+The DCN platform is focused on availability at all costs, allowing for remote management to be successful even in the event of a failed update or other issues introduced by platform or application changes.
+
+## Resulting Context
+The resulting context is the ability to deploy and manage platforms and workloads at the appropriate location, across a large number of deployment sites with varying levels of connectivity and throughput, in a highly automated, easily managed approach.
 
 ### HERE ###
 
-## Solution
-The solution is two fold: content mirroring and platform configuration are combined to provide the solution for operating an ACP in a fully disconnected state.
-
-For review, the default ACP architecture involves the platform being able to reach out to publically accessable content sources to download during initial installation, the addition of additional features and functionality, and during workload deployment:
-![Connected ACP](./.images/connected-acp.png)
-
-The two sections below walk through the components of this solution, while the [Examples](#examples) section showcases the solution in action in a few different situations.
-
-> Note:
->
-> For simplicity, not all ACP features and services are shown in the following diagrams.
-
-> Note:
->
-> The content mirroring tool used throughout this pattern is the same tooling as what's used for the [caching platform update content on an ACP](../caching-platform-updates-on-an-acp/README.md) solution.
-
-### Platform Content Mirroring
-For disconnected ACPs, all content required by the platform, standard services, and workloads must be mirrored and be made available to the disconnected platfom. This content is mirrored to a location that is reachable by the disconnected platform, either co-located at the destination deployment site, or available through an internal network.
-
-The content mirroring tooling takes a configuration that outlines desired platform version, functionality, and optionally, additional content to be mirrored, and downloads it from the publically available content sources. The downloaed content can be stored in a content registry directly, or optionally, written to persistent storage for transportation to a destination.
-
-![Content Mirroring Tool](./.images/content-mirroring-tool.png)
-
-Refer to the [Examples](#examples) section of this pattern for a few example use cases.
-
-### Platform Configuration
-By default, ACPs are configured to pull their content from publically accessable sources on the internet, which works well for datacenter and cloud deployments, but does not support disconnected environments, or even all edge deployments where connectivity is limited. To support retrieving platform and workload content from alternate sources, the platform can be configured to retrieve content from mirrored or internally available sources, instead of reaching out to the default sources on the internet.
-
-This configuration's behavior is transparent to the workload and to the operator of the platform. When content is required, the platform will automatically redirect the request to the configured internal location, without needing specific configuration at the feature or workload level.
-
-![Redirected Content Download](./.images/redirected-content-download.png)
-
-**Pros:**
-- Provides full platform functionality when fully disconnected
-- Transparent to end users and operators of the platform
-
-**Cons:**
-- Requires knowledge of the desired platform version and standard services
-- Requires available persistent storage to store the content
-- Requires an internally reachable content registry for the platform to pull the content from
-
-## Resulting Context
-The resulting context is the ability to deploy ACPs, standard services, and workloads when external connectivity is not available, while maintaining consistency with the functionality provided by a "connected" ACP. The end user experience, features and functionality, and operational experience are all consistent across connected and disconnected platforms, and across deployment methodologies.
+ACPs, standard services, and workloads when external connectivity is not available, while maintaining consistency with the functionality provided by a "connected" ACP. The end user experience, features and functionality, and operational experience are all consistent across connected and disconnected platforms, and across deployment methodologies.
 
 The content mirroring portion of this pattern's solution can be automated and scaled, allowing for many platforms to be run across a large number of deployment locations or targets, all consuming the same set of mirrored content (or optionally, the same content across many mirrors), driving consistency and operational efficiency.
 
