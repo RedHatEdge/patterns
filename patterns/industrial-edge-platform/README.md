@@ -84,8 +84,8 @@ The platform is deployable in different architectures, such as [highly-available
 An ACP provides a solid, stable platform that, in addition to running workloads, also can act as a [management conduit for distributed control](../build-test-host-dcn-images-on-acp/README.md) nodes, allowing for a high degree of site autonomy. An ACP can be operated in a fully connected, [partially connected](../caching-platform-updates-on-an-acp/README.md), or [fully disconnected](../disconnected-acp/README.md) environment, without compromising on the features or functionality of the platform itself.
 
 ### The Distributed Control Node Layer
-The distributed control node layer lives at the "bottom" of the architecture, primarily on small form factor, purpose-built devices. These systems are usually dedicated to a single task, and operate in an [image](../image-mode-for-dcns/README.md) mode for increased resiliancy.
-![Image Mode for DCNs](../image-mode-for-dcns/.images/image-mode-install-system.png)
+The distributed control node layer lives at the "bottom" of the architecture, primarily on small form factor, purpose-built devices. These systems are usually dedicated to a single task, and operate in an [image-based](../image-mode-for-dcns/README.md) mode for increased resiliancy.
+![Image Mode for DCNs](../image-mode-for-dcns/.images/image-mode-site-specific.png)
 
 These devices are often standalone, yet can optionally be [clustered](../self-healing-dcns/README.md) to provide some failover or redundancy capability if desired.
 ![DCN Clustering](../self-healing-dcns/.images/self-healing-between-cabinets.png)
