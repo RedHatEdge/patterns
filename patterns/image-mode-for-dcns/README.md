@@ -40,7 +40,7 @@ This approach mirrors the container-native approach to application deployment: b
 
 ## Forces
 - **Customizability:** This pattern's solution allows for full control and customization of the images that are applied to the DCNs, mirroring the current operating system paradigm functionality, while recieving the benefits of image-mode deployment methodology.
-- **Customizability:** This pattern's solution can be fully customized according to the required content and confirugations of the DCNs, regardless or role or use case.
+- **Customizability:** This pattern's solution can be fully customized according to the required content and configuration of the DCNs, regardless or role or use case.
 - **Broad Applicability:** This pattern's solution works for any physical system or virtual machine that will be using image mode.
 - **Reusability:** This pattern's solution can be replicated for many different operating system images, optionally spanning across sites, geos, or other groupings.
 
@@ -55,7 +55,7 @@ The current deployment methodology for operating systems for DCNs is not imaged 
 First, the base set of systems is installed onto a device when installing it:
 ![Current Deployment OS Packages](./.images/current-deployment-os-packages.png)
 
-This process combines the individual transactions of hundreds of packages into a single big transtion, with iterates over the installation of the packages required to install the operating system.
+This process combines the individual transactions of hundreds of packages into a single big transaction, which iterates over the installation of the packages required to install the operating system.
 
 Next, additional packages are added on top of the operating system packages to support the desired workload. These packages could be to support virtualized workloads, or containerized workloads, or bare-metal workloads that require additional functions and libraries from the operating system.
 ![Current Deployment Additional Packages](./.images/current-deployment-additional-packages.png)
@@ -68,7 +68,7 @@ Finally, after these three layers have been applied, the workload can then be de
 
 The last three phases (adding additional packages, adding configurations, and deploying the workload) are all completed after the initial system installation has occured, and require either manual intervention to complete, or require the use of an automation tool.
 
-This post-installation customization approach introduces the opportunity for configuration drift, due to manual intervention and possible errors when completing the required setup tasks, or require investment in knowledge, expertise, and training on an automation tool. In addition, an automation tool may require connectivity to the systems themselves to complete the various tasks, which can further complcate the deployment of the system.
+This post-installation customization approach introduces the opportunity for configuration drift, due to manual intervention and possible errors when completing the required setup tasks, or require investment in knowledge, expertise, and training on an automation tool. In addition, an automation tool may require connectivity to the systems themselves to complete the various tasks, which can further complicate the deployment of the system.
 
 **Pros:**
 - Large existing knowledge base due to the widespread use of this type of deployment methodology
@@ -96,12 +96,12 @@ Then, configurations are added to create another itermediary image.
 Finally, the workload is added, to create the final, ready to deploy image.
 ![Image Mode Add Application](./.images/image-mode-add-application.png)
 
-This final image contains everything required to un the workload, needing only to be deployed to the target system. Once deployed, the system can be booted, and will begin running the workload.
+This final image contains everything required to run the workload, needing only to be deployed to the target system. Once deployed, the system can be booted, and will begin running the workload.
 ![Image Mode Install System](./.images/image-mode-install-system.png)
 
 This methodology allows for the final image to be deployed to the device, then booted. No post-installation work is required, instead, the device can simply be deployed, and will immediately be productive and ready.
 
-In addition, each step in this process, if one as one flow, becomes individual layers that can be deployed individually, updated individually, or if desired, before the source for a new image.
+In addition, each step in this process becomes individual layers that can be deployed individually, updated individually, or if desired, be the source for a new image.
 
 For example, if two systems both share the same configurations and both require the same set of additional packages, such as a container runtime or virtualization packages, but run different workloads, a single image can be the source for both, cutting down on duplicate steps, and instead only branching at the end.
 
@@ -143,7 +143,7 @@ Then, three images are built from that common base, according to the requirement
 - An IoT gateway image, where container runtime packages and network configurations are added
 ![Image Mode Three Images](./.images/image-mode-three-images.png)
 
-Then, each image is further built on my adding site-specific configurations, such as PTP time sources:
+Then, each image is further built on by adding site-specific configurations, such as PTP time sources:
 ![Image Mode Site Specific Configurations](./.images/image-mode-site-specific.png)
 
 These images, having started out as a single generic base image, then having had multiple layers of content added, now are ready to deploy to the various devices at the sites.
