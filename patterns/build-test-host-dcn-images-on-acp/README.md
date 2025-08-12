@@ -1,5 +1,5 @@
 # Building, Testing, and Hosting Images for DCNs on an ACP or Hub
-This pattern outlines a solution for building, testing, and hosting DCN images on an ACP or hub, leveraging core services and built-in functionality. 
+This pattern outlines a solution for building, testing, and hosting DCN images on an ACP (Advanced Compute Platform) or hub, leveraging core services and built-in functionality. 
 
 As the images that will be deployed to DCNs need to be built, tested, and ultimately hosted for consumption by the DCNs, a platform that can provide tooling and capability to meet the steps required to complete this process is required.
 
@@ -122,7 +122,7 @@ Optionally, the rollout could be controlled in stages, or controlled using image
 This allows for a "gitops-style" build, test, and rollout methodology for the DCN operating system images, which allows for treating those physical assets as code and code driven resources.
 
 ## Rationale
-The Rationale for this pattern is to address the need for a high level of testing and validation around distributed control node deployment and operation, and conquering the challenges around building and maintaining those images. In addition, specical focus was given to using services and functionality that are already provided by an ACP, leveraging the existing platform to drive and provide the expected behavior and functionality.
+The Rationale for this pattern is to address the need for a high level of testing and validation around distributed control node deployment and operation, and conquering the challenges around building and maintaining those images. In addition, special focus was given to using services and functionality that are already provided by an ACP, leveraging the existing platform to drive and provide the expected behavior and functionality.
 
 ## Footnotes
 
