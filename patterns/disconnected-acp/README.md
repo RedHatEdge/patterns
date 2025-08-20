@@ -35,8 +35,6 @@ Despite a lack of connectivity to retrieve the core platform or application cont
 ## Context
 This pattern can be applied anytime an ACP is being deployed into an environment where connectivity to public content sources available on the internet is not allowed or configured. This pattern's solution works for platforms consume the full list of [standard services](../rh-acp-standard-services/README.md), or for a more streamlined or slimmed down installation of the platform. This allows for full functionality of the platform without needing any external connection to the internet, or to content sources available on the internet. This solution can also be leveraged for ACPs deployed into environments where the external connectivity makes installation and upgrades of the platform unreasonably slow.
 
-This pattern can be applied anytime an ACP is being deployed where the underlying hardware is not limited by some factor, such as power or cooling, and where the full set of features and functionality are not required. The intention is to provide a balance between the required hardware to enable the platform, the core platform functionality, and the ability to use more of the available hardware for workloads. While some compute power is required for the platform to function, the overall amount can be limited to better fit into challenging compute locations, or to limit the cost of the platform and hardware required.
-
 This pattern's solution requires proper planning to ensure successful deployment of the platform and workloads, however it can be applied after the platform has been installed through a connected process if desired.
 
 A few key assumptions are made:
