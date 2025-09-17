@@ -95,52 +95,69 @@ The main workloads for these devices are human-machine interfaces that show real
 The DCN platform is focused on availability at all costs, allowing for remote management to be successful even in the event of a failed update or other issues introduced by platform or application changes.
 
 ## Resulting Context
-The resulting context is the ability to deploy and manage platforms and workloads at the appropriate location, across a large number of deployment sites with varying levels of connectivity and throughput, in a highly automated, easily managed approach.
+The resulting context is the ability to deploy and manage platforms and workloads at the appropriate location, across a large number of deployment sites with varying levels of connectivity and throughput, in a highly automated, easily managed approach. This spans across various hardware footprints at sites, allowing for consistency at the application and platform levels, despite differences in underlying hardware and networking.
 
-### HERE ###
+Overall, this solution provides a high level of consistency for running applications across the various deployment targets, while providing a centralized management story. It leverages all three layers to deliver and manage applications, and can use the ACP and DCN layers to provide "supporting" capabilities when needed, allowing for platforms to be installed, updated, and managed.
 
-ACPs, standard services, and workloads when external connectivity is not available, while maintaining consistency with the functionality provided by a "connected" ACP. The end user experience, features and functionality, and operational experience are all consistent across connected and disconnected platforms, and across deployment methodologies.
-
-The content mirroring portion of this pattern's solution can be automated and scaled, allowing for many platforms to be run across a large number of deployment locations or targets, all consuming the same set of mirrored content (or optionally, the same content across many mirrors), driving consistency and operational efficiency.
-
-In addition, the platform configuration can be deployed at scale using a hub, or through automation at deployment time. In addition, it can be applied to already-installed platforms as a day-2 operation, through any standard tooling that's used to manage ACPs.
-
-This also allows for ACPs to be run outside of the traditional "plant datacenter" or edge location, instead allowing for platform deployment and operation on mobile platforms, high security sites, or other locations that do not have, or do not provide, external connectivity to internal resources.
+As much as possible, this solution aims to leverage automation and tooling to deploy and manage the lifecycle of applications across a large fleet, regardless of the need for either declarative or procedural methodology. This automation can be initiated at the hub layer, but driven at a lower layer (such as from an ACP) to fit into the security paradigm of an industrial location.
 
 ## Examples
-The [Solution](#solution) section of this pattern highlights the core components required to enact the solution. In this section, three scenarios will be outlined that leverage that solution:
+The [Solution](#solution) section of this pattern highlights the individual layers that come together to form a full architecture of the industrial edge platform. Within this examples section, a few key use cases will be pulled from existing patterns.
 
-1. Mirroring content to an internally reachable location
-2. Managing Disconnected ACPs from a Hub
-3. Transporting content via "sneakernet" to fully disconnected locations
+1. Self-Healing DCNs within a Single Cabinet
+2. Running Existing Applications and Next Generation Workloads on the Same ACP
+3. Zero-Touch Provisioning of ACPs from a Hub
+4. Cloud to Edge Application Deployments
 
-### Mirroring Content to an Internally Reachable Location
-Some industrial sites operate in a "mostly disconnected" mode, meaning that connectivity back to internal/corporate resources is allowed, but connectivity to the internet is not.
+### Self-Healing DCNs within a Single Cabinet
+A self-healing cluster could be set up on DCNs located within a cabinet, allowing for the functions of those DCNs to move freely between them:
 
-For the purposes of this pattern, this use case can be considered disconnected, and a content mirror can be run centrally for ACPs at sites to pull content from.
+![Self-Healing Soft Control Cabinet](../self-healing-dcns/.images/self-healing-soft-control.png)
 
-![Central Content Source](./.images/centralized-content-source.png)
+These functions could include: running virtualized workloads, such as an application within a Windows virtual machine, a containerized deterministic application, such as a software-based control runtime with a control strategy, or other workloads as desired.
 
-This approach leverages the disconnected methodology, and provides all the benefits of full platform functionality, version consistency, and operational consistency without needing to allow the deployed ACPs to pull content from the internet directly.
+In this example, the failure of a single DCN will not remove the ability for the cabinet to function, and depending on the configuration of the workloads, may automatically recover from a DCN failure.
 
-### Managing Disconnected ACPs from a Hub
-Building on the previous example, if connectivity back to a central location is allowed, then ACPs at remote sites can be managed using a [hub](../rh-hub-standard-services/README.md). This allows for [highly-automated ACP installs](../automated-acp-install-from-hub/README.md), along with deployment of applications and policies at scale from a central management location.
+### Running Existing Applications and Next Generation Workloads on the Same ACP
+As ACPs provide functionality for workloads that are containerized, microservice based, or virtualized, a single ACP provides the functionality needed to run applications at a site. For example, an MES, which still requires virtual machines, is deployed to the same ACP where a modernized, containerized DCS is also running.
+![Colocated Workloads](../existing-apps-on-acp/.images/colocated-workloads.png)e
 
-![Centralized Management with Centrailized Content Source](./.images/hub-management-with-centralized-content-source.png)
+Despite different application architectures, and leveraging different functionality and services, the workloads are consolidated onto a single platform, highlighting an ACP's capabilities to run both existing and new workloads without requiring more overhead.
 
-In this use case, the ACP configuration to leverage an internal content source for workloads and platform content is simply a configuration item that can be applied from the hub in a broad or targeted approach.
+In this example, the MES is consuming data, via the API endpoints of the DCS, allowing data to be gathered, transformed, and displayed in the MES. This enables higher level business functions to have greater visibility into the processes running at the edge site.
 
-### Transporting Content via "Sneakernet" to Fully Disconnected Locations
-For fully disconnected sites that have no outside connectivity, the content mirroring tool can be used to download the required content to persistent storage that can be physically transported to the site, then leveraged again to load the content from storage to a content repository on-site that the ACP can reach.
+In addition, the control plane functions and core services of the ACP are also run on the platform, alongside the other two workloads, enabling these workloads, as well as providing key functionality for their deployment and operation.
 
-![Content Over Sneakernet](./.images/content-over-sneakernet.png)
+This example showcases the benefits to businesses in adopting a modern approach to edge computing: adopting a platform, such as an ACP, provides a suite of services and capabilities beyond what current platforms allow, while still having full support for existing workloads, which can be migrated to the platform.
 
-This allows for operation at sites that have no connectivity, at all, outside of the site itself.
+### Zero-Touch Provisioning ACPs from a Hub
+Another example for the industrial edge platform is using declarative tooling and GitOps at the hub level to define and deploy ACPs to remote sites at scale, and ensure they're consistent and managed by the hub, which in turn ensures consistency as the ACPs are deployed to remote sites.
+
+![Declarative Process](../automated-acp-install-from-hub/.images/declarative-process.png)
+
+This allow for significant scaling of this solution over manually defining each site or ACP at every site, reducing the burden on the centralized management team when deploying ACPs to a large number of sites.
+
+In addition, templating functionality of the declarative state management service could be used to build a large number of ACP operating environment definitions and ACP definitions without needing to manually define them individually.
+
+### Cloud to Edge Application Deployment - Hub to DCN Through an ACP
+ACPs are fully feature-complete without a hub, however, when managing ACPs at scale, a hub provides a central point to drive configuration and application deployments. This architecture is commonly referred to as a "hub and spoke" style deployment, where ACPs would be the spokes, connected back to a central hub, where configuration and deployment information are pulled from.
+
+Because the declarative state management service runs on the hub and on ACPs, application definitions can be created that target many ACPs, allowing for a simplified and centralized deployment process.
+![Hub to ACP Deployments](../cloud-to-edge-app-deployment/.images/hub-to-acp-deployments.png)
+
+This approach allows for a high degree of scaling without having to interface with each ACP directly, instead, the ACPs are connected back to a central hub, and pull application deployments from it. The hub provides a centralized point of configuration and visibility, and facilitates deployments out to the ACPs at scale.
+
+While the hub performs some high level rendering functions, responsibility for the deployment of the applications and constant reconciliation is still the responsibility of the ACPs themselves, as they're running the declarative state management service. This facilitates local autonomy at the ACP level: if the hub cluster experiences an outage, or connectivity to it is lost, applications continue to function as they were, according to the last known deployment definition. Should a component of the application drift or be deleted, it will be reconciled by the instnace of the declarative state management service running on that ACP.
+![Component Deleted](../cloud-to-edge-app-deployment/.images/component-deleted.png)
+
+Once connection is re-established to the hub, deployment definitions will be automatically pulled, and if an update to an application deployment definition has been made, it will be automatically applied.
+
+Typically, the pull model is used for the connection between the ACPs and the hub, as this method simplifies the required connectivity changes to facilitate communication: the ACPs simply need to be allowed to call out to the hub, as opposed to requiring the hub to communicate directly via an inbound connection, from the point of reference of the ACP. Outbound connections are usually preferred at sites, as they are viewed as more secure and easier to manage.
 
 ## Rationale
-The rationale for this pattern is to address wanting ACPs deployed to sites that operate in a disconnected manner, while retaining full feature parity with ACPs that are deployed in connected or semi-connected environments. This allows for the platform's features and functionality to be consumed in even more operational environments without significant drift from the standard platform deployment configuration.
+The rationale for this pattern is to address the needs for next-generation compute capabilities at industrial sites with respect for security, consistency, scalability, and reliability.
 
-Since consistency is key when operating edge sites at scale, the ability to leverage a common platform, regardless of the connectivity model at each site, helps to scale the capabilities of the organization, while still remaining flexible enough to support the needs of an individual site.
+The overall objective is to provide one singluar, consistency way to deploy and manage platforms and applications onto those platforms, regardless of the underlying hardware, and working within the network and security boundries that have come to define the modern industrial edge site.
 
 ## Footnotes
 
