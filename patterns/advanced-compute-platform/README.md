@@ -20,6 +20,7 @@ An ACP loosely maps to functions found within the DMZ, layer 3, layer 3.5, and p
 * [Resulting Context](#resulting-context)
 * [Examples](#examples)
 * [Rationale](#rationale)
+* [Further Reading](#further-reading)
 
 ## Abstract
 | Key | Value |
@@ -112,6 +113,21 @@ For more information, review the following patterns:
 The rationale for this pattern is to highlight the ACP as the cornerstone of industrial edge compute. It balances flexibility and resilience, supporting both modernization and continuity of critical operations.  
 
 By providing a consistent, secure, and manageable compute layer, ACPs enable industrial organizations to standardize across sites, simplify operations, and prepare for future workloads—without compromising on mission-critical reliability.
+
+## Further Reading
+
+### Architectures for ACPs
+ACPs can be deployed in highly-available and non-highly available architectures:
+- [Highly Available ACP Architecture](../acp-standardized-architecture-ha/README.md)
+- [Non-Highly Available ACP Architecture](../acp-standardized-architecture-non-ha/README.md)
+
+### Standard Services of an ACP
+- [ACP Standard Services](../rh-acp-standard-services/README.md)
+
+### Deployment Options for an ACP
+- [Automated Installation from a Hub](../automated-acp-install-from-hub/README.md)
+- [Non-Hub ACP Install](../non-hub-acp-install/README.md)
+- [Disconnected ACP Installation](../disconnected-acp/README.md)
 
 ## Footnotes
 
