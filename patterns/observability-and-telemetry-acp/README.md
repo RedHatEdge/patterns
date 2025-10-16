@@ -1,5 +1,5 @@
 # Observability and Telemetry on an ACP
-This pattern outlines a solution for observability and telemetry on an ACP, and for DCNs (and related devices) within the same network boundry as an ACP. It can be used as part of a enterprise-wide observability and telemtry approach, however this pattern will focus on the ACP and "lower" layers within a single site.
+This pattern outlines a solution for [observability](https://opentelemetry.io/docs/concepts/observability-primer/#what-is-observability) and telemetry on an ACP, and for DCNs (and related devices) within the same network boundry as an ACP. It can be used as part of a enterprise-wide observability and telemtry approach, however this pattern will focus on the ACP and "lower" layers within a single site.
 
 ACPs provide a level of observability and telemetry out-of-the-box, with the main focus being to track the health and performance of the platform itself. This can be extended to additional workloads running on the platform for deeper visibility and better efficiency when troubleshooting.
 
@@ -72,37 +72,89 @@ The [Examples](#examples) section will outline a few common scenarios that lever
 ## Examples
 This section of this pattern will focus on two key use cases for the solution of this pattern:
 - Observability of workloads running on the ACP
-- Combining observability and telemetry for workloads both on the ACP and external to the ACP
-
-HERE
+- Combining observability and telemetry for workloads on the ACP and external to the ACP
 
 ### Observability of Workloads Running on the ACP
-The observability service provides 
+The observability service provides easily-consumed functionality around gathering and displaying information, such as metrics, for workloads running on the platform. 
 
-![Network Based Boot](./.images/network-based-boot.png)
+For example, consider the following base ACP, which is hosting virtualized and containerized workloads that form a full system:
+![Base ACP](./.images/base-acp.png)
 
-In this example, the generated installation media for networking booting is downloaded to a web server at the site. Then, the hosts are network booted, where network services inform the hosts that the installation media is available for download from the web server. The hosts retrieve the installation media over the network, boot, then continue on with the rest of the process like normal.
+To gain further insights into the system, two actions are required:
+1. The Observability service is enabled on the platform - this service can be enabled at installation time, or later on. It also can be disabled if it's no longer needed.
+![Observability Service Added](./.images/observability-added.png)
 
-Optionally, this can be fully automated using IT automation tooling to configure the site's web server and network services.
+2. The various workloads that compromise the system are tagged so the Observability service starts collection metrics.
+![Workloads Tagged](./.images/workloads-tagged.png)
 
-### Installation onto an underlying platform
-In certain situations, ACPs can be virtualized on top of other platforms that provide virtualization. The hub's central management platform features a set of pre-built integrations for virtualization and compute providers, which allows to hub to simply consume the virtualization platform and create an ACP without needing additional support, or without needing to generate installation media.
+Once the workloads are tagged, the Observability service will automatically start gathering metrics and information about the workloads, and store that information.
+![Workloads Discovered by Tag](./.images/workloads-discovered.png)
 
-![Virtualized ACP Install](./.images/virtualized-acp-install.png)
+Now, the gathered information can be visualized:
+![Workloads Observed](./.images/workloads-observed.png)
 
-In this example, the site has a virtualization platform that the hub's central management service has an existing integration for. This allows for a "direct" installation of the ACP by the hub, without any additional input. This provides a similiarily heavily automated experience when building ACPs at remote sites.
+### Combining Observability and Telemetry for Workloads on the ACP and External to the ACP
+The telemetry service allows for collection, processing, aggregration, filtering, and forwarding of metrics, logs, and traces from workloads both internal and external to the ACP, as long as networking connectivity is available.
 
-### Leveraging declarative tooling to scale ACP operating environment and ACP definition deployment
-Finally, another example is using declarative tooling and GitOps to define clusters at scale, and ensure they're consistent and managed on the hub, which in turn ensures consistency as the ACPs are deployed to remote sites.
+Similar to the Telemetry service, two steps are needed to enable this service and leverage its functionality:
+1. Enablement of the Telemetry service - this service can be enabled at installation time, or later on. It can also be disabled if it's no longer needed.
+![Telemetry Service Added](./.images/telemetry-service-added.png)
 
-![Declarative Process](./.images/declarative-process.png)
+2. Applying a configuration to the Telemetry service - this configuration tells the Telemetry service where to start gathering metrics from, and also to optionally listen for incoming logs from external sources.
+![Telemetry Service Configured](./.images/telemetry-service-configured.png)
 
-This allow for significant scaling of this solution over manually defining each site or ACP at every site, reducing the burden on the centralized management team when deploying ACPs to a large number of sites.
+Once the configuration is applied, the platform automatically deploys (or redeploys) the various components of the telemetry service, which then begin operating according to the configuration.
 
-In addition, templating functionality of the declarative state management service could be used to build a large number of ACP operating environment definitions and ACP definitions without needing to manually define them individually.
+In this example, the configuration contained information about two external DCNs which should be scraped for metrics. Once the configuration was applied, the collection service began scraping metrics from the DCNs. These metrics then flowed through the processing service, and became avaiable for consumption via the output service.
+![Metrics Gathered from DCNs](./.images/metrics-gathered-from-dcns.png)
+
+To integrate the Observability and Telemetry services, a label is added to the Telemetry's output service, which the Observability service discovers, and begins gathering metrics from - allowing for a full flow from the external DCNs to the visualization function of the Observability service, faciliated by the Telemetry service.
+![Full Flow](./.images/full-flow.png)
+
+This can be further extended to include logs or traces from applications, or from other external sources. For example, this setup scrapes and ingests metrics and logs from workloads and embedded devices to gain further insights into the overall system:
+```mermaid
+graph BT
+    subgraph internal [Processing and Visualization - Inside ACP]
+        sp_internal[ ]
+        OTEL["OTEL Collector"]
+        MS["MonitoringStack"]
+        ACP_WL["ACP Workloads"]
+        VIZ["Visualization: Grafana"]
+        ACP["Platform"]
+    end
+
+    subgraph external [External Sources - Outside ACP]
+        DCN["DCN Nodes"]
+        DCNIO["DCNIO Nodes"]
+        APPS["GDS/MPC Apps"]
+    end
+
+    %% --- Data Flow (Bottom to Top) ---
+
+    %% External sources sending data INTO the ACP.
+    DCN -- "is scraped by" --> OTEL
+    DCNIO -- "is scraped by" --> OTEL
+    APPS -- "pushes data to" --> OTEL
+
+    %% Internal ACP data flow.
+    ACP_WL -- "is scraped by" --> MS
+    ACP -- "is scraped by" --> MS
+    OTEL -- "is scraped by" --> MS
+    MS -- "provides data for" --> VIZ
+    
+    %% This invisible link forces the spacer to the top
+    VIZ ~~~ sp_internal
+
+    %% --- Styling ---
+    %% This makes the spacer node invisible
+    style sp_internal fill:none, stroke:none
+```
+
+This now allows for insights and visibility into a full system, even if parts of the system are external to the ACP.
+
 
 ## Rationale
-The rationale for this pattern is to address the need for repeatable and automated deployment of ACPs at a large number of edge sites without needing a large centralized team. This pattern's solution leverages functionality of a service provided by a centralized application, the hub's central management service, to accomplish this. This approach also leads to greater consistency at scale, helping to eliminate support and troubleshooting burdens when building and operating ACPs.
+The rationale for this pattern is to address the need for visibility into complex systems: their performance, steady state, and overall health. The various infrastructure components that faciliate this should be managed by the platform itself, and be extensible to both external data sources, as well as to new or evolving workloads on the platform over time. This pattern's solution addresses these concerns using standard services available on an ACP.
 
 ## Footnotes
 
