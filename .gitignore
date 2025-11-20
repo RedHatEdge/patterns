@@ -3,3 +3,6 @@ KUBECONFIG
 kubeconfig
 .TO-DO.md
 hold/
+.DS_Store
+.tmp.*
+WARP.md
