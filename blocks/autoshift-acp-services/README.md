@@ -171,6 +171,37 @@ AutoShift ships with policies covering the full ACP service portfolio:
 | **Lifecycle** | machine-health-checks, node-maintenance, workload-partitioning |
 | **Hub** | advanced-cluster-management, cluster-install, cluster-labels |
 
+### ACP Standard Services to AutoShift Label Mapping
+The following table maps each [ACP Standard Service](../../patterns/rh-acp-standard-services/README.md) to the AutoShift labels that control its deployment. This is the reference for translating the desired ACP service portfolio into values file configuration.
+
+| ACP Standard Service | Red Hat Product | AutoShift Enable Label | Subscription Labels | Placement Key |
+| --- | --- | --- | --- | --- |
+| **Certificate Management** | cert-manager Operator | `cert-manager: 'true'` | `cert-manager-channel`, `cert-manager-source`, `cert-manager-source-namespace`, `cert-manager-subscription-name` | `autoshift.io/cert-manager` |
+| **Converged Storage (HA)** | OpenShift Data Foundation | `odf: 'true'` | `odf-channel`, `odf-source`, `odf-source-namespace`, `odf-subscription-name`, `odf-resource-profile` | `autoshift.io/odf` |
+| **Local Storage (Non-HA)** | LVM Storage | `lvm: 'true'` | `lvm-channel`, `lvm-source`, `lvm-source-namespace`, `lvm-subscription-name` | `autoshift.io/lvm` |
+| **Local Storage (Backing)** | Local Storage Operator | `local-storage: 'true'` | `local-storage-channel`, `local-storage-source`, `local-storage-source-namespace`, `local-storage-subscription-name` | `autoshift.io/local-storage` |
+| **Virtualization** | OpenShift Virtualization | `virt: 'true'` | `virt-channel`, `virt-source`, `virt-source-namespace`, `virt-subscription-name` | `autoshift.io/virt` |
+| **Network Interface Management** | NMState Operator | `nmstate: 'true'` | `nmstate-channel`, `nmstate-source`, `nmstate-source-namespace`, `nmstate-subscription-name` | `autoshift.io/nmstate` |
+| **IT Automation** | Ansible Automation Platform | `aap: 'true'` | `aap-channel`, `aap-source`, `aap-source-namespace`, `aap-subscription-name` | `autoshift.io/aap` |
+| **Declarative State Management** | OpenShift GitOps | `gitops: 'true'` | `gitops-channel`, `gitops-source`, `gitops-source-namespace`, `gitops-subscription-name` | `autoshift.io/gitops` |
+| **Compliance** | Compliance Operator | `compliance: 'true'` | `compliance-channel`, `compliance-source`, `compliance-source-namespace`, `compliance-subscription-name` | `autoshift.io/compliance` |
+| **Telemetry** | Red Hat build of OpenTelemetry | `opentelemetry: 'true'` | `opentelemetry-channel`, `opentelemetry-source`, `opentelemetry-source-namespace`, `opentelemetry-subscription-name` | `autoshift.io/opentelemetry` |
+| **Observability** | Cluster Observability Operator | `coo: 'true'` | `coo-channel`, `coo-source`, `coo-source-namespace`, `coo-subscription-name` | `autoshift.io/coo` |
+
+Additional supporting services available through AutoShift:
+
+| Service | AutoShift Enable Label | Subscription Labels | Placement Key |
+| --- | --- | --- | --- |
+| **Logging** | `logging: 'true'` | `logging-channel`, `logging-source`, `logging-source-namespace`, `logging-subscription-name` | `autoshift.io/logging` |
+| **Log Storage (Loki)** | `loki: 'true'` | `loki-channel`, `loki-source`, `loki-source-namespace`, `loki-subscription-name`, `loki-size` | `autoshift.io/loki` |
+| **Distributed Tracing (Tempo)** | `tempo: 'true'` | `tempo-channel`, `tempo-source`, `tempo-source-namespace`, `tempo-subscription-name` | `autoshift.io/tempo` |
+| **User Workload Monitoring** | `uwm: 'true'` | N/A (platform configuration) | `autoshift.io/uwm` |
+| **Security (ACS)** | `acs: 'true'` | `acs-channel`, `acs-source`, `acs-source-namespace`, `acs-subscription-name` | `autoshift.io/acs` |
+| **Storage Nodes (HA)** | `storage-nodes: '<count>'` | N/A (creates MachineSets) | N/A |
+| **Node Maintenance** | `node-maintenance: 'true'` | `node-maintenance-channel`, `node-maintenance-source`, `node-maintenance-source-namespace`, `node-maintenance-subscription-name` | `autoshift.io/node-maintenance` |
+
+Every enable label also supports an optional version pin label (`<operator>-version`) that locks the operator to a specific CSV. See [Part 7](#part-7---managing-service-lifecycle) for details.
+
 ## Part 2 - Bootstrapping the Hub
 Before AutoShift can manage the fleet, two foundational services must be installed on the hub: Advanced Cluster Management and OpenShift GitOps.
 
