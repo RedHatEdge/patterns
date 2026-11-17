@@ -441,10 +441,6 @@ spec:
 
 > Note:
 >
-> The [ACP Networking Configuration](../../blocks/acp-network-configuration/README.md#part-4---applying-network-configurations) block's template only renders the `interfaces` section of a policy. To manage bridge mappings with the same tooling, extend the template to also render an `ovn` section.
-
-> Note:
->
 > A physical interface should be used by either Linux bridges (Sections 1-4) or an OVS bridge (this section), not both. Choose one model per physical interface.
 
 #### Creating the Networks
