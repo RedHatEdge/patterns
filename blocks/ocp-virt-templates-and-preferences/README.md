@@ -380,3 +380,21 @@ Once complete, these resources can be reviewed in the WebUI, and are ready to be
 ![VM Template](./.images/vm-template.png)
 
 ![Cluster Preferences](./.images/cluster-preferences.png)
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: OpenShift Virtualization Templates and Cluster Preferences
+type: block
+description: Creating templates and setting cluster preferences for virtual machine operating systems
+platform: Red Hat OpenShift
+scope: Virtualization
+tooling: [CLI, yaml]
+prerequisites:
+  blocks: [importing-installer-isos, autounattend-for-windows, attaching-autounattend-files-to-virtual-machine, installing-operators-yaml, enabling-tekton-vm-tasks]
+  patterns: [windows-templates-acp-virtualization]
+status: complete
+```

@@ -354,3 +354,20 @@ With everything set and defined, our automation can now be leveraged to create i
 ```
 ansible-playbook code/ansible/create-install-media.yml --inventory code/ansible/inventory.yml --extra-vars @code/ansible/extra-vars.yml -vv
 ```
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Automation for Creating Installation Media
+type: block
+description: Using Ansible to create installation media for a cluster or ACP
+platform: Red Hat OpenShift
+scope: Bootstrapping
+tooling: [CLI, yaml, Ansible]
+prerequisites:
+  blocks: [agent-config-and-install-config]
+  patterns: []
+status: complete
+```

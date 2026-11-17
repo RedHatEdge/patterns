@@ -374,3 +374,21 @@ oc apply -f code/pipeline.yaml
 
 Once complete, the pipeline will be created:
 ![Created Pipelines](./.images/created-pipelines.png)
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Creating Windows Template Prep Pipelines
+type: block
+description: Creating pipelines that handle the creation of Windows templates for use in virtual machine deployments
+platform: Red Hat OpenShift
+scope: Virtualization
+tooling: [CLI, yaml]
+prerequisites:
+  blocks: [importing-installer-isos, autounattend-for-windows, attaching-autounattend-files-to-virtual-machine, installing-operators-yaml, enabling-tekton-vm-tasks]
+  patterns: [windows-templates-acp-virtualization]
+status: complete
+```

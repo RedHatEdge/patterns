@@ -122,3 +122,21 @@ volumes:
 ```
 
 These configurations, when added to the virtual machine definition, will attach another virtual CD that the operating system can access.
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Attaching Autounattend Files to Windows Virtual Machines
+type: block
+description: How to attach autounattend and post-install files to a virtual machine for automatic Windows installation
+platform: Red Hat OpenShift
+scope: Virtualization
+tooling: [CLI, yaml, helm, GitOps]
+prerequisites:
+  blocks: [autounattend-for-windows]
+  patterns: []
+status: complete
+```

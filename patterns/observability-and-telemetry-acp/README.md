@@ -163,3 +163,20 @@ The rationale for this pattern is to address the need for visibility into comple
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Observability and Telemetry on an ACP
+type: pattern
+description: Providing observability and telemetry on an ACP for workloads and external devices using OpenTelemetry
+platform: Advanced Compute Platform
+scope: Installation
+tooling: [Red Hat Advanced Cluster Management]
+prerequisites:
+  blocks: []
+  patterns: [acp-standardized-architecture-ha, acp-standardized-architecture-non-ha]
+status: complete
+```

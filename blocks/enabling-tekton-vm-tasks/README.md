@@ -120,3 +120,21 @@ This can be set when installing OpenShift Virtualization, or after by editing th
 
 Once the rollout completes, the tasks will be available:
 ![Enabled Tasks](./.images/enabled-tasks.png)
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Enabling Tekton Task Resources
+type: block
+description: How to enable Tekton tasks for managing virtual machines on an ACP
+platform: Red Hat OpenShift
+scope: Virtualization
+tooling: [CLI, yaml, helm, GitOps]
+prerequisites:
+  blocks: [installing-operators-yaml]
+  patterns: []
+status: complete
+```

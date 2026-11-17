@@ -201,3 +201,20 @@ The rationale for this pattern is to address the need for repeatable and automat
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Automated ACP Installs from a Hub
+type: pattern
+description: Installing ACPs at distributed sites in an automated fashion using a hub cluster to drive the installation
+platform: Advanced Compute Platform
+scope: Installation
+tooling: [Red Hat Advanced Cluster Management]
+prerequisites:
+  blocks: []
+  patterns: [acp-standardized-architecture-ha, acp-standardized-architecture-non-ha, rh-hub-standard-services]
+status: complete
+```

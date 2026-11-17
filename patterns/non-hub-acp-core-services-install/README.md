@@ -170,3 +170,20 @@ Most end consumers of converged platforms are interested in consuming the resour
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Non-Hub Based ACP Core Services Installation
+type: pattern
+description: Installing ACP core services without a hub using GitOps and Helm
+platform: Red Hat OpenShift
+scope: Platform Installation
+tooling: [Helm, Red Hat OpenShift GitOps]
+prerequisites:
+  blocks: [helm-getting-started, gitops-deployment-k8s, bootstrapping-gitops, local-storage-for-converged-storage, acp-network-configuration, acp-cert-management, converged-storage-odf, aap-on-acp-install, virtualization-on-acp]
+  patterns: [acp-standardized-architecture-ha, rh-acp-standard-services]
+status: complete
+```

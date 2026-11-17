@@ -249,3 +249,20 @@ ansible-playbook code/ansible/playbook.yml --inventory code/ansible/inventory.ym
 ```
 
 Once the run is completed, the switch is configured and ready.
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Example Network Configuration
+type: block
+description: Using Ansible to configure networking devices (Cisco switch) to support an ACP
+platform: Red Hat Ansible Automation Platform
+scope: Bootstrapping
+tooling: [Ansible, CLI]
+prerequisites:
+  blocks: []
+  patterns: []
+status: complete
+```

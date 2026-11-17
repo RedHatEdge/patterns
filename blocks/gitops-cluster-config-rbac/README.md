@@ -63,3 +63,20 @@ oc apply -f code/clusterrolebinding.yaml
 > Note:
 >
 > Ensure you have cluster admin privileges before attempting to create or modify the cluster role binding.
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: GitOps Cluster Configuration Permissions
+type: block
+description: Giving OpenShift GitOps cluster admin permissions for managing more than just applications
+platform: Red Hat Device Edge with Microshift, Red Hat OpenShift
+scope: Application deployment
+tooling: [Red Hat OpenShift GitOps]
+prerequisites:
+  blocks: [k8s-core-concepts]
+  patterns: []
+status: complete
+```

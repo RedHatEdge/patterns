@@ -136,3 +136,20 @@ ACPs can be deployed in highly-available and non-highly available architectures:
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Advanced Compute Platform Overview
+type: pattern
+description: Overview of the ACP layer of the industrial edge platform, covering its role as the site-scale compute foundation
+platform: Advanced Compute Platform
+scope: [Installation, Operation, Workload Hosting]
+tooling: [Red Hat OpenShift, Red Hat Advanced Cluster Management, Red Hat Ansible Automation Platform]
+prerequisites:
+  blocks: []
+  patterns: []
+status: complete
+```

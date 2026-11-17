@@ -436,3 +436,21 @@ oc apply -f code/server2019/configmap.yaml
 
 This will create the ConfigMap:
 ![ConfigMap](./.images/configmap.png)
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Autounattend and Post-Install Scripts for Automated Windows Installs
+type: block
+description: What autounattend files are, how they are structured, and including post-installation steps for automated Windows installs
+platform: Red Hat OpenShift
+scope: Virtualization
+tooling: [CLI, yaml, helm, GitOps]
+prerequisites:
+  blocks: [helm-getting-started, installing-operators-yaml, gitops-cluster-config-rbac]
+  patterns: []
+status: complete
+```

@@ -166,3 +166,20 @@ The overall objective is to provide one singluar, consistency way to deploy and 
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Industrial Edge Platform Overview
+type: pattern
+description: Meta-pattern for next generation compute platforms at industrial sites spanning hub, ACP, and DCN layers
+platform: [Advanced Compute Platform, Distributed Control Nodes]
+scope: [Installation, Operation]
+tooling: [Red Hat Advanced Cluster Management, Red Hat Ansible Automation Platform]
+prerequisites:
+  blocks: []
+  patterns: []
+status: complete
+```

@@ -186,3 +186,20 @@ oc apply -f code/example-rhel9.yaml
 
 The virtual machine will then be created and started:
 ![RHEL9 Virtual Machine Details](./.images/rhel9-vm-details.png)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Declaring Virtual Machines as Code
+type: block
+description: How to create virtual machines from code using the virtualization service
+platform: Red Hat OpenShift
+scope: Bootstrapping
+tooling: [CLI, yaml, helm, GitOps]
+prerequisites:
+  blocks: [helm-getting-started, installing-operators-yaml, gitops-cluster-config-rbac, virtualization-on-acp]
+  patterns: []
+status: complete
+```

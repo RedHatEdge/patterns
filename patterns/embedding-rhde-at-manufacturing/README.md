@@ -177,3 +177,20 @@ Secure attestation and onboarding, along with automated workload and application
 
 ## Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Embedding Red Hat Device Edge at Device Manufacturing
+type: pattern
+description: Embedding RHDE on devices during manufacturing with secure FDO-based onboarding at deployment sites
+platform: Red Hat Device Edge
+scope: [Manufacturing, Onboarding]
+tooling: [FDO]
+prerequisites:
+  blocks: []
+  patterns: []
+status: complete
+```

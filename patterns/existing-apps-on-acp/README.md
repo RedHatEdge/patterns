@@ -202,3 +202,20 @@ Two threads emerge from this rationale point: leveraging services and tooling to
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Preparing to Run Existing Workloads on an ACP
+type: pattern
+description: Configuring ACP core services to run existing virtualized workloads with like-for-like functionality from legacy platforms
+platform: Advanced Compute Platform
+scope: [Virtualization, Migration]
+tooling: [Red Hat OpenShift GitOps]
+prerequisites:
+  blocks: []
+  patterns: []
+status: complete
+```

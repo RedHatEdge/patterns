@@ -100,3 +100,20 @@ The resulting context is the ability to consistently install ACPs onto target ha
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Non-Hub Based Automated ACP Installation
+type: pattern
+description: Installing an ACP through an automated process without a hub using Ansible
+platform: Red Hat OpenShift
+scope: Platform Installation
+tooling: [Red Hat Ansible]
+prerequisites:
+  blocks: [example-network-config, dns-for-acp, agent-config-and-install-config, install-media-playbook, install-via-oob]
+  patterns: [acp-standardized-architecture-ha]
+status: complete
+```

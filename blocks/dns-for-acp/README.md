@@ -321,3 +321,21 @@ Name:	redhat.com
 Address: 52.200.142.250
 Name:	redhat.com
 Address: 34.235.198.240
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Setting Up DNS for an ACP
+type: block
+description: DNS requirements and configuration for running an ACP using Bind
+platform: Red Hat OpenShift
+scope: Bootstrapping
+tooling: [CLI, yaml, Ansible]
+prerequisites:
+  blocks: []
+  patterns: []
+status: complete
+```

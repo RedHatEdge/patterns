@@ -251,3 +251,20 @@ ansible-playbook code/ansible/playbook.yml --inventory code/ansible/inventory.ym
 ```
 
 Once the run is completed, the switch is configured and ready.
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Example Redundant Network Configuration
+type: block
+description: Example of a redundant network configuration for ACP nodes using Ansible
+platform: Advanced Compute Platform
+scope: Networking
+tooling: [Ansible, CLI]
+prerequisites:
+  blocks: []
+  patterns: []
+status: wip
+```

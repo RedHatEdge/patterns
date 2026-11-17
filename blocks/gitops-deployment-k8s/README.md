@@ -171,3 +171,20 @@ Application created:
 
 Deployment:
 ![Deployment](./.images/deployment.png)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: GitOps Application Deployment for Kubernetes Applications
+type: block
+description: Deployment of applications to kubernetes-based platforms using GitOps
+platform: Red Hat Device Edge with Microshift, Red Hat OpenShift
+scope: Application deployment, application lifecycle
+tooling: [Git, Helm, ArgoCD]
+prerequisites:
+  blocks: [k8s-core-concepts, helm-getting-started]
+  patterns: []
+status: complete
+```

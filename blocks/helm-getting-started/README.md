@@ -165,3 +165,20 @@ TEST SUITE: None
 ```
 
 Here, the value of `instanceAnnotations.companyName` was overriden by the CLI to be "XYZ Corporation".
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Getting Started with Helm Charts
+type: block
+description: Leveling up Kubernetes application deployment to use Helm charts
+platform: Red Hat Device Edge with Microshift, Red Hat OpenShift
+scope: Application deployment
+tooling: [Git, Helm]
+prerequisites:
+  blocks: [k8s-core-concepts]
+  patterns: []
+status: complete
+```

@@ -194,3 +194,21 @@ After following the URL, the username `admin` and password from the `controller-
 ![Login Page](./.images/webui-login.png)
 
 ![Dashboard](./.images/controller-dashboard.png)
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Installing Ansible Automation Platform on an ACP
+type: block
+description: How to install Ansible Automation Platform and deploy a Controller instance on an ACP
+platform: Red Hat OpenShift
+scope: Bootstrapping
+tooling: [CLI, yaml, helm, GitOps]
+prerequisites:
+  blocks: [helm-getting-started, installing-operators-yaml, gitops-cluster-config-rbac]
+  patterns: []
+status: complete
+```

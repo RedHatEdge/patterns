@@ -804,3 +804,21 @@ helm upgrade --install autoshift ./autoshift \
 Or via an ArgoCD Application referencing the values file in Git, as shown in [Part 4](#part-4---deploying-autoshift).
 
 After deployment, assigning an ACP to the `non-ha-acps` clusterset automatically provisions the entire service stack — LVM storage, virtualization, NMState networking, ACS security, observability, and logging — with no further per-site configuration.
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Deploying ACP Standard Services with AutoShift
+type: block
+description: Using AutoShift IaC framework to deploy and enforce ACP services from a hub cluster using RHACM governance policies and GitOps
+platform: Red Hat OpenShift
+scope: Fleet Management, Service Deployment
+tooling: [CLI, helm, GitOps, RHACM]
+prerequisites:
+  blocks: [helm-getting-started, installing-operators-yaml, gitops-cluster-config-rbac]
+  patterns: [rh-hub-standard-services, rh-acp-standard-services]
+status: complete
+```

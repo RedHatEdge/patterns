@@ -149,3 +149,20 @@ Since consistency is key when operating edge sites at scale, the ability to leve
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Deploying ACPs to Small Form-Factor Hardware
+type: pattern
+description: Installing ACPs onto limited or purpose-built hardware by selectively omitting platform features at installation time
+platform: Advanced Compute Platform
+scope: Installation
+tooling: [Red Hat Advanced Cluster Management, Red Hat Ansible Automation Platform]
+prerequisites:
+  blocks: []
+  patterns: [acp-standardized-architecture-ha, acp-standardized-architecture-non-ha, rh-hub-standard-services]
+status: complete
+```

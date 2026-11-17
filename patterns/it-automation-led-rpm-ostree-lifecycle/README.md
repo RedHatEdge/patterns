@@ -193,3 +193,20 @@ This solution leverages what's already provided by an ACP to accomplish an autom
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Using the IT Automation Service for DCN Operating System Lifecycle Management
+type: pattern
+description: Lifecycle management of distributed control node operating systems driven by the IT automation service on an ACP
+platform: TBD
+scope: TBD
+tooling: []
+prerequisites:
+  blocks: []
+  patterns: []
+status: complete
+```

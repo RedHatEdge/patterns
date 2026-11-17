@@ -301,3 +301,21 @@ Automation can be added to this pattern's solution to elevate it to a more "ente
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Creating Red Hat Device Edge Images without an ACP
+type: pattern
+description: Building Red Hat Device Edge images using Podman on a Linux system when an ACP is not available
+platform: Red Hat Device Edge
+scope: [Build, Image Creation]
+tooling: [Podman]
+prerequisites:
+  blocks: []
+  patterns: []
+status: complete
+```

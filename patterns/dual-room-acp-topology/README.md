@@ -1005,3 +1005,21 @@ The stretched ACP is the simpler model with fewer moving parts and stronger auto
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Stretched ACP vs. Independent ACPs Across Two Data Rooms
+type: pattern
+description: Comparing stretched ACP and two independent ACPs for dual-room edge sites, covering recovery, isolation, networking, and disconnected behavior
+platform: Advanced Compute Platform
+scope: [Architecture, Availability, Networking, Workload Scheduling]
+tooling: [Red Hat OpenShift, Red Hat Advanced Cluster Management, Submariner]
+prerequisites:
+  blocks: []
+  patterns: [acp-standardized-architecture-ha, acp-control-plane-sizing, rh-acp-standard-services]
+status: complete
+```

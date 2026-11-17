@@ -254,3 +254,21 @@ Assuming correct configuration, our NNCPs should match one node each, and be app
 
 ![Node Network State](./.images/node-network-state.png)
 
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Creating Bridged Networks on an ACP
+type: block
+description: How to create and manage VLAN and bridged networks on an ACP for connecting virtual machines directly to a network
+platform: Red Hat OpenShift
+scope: Bootstrapping
+tooling: [CLI, yaml, helm, GitOps]
+prerequisites:
+  blocks: [helm-getting-started, installing-operators-yaml, gitops-cluster-config-rbac]
+  patterns: []
+status: complete
+```

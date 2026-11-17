@@ -213,3 +213,21 @@ If there are sub-directories, the `--recursive` flag can be used. For example, t
 ```
 oc apply -f code/k8s/ --recursive
 ```
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Kubernetes Core Concepts
+type: block
+description: Gaining a base understanding of Kubernetes resources and deployment concepts
+platform: Red Hat Device Edge with Microshift, Red Hat OpenShift
+scope: Platform, information
+tooling: [k8s]
+prerequisites:
+  blocks: []
+  patterns: []
+status: complete
+```

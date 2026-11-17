@@ -382,3 +382,21 @@ This pattern's solution uses a non-intrusive, platform-managed approach that ali
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Power Utilization Tracking of Workloads on an ACP
+type: pattern
+description: Tracking per-pod and per-namespace power consumption on bare-metal ACPs using Kepler and the observability stack
+platform: Advanced Compute Platform
+scope: [Observability, Sustainability]
+tooling: [Kepler, Red Hat Cluster Observability Operator, Red Hat's build of OpenTelemetry]
+prerequisites:
+  blocks: [power-monitoring-kepler]
+  patterns: [acp-standardized-architecture-ha, acp-standardized-architecture-non-ha, observability-and-telemetry-acp]
+status: complete
+```

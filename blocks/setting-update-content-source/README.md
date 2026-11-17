@@ -148,3 +148,21 @@ oc apply -f /path/to/imagecontentsourcepolicy.yaml
 ```
 
 Once complete, the platform will handle any additional configuration needed to ensure the `ImageContentSourcePolicy` is applied to all nodes within the cluster.
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Setting Update Content Sources for an ACP
+type: block
+description: Configuring an ACP to pull update content from a different source using ImageContentSourcePolicy
+platform: Red Hat OpenShift
+scope: Updates
+tooling: [CLI, yaml]
+prerequisites:
+  blocks: [k8s-core-concepts, helm-getting-started, gitops-deployment-k8s, backing-internal-registry-with-storage-ha, mirroring-update-content]
+  patterns: []
+status: complete
+```

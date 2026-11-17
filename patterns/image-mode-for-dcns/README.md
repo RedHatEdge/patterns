@@ -200,3 +200,21 @@ In addition, devices will self-check when booting, and have enough local autonom
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
 - Ram Gopinathan (rgopinat@redhat.com)
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Image Mode For Distributed Control Nodes
+type: pattern
+description: Leveraging bootable containers as immutable operating system images for distributed control nodes on purpose-built hardware
+platform: TBD
+scope: TBD
+tooling: []
+prerequisites:
+  blocks: []
+  patterns: []
+status: complete
+```

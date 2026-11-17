@@ -173,3 +173,20 @@ The created instance will come with a route and a secret that contains the admin
 
 ### WebUI Login
 ![ArgoCD WebUI Login](./.images/argocd-login.png)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Bootstrapping GitOps Functionality
+type: block
+description: How to get GitOps functionality ready and running on an ACP
+platform: Red Hat OpenShift
+scope: Bootstrapping
+tooling: [CLI, yaml, helm]
+prerequisites:
+  blocks: [helm-getting-started, installing-operators-yaml, gitops-cluster-config-rbac]
+  patterns: []
+status: complete
+```

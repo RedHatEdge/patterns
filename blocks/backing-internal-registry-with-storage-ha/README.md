@@ -119,3 +119,21 @@ Review the meta chart's [readme](https://github.com/RedHatEdge/acp-operations/bl
 
 Once the rollout is executed, a new application tile will appear in ArgoCD, and the registry configuration will be handled by the tooling.
 ![Registry Config Applied](./.images/registry-config-chart-applied.png)
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Backing the Internal Registry with Persistent Storage on an HA ACP
+type: block
+description: How to configure the internal registry to use ODF object storage for image retention and expose it for platform upgrades
+platform: Red Hat OpenShift
+scope: Bootstrapping
+tooling: [CLI, yaml, helm, GitOps]
+prerequisites:
+  blocks: [k8s-core-concepts, helm-getting-started, gitops-deployment-k8s]
+  patterns: []
+status: complete
+```

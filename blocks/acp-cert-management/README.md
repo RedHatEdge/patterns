@@ -412,3 +412,20 @@ NAMESPACE           NAME             READY   SECRET               AGE
 openshift-config    openshift-api    True    openshift-api-cert   2d20h
 openshift-ingress   router-default   True    router-cert          2d20h
 ```
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Certificate Management for ACPs
+type: block
+description: How to leverage cert-manager for certificate management on ACPs
+platform: Red Hat OpenShift
+scope: Bootstrapping
+tooling: [CLI, yaml, helm, GitOps]
+prerequisites:
+  blocks: [helm-getting-started, installing-operators-yaml, gitops-cluster-config-rbac]
+  patterns: []
+status: complete
+```

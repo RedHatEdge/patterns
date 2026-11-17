@@ -151,3 +151,20 @@ Once applied, the following phases can be observed:
 
 ### 3. Deployments Synced
 ![Deployments Synced](./.images/deployments-synced.png)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: App of Apps for Scaling Deployments
+type: block
+description: Using GitOps and the app-of-apps pattern to scale deployments through full automation
+platform: Red Hat Device Edge with Microshift, Red Hat OpenShift
+scope: Application deployment
+tooling: [Red Hat OpenShift GitOps]
+prerequisites:
+  blocks: [k8s-core-concepts, scaling-gitops-deployment-k8s, helm-getting-started, gitops-deployment-k8s]
+  patterns: []
+status: complete
+```

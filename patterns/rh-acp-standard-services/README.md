@@ -137,3 +137,21 @@ In addition, as infrastucture becomes more complex, providing the capability to 
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Red Hat Provided ACP Standard Services
+type: pattern
+description: Core services supported by Red Hat on an ACP including storage, virtualization, networking, automation, and more
+platform: Red Hat OpenShift
+scope: Platform Capabilities
+tooling: [Red Hat OpenShift GitOps]
+prerequisites:
+  blocks: []
+  patterns: [acp-standardized-architecture-ha]
+status: complete
+```

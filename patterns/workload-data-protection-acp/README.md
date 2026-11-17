@@ -318,3 +318,21 @@ The rationale for this pattern is to address the need for application-aware data
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Workload Data Protection on an ACP
+type: pattern
+description: Application-aware backup, restore, and disaster recovery for workloads on an ACP using Trilio
+platform: Advanced Compute Platform
+scope: Data Protection
+tooling: [Trilio for Kubernetes]
+prerequisites:
+  blocks: [workload-data-protection-acp]
+  patterns: [acp-standardized-architecture-ha, rh-acp-standard-services]
+status: complete
+```

@@ -105,3 +105,21 @@ The rationale for this pattern is to have self-healing capabilities on small for
 - Tim Mirth (tmirth@redhat.com)
 - Dave Rapini (drapini@redhat.com)
 - Josh Swanson (jswanson@redhat.com)
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Creating a Self-Healing DCN Cluster
+type: pattern
+description: Creating self-healing clusters across distributed control nodes for automatic workload recovery on failure
+platform: Red Hat Device Edge
+scope: [Virtualization, Containerization]
+tooling: [Red Hat Ansible Automation Platform]
+prerequisites:
+  blocks: []
+  patterns: [create-rhde-images-on-acp]
+status: complete
+```

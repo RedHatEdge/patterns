@@ -721,3 +721,21 @@ Understanding the limitations of power monitoring helps set appropriate expectat
 | Bare-metal requirement | VMs and cloud instances typically lack RAPL access | Deploy on bare-metal ACPs; accept model-based estimation on VMs |
 | Short-lived pods | Pods that start and stop between scrape intervals may be missed | Reduce the scrape interval (15s minimum recommended) |
 | Idle power distribution | Idle power is distributed proportionally, not causally | Note this in reports; idle attribution is an estimate per GHG Protocol guidelines |
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Power Monitoring with Kepler on an ACP
+type: block
+description: Deploying and configuring Kepler for per-pod and per-workload power monitoring on an ACP
+platform: Red Hat OpenShift
+scope: Observability, Sustainability
+tooling: [CLI, yaml, helm, GitOps]
+prerequisites:
+  blocks: [helm-getting-started, installing-operators-yaml, gitops-cluster-config-rbac]
+  patterns: [observability-and-telemetry-acp]
+status: complete
+```

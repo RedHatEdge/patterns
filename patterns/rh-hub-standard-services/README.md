@@ -188,3 +188,20 @@ The main rationale for deploying a set of services centrally are:
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Hub for ACPs Standard Services
+type: pattern
+description: Core services for a centralized hub managing distributed ACPs at scale
+platform: Red Hat OpenShift
+scope: Platform Capabilities
+tooling: [Red Hat OpenShift GitOps]
+prerequisites:
+  blocks: []
+  patterns: [acp-standardized-architecture-ha, rh-acp-standard-services]
+status: complete
+```

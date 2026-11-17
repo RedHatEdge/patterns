@@ -434,3 +434,21 @@ The rationale for this pattern is to address the operational challenge of managi
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Policy-Driven Deployment of ACP Standard Services from a Hub
+type: pattern
+description: Deploying and enforcing ACP services at fleet scale using RHACM governance policies and label-based targeting
+platform: Advanced Compute Platform
+scope: [Service Deployment, Fleet Management]
+tooling: [Red Hat Advanced Cluster Management for Kubernetes, Red Hat OpenShift GitOps, AutoShift]
+prerequisites:
+  blocks: [autoshift-acp-services]
+  patterns: [acp-standardized-architecture-ha, acp-standardized-architecture-non-ha, rh-hub-standard-services, rh-acp-standard-services, automated-acp-install-from-hub]
+status: complete
+```

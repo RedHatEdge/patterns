@@ -1262,3 +1262,21 @@ The tie-breaker concept for dual-room deployments is critical to achieving room-
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Control Plane Sizing for Advanced Compute Platforms
+type: pattern
+description: Considerations, trade-offs, and recommendations for sizing ACP control planes (3-node, 4-node, 5-node) across single and dual data room deployments
+platform: Advanced Compute Platform
+scope: [Architecture, Availability, Installation Planning]
+tooling: [Red Hat OpenShift, Red Hat Advanced Cluster Management]
+prerequisites:
+  blocks: []
+  patterns: [acp-standardized-architecture-ha, rh-acp-standard-services]
+status: complete
+```

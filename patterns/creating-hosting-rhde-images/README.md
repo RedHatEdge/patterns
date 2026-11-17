@@ -67,3 +67,20 @@ The rationale for this pattern is to have a completely automated way to create a
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Self-Healing Distributed Control Nodes
+type: pattern
+description: Leveraging pacemaker clustering on DCNs running RHDE to automatically relocate workloads on device failure
+platform: Red Hat OpenShift
+scope: Virtualization
+tooling: [Red Hat OpenShift GitOps]
+prerequisites:
+  blocks: [example-network-config, acp-network-configuration, acp-bridged-networks, virtual-machines-as-code, importing-installer-isos, enabling-tekton-vm-tasks, ocp-virt-templates-and-preferences]
+  patterns: [acp-standardized-architecture-ha, rh-acp-standard-services]
+status: complete
+```

@@ -131,3 +131,21 @@ The Rationale for this pattern is to address the need for a high level of testin
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Building, Testing, and Hosting Images for DCNs on an ACP or Hub
+type: pattern
+description: Leveraging ACP or hub core services to build, test, and host DCN operating system images via pipelines
+platform: Advanced Compute Platform
+scope: [Virtualization, Pipelines, Build, Image Registry]
+tooling: [Red Hat OpenShift GitOps]
+prerequisites:
+  blocks: []
+  patterns: [image-mode-for-dcns]
+status: complete
+```

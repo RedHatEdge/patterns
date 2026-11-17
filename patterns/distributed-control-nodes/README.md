@@ -115,3 +115,20 @@ By standardizing the DCN layer, industrial organizations can replace fragmented 
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Distributed Control Node Overview
+type: pattern
+description: Overview of the DCN layer providing lightweight, autonomous compute at the industrial far edge
+platform: Distributed Control Node
+scope: [Installation, Operation, Workload Hosting]
+tooling: [Red Hat Enterprise Linux for Edge, Podman, Ansible Automation Platform]
+prerequisites:
+  blocks: []
+  patterns: []
+status: complete
+```

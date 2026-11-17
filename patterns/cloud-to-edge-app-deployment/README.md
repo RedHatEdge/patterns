@@ -184,3 +184,20 @@ ACPs provide the core service to achieve these goals as part of the standard dep
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Cloud/Datacenter to Edge Application Deployments
+type: pattern
+description: Deploying applications from a central cloud or datacenter to ACPs and edge devices using declarative state management
+platform: Advanced Compute Platform
+scope: [Application Deployment, GitOps]
+tooling: [Red Hat OpenShift GitOps]
+prerequisites:
+  blocks: []
+  patterns: []
+status: complete
+```

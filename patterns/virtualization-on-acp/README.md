@@ -410,3 +410,20 @@ The rationale for this pattern is to have an easily managed way to consume the v
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Virtualization on an ACP
+type: pattern
+description: Creating and managing virtual machines on an ACP via the virtualization and gitops services
+platform: Red Hat OpenShift
+scope: Virtualization
+tooling: [Red Hat OpenShift GitOps]
+prerequisites:
+  blocks: [example-network-config, acp-network-configuration, acp-bridged-networks]
+  patterns: [acp-standardized-architecture-ha, rh-acp-standard-services]
+status: complete
+```

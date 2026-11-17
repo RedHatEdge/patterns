@@ -200,3 +200,21 @@ Virtual machines can be launched by combining a bootable volume with an instance
 ### VM Migrations
 If the underlying platform is highly available, containing more than a single node, virtual machines can be migrated between the nodes. These migrations are tracked and displayed:
 ![VM Migrations](./.images/vm-migrations.png)
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Installing Virtualization on an ACP
+type: block
+description: How to install virtualization functionality on an ACP with a preview of installed assets
+platform: Red Hat OpenShift
+scope: Bootstrapping
+tooling: [CLI, yaml, helm, GitOps]
+prerequisites:
+  blocks: [helm-getting-started, installing-operators-yaml, gitops-cluster-config-rbac]
+  patterns: []
+status: complete
+```

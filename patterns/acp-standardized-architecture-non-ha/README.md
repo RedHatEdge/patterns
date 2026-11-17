@@ -186,3 +186,20 @@ While there's value in running the workloads found today, applications are being
 ### Authors
 - Hendrik van Niekerk (hvanniek@redhat.com)
 - Josh Swanson (jswanson@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Standardized Non Highly-Available Computing Platform Architecture
+type: pattern
+description: Technical look at a non highly-available, hyper-converged style advanced computing platform on a single physical node
+platform: Advanced Compute Platform
+scope: [Architecture, Installation]
+tooling: [Red Hat OpenShift]
+prerequisites:
+  blocks: []
+  patterns: []
+status: under-review
+```

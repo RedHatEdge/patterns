@@ -199,3 +199,21 @@ After completion, if the destination was set to the internal registry, then new 
 
 Within those ImageStreams, a large amount of tags will be shown, denoting images have been synced:
 ![Synced Images](./.images/synced-images.png)
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Mirroring Update Content to an ACP
+type: block
+description: How to leverage oc-mirror to mirror images for running platform updates
+platform: Red Hat OpenShift
+scope: Updates
+tooling: [CLI, yaml, helm, GitOps]
+prerequisites:
+  blocks: [k8s-core-concepts, helm-getting-started, gitops-deployment-k8s, backing-internal-registry-with-storage-ha]
+  patterns: []
+status: complete
+```

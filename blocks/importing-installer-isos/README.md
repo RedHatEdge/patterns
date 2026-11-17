@@ -123,3 +123,21 @@ oc apply -f code/datavolume.yaml
 
 After applying the yaml file, a PVC should be created, and the import process will begin.
 ![PVC for DV](./.images/pvc-for-dv.png)
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Importing Installer ISOs onto an ACP
+type: block
+description: How to import operating system installation ISOs to storage on an ACP
+platform: Red Hat OpenShift
+scope: Bootstrapping
+tooling: [CLI, yaml, helm, GitOps]
+prerequisites:
+  blocks: [helm-getting-started, installing-operators-yaml, gitops-cluster-config-rbac]
+  patterns: []
+status: complete
+```

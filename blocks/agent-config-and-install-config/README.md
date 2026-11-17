@@ -173,3 +173,21 @@ openshift-install --dir ocp-install/ agent create image
 ```
 
 This will create a bootable ISO that can be used to install the cluster.
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Agent Config and Install Config
+type: block
+description: Example of creating agent-config.yaml and install-config.yaml for bare-metal OpenShift cluster installation
+platform: Red Hat OpenShift
+scope: Bootstrapping
+tooling: [CLI, yaml]
+prerequisites:
+  blocks: []
+  patterns: []
+status: complete
+```

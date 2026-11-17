@@ -338,3 +338,21 @@ Once complete, the OpenShift web console will show additional information in the
 ![Status](./.images/status.png)
 
 Refer to the individual service's corresponding block to investigate service functionality more thoroughly.
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Installing Red Hat Provided Core Services on an ACP
+type: block
+description: Meta block that summarizes and streamlines the installation of core services on an ACP
+platform: Red Hat OpenShift
+scope: Bootstrapping
+tooling: [CLI, yaml, helm, GitOps]
+prerequisites:
+  blocks: [helm-getting-started, gitops-deployment-k8s, bootstrapping-gitops, local-storage-for-converged-storage, acp-network-configuration, acp-cert-management, converged-storage-odf, aap-on-acp-install, virtualization-on-acp]
+  patterns: [acp-standardized-architecture-ha, rh-acp-standard-services]
+status: complete
+```

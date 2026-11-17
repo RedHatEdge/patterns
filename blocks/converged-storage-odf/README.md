@@ -377,3 +377,20 @@ In addition, new views will be available via the cluster dashboard that give ins
 ![ODF Topology](./.images/odf-topology.png)
 
 ![ODF Consumption](./.images/consumption.png)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Converged Storage on an ACP using OpenShift Data Foundation
+type: block
+description: How to install and configure OpenShift Data Foundation to provide converged storage on an ACP
+platform: Red Hat OpenShift
+scope: Bootstrapping
+tooling: [CLI, yaml, helm, GitOps]
+prerequisites:
+  blocks: [helm-getting-started, installing-operators-yaml, gitops-cluster-config-rbac, acp-network-configuration, local-storage-for-converged-storage]
+  patterns: []
+status: complete
+```

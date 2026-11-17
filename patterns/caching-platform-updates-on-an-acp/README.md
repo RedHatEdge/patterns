@@ -158,3 +158,20 @@ The mirroring tool used within this pattern's solution and examples allows for e
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Caching Platform Update Content on an ACP
+type: pattern
+description: Cache update content locally on an ACP to speed up platform updates at bandwidth-constrained sites
+platform: Advanced Compute Platform
+scope: Operations
+tooling: []
+prerequisites:
+  blocks: [backing-internal-registry-with-storage-ha, mirroring-update-content, setting-update-content-source]
+  patterns: []
+status: complete
+```

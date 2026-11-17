@@ -148,3 +148,20 @@ The Rationale for this pattern is to drive greater consumption and easier on-ram
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Automated Creation of Virtual Machines and Application Installation
+type: pattern
+description: Using the gitops service to provision virtual machines and configure automation for application installation
+platform: Red Hat OpenShift
+scope: Virtualization
+tooling: [Red Hat OpenShift GitOps]
+prerequisites:
+  blocks: []
+  patterns: [acp-standardized-architecture-ha, rh-acp-standard-services, virtualization-on-acp]
+status: complete
+```

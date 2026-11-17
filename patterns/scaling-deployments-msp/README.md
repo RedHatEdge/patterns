@@ -141,3 +141,20 @@ These rationales, along with the features and functionality provided by the tool
 
 ### Authors
 - Josh Swanson (jswanson@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Scaling Deployments as a Managed Service Provider
+type: pattern
+description: Scaling application deployment capabilities using GitOps from a managed service provider perspective
+platform: Red Hat OpenShift
+scope: Application deployment
+tooling: [Red Hat OpenShift GitOps]
+prerequisites:
+  blocks: [k8s-core-concepts, app-of-apps]
+  patterns: []
+status: under-review
+```

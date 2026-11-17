@@ -52,3 +52,20 @@ Red Hat recomends either one or a combination depending upon requiremnts and wha
 
 ## Authors
 - Stephen Smith (stephen.smith@redhat.com)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: RHDE Management - Selecting your management path
+type: pattern
+description: Options for managing Red Hat Device Edge devices including zero-touch provisioning and fleet configuration
+platform: [Red Hat Device Edge, Ansible Automation Platform]
+scope: [Zero-Touch Provisioning, Fleet Configuration]
+tooling: []
+prerequisites:
+  blocks: []
+  patterns: []
+status: in-progress
+```

@@ -148,3 +148,20 @@ process-control-as   2m43s
 
 And the applications will be created:
 ![Applications](./.images/applications.png)
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Scaling GitOps Deployments
+type: block
+description: How Red Hat OpenShift GitOps can scale up deployments using ApplicationSets
+platform: Red Hat Device Edge with Microshift, Red Hat OpenShift
+scope: Application deployment
+tooling: [Git, Helm]
+prerequisites:
+  blocks: [k8s-core-concepts, helm-getting-started, gitops-deployment-k8s]
+  patterns: []
+status: complete
+```

@@ -164,3 +164,20 @@ Then, after the nodes have checked in with the rendevous host, the hosts will be
 ![Cluster Install In Progress](./.images/cluster-install-in-progress.png)
 
 The systems will reboot a few times during install.
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Installing a Cluster with Automation via Out of Band Management
+type: block
+description: Using Ansible to mount installation media to systems for cluster/ACP installation via out-of-band management
+platform: Red Hat OpenShift
+scope: Bootstrapping
+tooling: [CLI, yaml, Ansible]
+prerequisites:
+  blocks: []
+  patterns: []
+status: complete
+```

@@ -122,3 +122,21 @@ The `code/` directory includes sub-directories for various operator installation
 | Openshift GitOps | `code/openshift-gitops` |
 | Openshift Pipelines | `code/openshift-pipelines` |
 | Cert Manager | `code/cert-manager `|
+
+
+
+## For AI Agents
+For a complete catalog of all blocks and patterns with prerequisite relationships, see [`index.yaml`](../../index.yaml).
+
+```yaml
+title: Installing Operators via YAML
+type: block
+description: Installing operators through an automatable method using YAML instead of the WebUI
+platform: Red Hat OpenShift
+scope: Operators
+tooling: []
+prerequisites:
+  blocks: [k8s-core-concepts]
+  patterns: []
+status: complete
+```
